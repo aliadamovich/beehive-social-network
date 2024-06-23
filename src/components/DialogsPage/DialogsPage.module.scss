@@ -1,0 +1,91 @@
+
+
+.container {
+	max-width: 1400px;
+	padding: 0 10px;
+	margin: 0px auto;
+	overflow: hidden;
+	height: calc(100vh - var(--header-height));;
+	@media (max-width:1500px) {
+		max-width: 1200px;
+	}
+}
+
+.content {
+}
+
+
+.body {
+	display: flex;
+}
+
+.body__dialogs{
+	flex: 0 1 25%;
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	padding: 40px 0 0 40px;
+	border-right: 1px solid rgb(237, 241, 245);
+	height: calc(100vh - 120px);
+	overflow: scroll;
+	scrollbar-width: 0;
+}
+
+.body__dialogs::-webkit-scrollbar {
+	display: none;
+}
+.body__messages::-webkit-scrollbar {
+	display: none;
+}
+
+.body__messages{
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	flex: 1 1 auto;
+	padding: 40px 40px 0 40px;
+	border-right: 1px solid rgb(237, 241, 245);
+	height: calc(100vh - 120px);
+	overflow: scroll;
+	>*:not(:last-child) {
+		margin-bottom: 10px;
+	}
+}
+
+.body__content {
+	flex: 1 1 auto;
+}
+
+.body__recent {
+	flex: 0 1 22%;
+}
+
+
+
+.messageCreate {
+	position: sticky;
+	bottom: 0;
+	border-top: 1px solid rgb(237, 241, 245);
+	background: #fff;
+	width: 100%;
+	padding-top: 20px;
+	padding-bottom: 30px;
+	&__content {
+		padding: 0 20px;
+	}
+
+	&__body {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin-bottom: 8px;
+		textarea {
+			resize: none;
+			width: 100%;
+			border: 1px solid rgb(129, 29, 222);
+			padding: 10px;
+			border-radius: 8px;
+		}
+	}
+}
+

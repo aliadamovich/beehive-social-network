@@ -1,0 +1,62 @@
+
+//кнопка градиентная
+button {
+	// display: flex;
+	// justify-self: center;
+	// align-items: center;
+	// background: linear-gradient(to right, rgb(189, 139, 237), rgb(129, 29, 222));
+	// box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+	// color: #fff;
+	// padding: 2px 28px;
+	// height: 40px;
+	// border-radius: 18px;
+	// transition: all 0.7s ease 0s;
+
+	// &:hover {
+	// 	opacity: 0.8;
+	// }
+}
+
+
+box{
+
+	//border линия
+	border: 1px solid #edf1f5;
+
+//обводка градиентная
+	border: 1px solid rgb(129, 29, 222);
+	
+	color: #8c30e2;// акцентный цвет
+	//базовый шрифт
+	color: rgb(79, 81, 91);
+	color: #111010;//жирный шрифт
+	font-size: 24px;
+	font-family: "Nunito Sans";
+	font-family: 'Quicksand'; //второй
+	font-family: 'Inter'; //третий
+	color: rgb(204, 95, 189)
+	//фиолетовый цвет #8c30e2
+}
+
+//search__icon
+.search__icon {
+	width: 30px;
+	height: 30px;
+	background: linear-gradient(to top left, rgb(189, 139, 237), rgb(129, 29, 222));
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	transition: all 0.3s ease 0s;
+	&:hover {
+		opacity: 0.8;
+	}
+	svg {
+		width: 15px;
+		height: 15px;
+		fill: white;
+	}
+
+	
+}

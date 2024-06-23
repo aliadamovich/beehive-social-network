@@ -1,0 +1,68 @@
+
+.content {
+	background-color:rgb(248, 249, 251);
+	text-align: center;
+	border-right: 1px solid rgb(237, 241, 245);
+	height: 100vh;
+	grid-area: n;
+}
+.logo {
+	display: block;
+	padding: 8px;
+	width: 100%;
+	background-color: rgb(56, 58, 69);
+	margin-bottom: 20px;
+	
+	img{
+		width: 100%;
+	}
+}
+
+.nav {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+
+	.item {
+		width: 100%;
+		padding: 20px 0;
+		transition: all 0.3s ease 0s;
+		border-radius: 8px;
+
+		&:hover {
+			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+			background: linear-gradient(to bottom right, rgb(189, 139, 237), rgb(129, 29, 222));
+
+			svg {
+				stroke: #fff;
+				path {
+					stroke: #fff;
+				}
+			}
+		}
+
+		&.active {
+			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+			background: linear-gradient(to bottom right, rgb(189, 139, 237), rgb(129, 29, 222));
+
+			svg {
+				path {
+					stroke: #fff;
+				}
+				stroke: #fff;
+			}
+		}
+	}
+}
+.svg{
+	svg{
+	width: 25px;
+	height: 25px;
+		stroke: #2f2e2e;
+		stroke-width: 1.5px;
+		path{
+			stroke: rgb(47, 46, 46);
+		}
+	}
+	
+}

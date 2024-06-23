@@ -1,0 +1,37 @@
+
+.search {
+	padding: 13px 0;
+	border-bottom: 1px solid rgb(237, 241, 245);
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	&__icon {
+		width: 30px;
+		height: 30px;
+		background: linear-gradient(to top left, rgb(189, 139, 237), rgb(129, 29, 222));
+		border-radius: 50%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		transition: all 0.3s ease 0s;
+		
+		&:hover{
+			opacity: 0.8;
+		}
+	}
+
+	input {
+		border: 1px solid rgb(237, 241, 245);
+		border-radius: 20px;
+		padding: 6px 10px;
+		min-width: 200px;
+		font-size: 17px;
+
+		&::placeholder {
+			font-weight: 500;
+
+		}
+	}
+}

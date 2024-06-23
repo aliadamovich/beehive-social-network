@@ -1,0 +1,148 @@
+
+.content {
+	position: relative;
+	height: 100%;
+	overflow: auto;
+}
+
+.cover {
+	position: absolute;
+	width: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 200px;
+	background: url('./../../assets/images/cover_example.jpg') center/ cover no-repeat;
+}
+
+.profile {
+	position: relative;
+	z-index: 100;
+	padding-top: 50px;
+	padding-bottom: 20px;
+	column-gap: 20px;
+	row-gap: 40px;
+	display: grid;
+	grid-template-columns: 25% auto 20%;
+	grid-template-rows: 22% auto;
+	grid-template-areas: 
+	'a m m'
+	'ph posts act';
+
+	&_user {
+		grid-area: a;
+		text-align: center;
+	}
+
+	&_menu {
+		grid-area: m;
+		grid-column: 2 / 2;
+		display: flex;
+		gap: 10px;
+		align-items: end;
+		li{
+			padding: 5px;
+			width: 60px;
+			height: 60px;
+			border-radius: 8px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+			transition: all 0.3s ease 0s;
+			cursor: pointer;
+			&.active {
+				background: linear-gradient(to bottom right,rgb(189, 139, 237), rgb(129, 29, 222));
+				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+				a{
+					color: white;
+				}
+			}
+			a{
+				color: inherit;
+				font-size: 13px;
+				font-weight: 500;
+				transition: all 0.3s ease 0s;
+			}
+			&:hover{
+				background: linear-gradient(to bottom right, rgb(189, 139, 237), rgb(129, 29, 222));
+				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+				a{
+					color: white;
+				}
+			}
+		}
+	}
+}
+
+.avatar {
+	height: 100%;
+	width: 100%;
+	
+	margin-bottom: 10px;
+	img {
+		border-radius: 15px;
+		border: 3px solid white;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+}
+
+
+.name{
+	font-family: "Quicksand", sans-serif;
+	font-size: 20px;
+	font-weight: 700;
+	color: rgb(79, 81, 91);
+	p{
+		font-weight: 400;
+		font-size: 13px;
+		margin-top: 10px;
+	}
+}
+
+.activity {
+	padding-top: 30px;
+	border-top: 1px solid rgb(237, 241, 245);
+	grid-area: act;
+}
+
+.photos {
+
+	justify-items: center;
+	padding-top: 30px;
+	border-top: 1px solid rgb(237, 241, 245);
+	grid-area: ph;
+}
+
+.friendsCounter {
+	padding: 0 20px 20px 20px;
+	&__container {
+		display: flex;
+		justify-content: center;
+		gap: 25px;
+		border-bottom: 1px solid rgb(237, 241, 245);
+		padding-bottom: 15px;
+	}
+
+	&__friends,
+		&__groups {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			font-size: 11px;
+			gap: 5px;
+			font-weight: 500;
+			font-family: 'Inter';
+		span {
+			color: #8c30e2;
+			font-size: 20px;
+		}
+	}
+
+	&__groups {
+		
+	}
+}

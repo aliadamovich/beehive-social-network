@@ -1,0 +1,51 @@
+.gallery{
+
+	&__content {
+		display: flex;
+		gap: 25px;
+	}
+
+	&__body{
+		flex: 0 1 60%;
+
+	}
+
+	&__grid{
+		margin-top: 30px;
+	}
+
+	&__recent{
+		flex: 1 1 auto;
+	}
+}
+
+.grid {
+	&__photo {
+		padding: 10px;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 10px;
+		grid-auto-flow: row;
+	}
+
+	&__item {
+		overflow: hidden;
+		cursor: pointer;
+		border-radius: 8px;
+
+		img {
+			width: 100%;
+			height: 100%;
+			transition: all 0.3s ease 0s;
+		}
+
+		&:hover {
+			transition: all 0.3s ease 0s;
+
+			img {
+				scale: 1.1;
+			}
+		}
+	}
+
+}

@@ -1,0 +1,27 @@
+.activity {
+
+	&__container {}
+
+	&__title {
+		position: relative;
+		font-family: "Quicksand";
+		font-size: 20px;
+		font-weight: 700;
+		color: rgb(79, 81, 91);
+		padding-bottom: 20px;
+		margin-bottom: 30px;
+
+		&::after {
+			content: '';
+			position: absolute;
+			width: 13%;
+			height: 2px;
+			bottom: 0px;
+			left: 0;
+			background: #8c30e2;
+		}
+	}
+	&__content {
+
+	}
+}
