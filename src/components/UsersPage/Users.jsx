@@ -1,12 +1,23 @@
 import c from './Users.module.scss';
 import userPhoto from './../../assets/images/user.png';
-import React from 'react';
+import React, { useState } from 'react';
 import { Loader } from '../common/Loader/Loader';
 import { NavLink } from 'react-router-dom';
+import { Button } from '../common/Button';
 
 
 export const Users = (props) => {
-	// debugger
+
+	let [filter, setFilter] = useState('all');
+
+	let filteredUsers = props.users;
+	if (filter === 'followed') filteredUsers = filteredUsers.filter(u => u.followed)
+	if (filter === 'unfollowed') filteredUsers = filteredUsers.filter(u => !u.followed)
+	
+	const onUsersFilter = (value) => {
+		setFilter(value)
+	}
+	
 	return (
 		<div className={c.users__wrap}>
 			{ props.isFetching ? <Loader /> : null}
@@ -14,7 +25,7 @@ export const Users = (props) => {
 
 				{
 
-					props.users.map(u => <div className={`${c.users__card} ${c.card}`} key={u.id}>
+					filteredUsers.map(u => <div className={`${c.users__card} ${c.card}`} key={u.id}>
 						<NavLink to={'/profile/' + u.id} className={c.card__image}>
 							<img src={u.photos.small !== null ? u.photos.small : userPhoto} alt="" />
 						</NavLink>
@@ -37,7 +48,10 @@ export const Users = (props) => {
 				}
 			</div>
 			<div className={c.users__load}>
-				<button onClick={() => { props.onLoadClick() }} className={c.users__btn}>Load more</button>
+				<Button onClick={() => { props.onLoadClick() }}>Load more</Button>
+				<Button onClick={() => onUsersFilter('followed')}>Followed</Button>
+				<Button onClick={() => onUsersFilter('unfollowed')}>Unfollowed</Button>
+				<Button onClick={() => onUsersFilter('all')}>All</Button>
 			</div>
 		</div>
 	)

@@ -5,7 +5,7 @@ export const Button = styled.button`
 	justify-content: center;
 	align-items: center;
 	background: linear-gradient(to right, rgb(189, 139, 237), rgb(129, 29, 222));
-	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 	color: #fff;
 	padding: 2px 28px;
 	height: 40px;

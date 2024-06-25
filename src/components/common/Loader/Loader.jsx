@@ -1,4 +1,4 @@
-import loader from './../../images/loader.svg';
+import loader from './../../../assets/images/loader.svg';
 
 import c from './Loader.module.scss';
 
