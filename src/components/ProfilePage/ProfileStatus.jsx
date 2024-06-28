@@ -1,16 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { theme } from '../../styles/Theme'
 import { CiEdit } from "react-icons/ci";
 import { FlexWrapper } from '../common/FlexWrapper';
 
 export const ProfileStatus = (props) => {
-
+	// debugger
 	const [editMode, setEditMode] = useState(false)
 	const [status, setStatus] = useState(props.status)
 
+	//исп-ем хук чтобы он подгрузил статус когда в пропсах он придет (указываем зависимость - )
+	useEffect(() => { setStatus(props.status) }, [props.status])
+
 	const changeEditMode = () => {
-		setEditMode(!editMode)
+		if(props.profileOwnerId === props.currentUserId) {
+			setEditMode(!editMode)
+		}
 	}
 	
 	const onInputChange = (e) => {
@@ -31,7 +36,7 @@ export const ProfileStatus = (props) => {
 					</FieldWrapper>
 				: <FlexWrapper gap='5px' align='center'>
 					<Status onDoubleClick={changeEditMode}>{status}</Status>
-					<CiEdit onClick={changeEditMode}/>
+					{props.profileOwnerId === props.currentUserId && <CiEdit onClick={changeEditMode} />}
 				 </FlexWrapper>
 			}
 		</StatusContainer>

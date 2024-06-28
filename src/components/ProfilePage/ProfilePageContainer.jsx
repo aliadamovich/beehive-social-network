@@ -58,6 +58,6 @@ function mapDispatchToProps(dispatch) {
 export const ProfilePageContainer = compose(
 	connect(mapStateToProps, mapDispatchToProps),
 	withRouter,
-	// withAuthRedirect
+	withAuthRedirect
 )
 	(ProfileAPIComponent)

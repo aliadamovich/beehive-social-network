@@ -10,10 +10,6 @@ export const GlobalStyles = createGlobalStyle`
 		padding: 0;
 		box-sizing: border-box;
 	}
-	
-	*::selection {
-		background-color: ${theme.colors.accent}
-	}
 
 
 	body {
@@ -60,5 +56,7 @@ export const GlobalStyles = createGlobalStyle`
 	textarea {
 		font-family: inherit;
 	}
-
+	*:focus-visible {
+    outline: 1px solid ${theme.colors.mainFont};
+}
 `

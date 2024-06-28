@@ -9,11 +9,13 @@ import cover from './../../assets/images/cover_example.jpg';
 import { ProfileStatus } from './ProfileStatus';
 
 export const ProfilePage = (props) => {
-	// debugger
+		// debugger
+	//выясняем чей профиль показан - авторизованного пользователя или нет чтобы потом использовать в статусе
+	const profileOwnerId = Number(props.router.params.userId) || props.authorizedLoginId
+
 	if (!props.userProfile) {
 		return <Loader />
 	}
-
  return(
 	 <div className={c.content}>
 		 <div className={c.cover}></div>
@@ -30,7 +32,7 @@ export const ProfilePage = (props) => {
 					 <div className={c.name}>{props.userProfile.fullName}</div>
 				 </div>
 				 <div className={c.profile_menu}>
-					<ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
+					 <ProfileStatus status={props.status} updateStatus={props.updateStatus} profileOwnerId={profileOwnerId} currentUserId={props.authorizedLoginId}/>
 					<ul className={c.profile_menu__list}>
 						 <li className={c.active}><a href="#" className="href">Activity</a></li>
 						 <li><a href="#" className="href">Profile</a></li>

@@ -12,18 +12,12 @@ import { GalleryContainer } from './components/GalleryPage/GalleryContainer';
 
 
 function App() {
-	const location = useLocation();
-	const isLoginPage = location.pathname === '/login';
-	console.log(location);
-	
   return (
 
 			<>
-			{isLoginPage ? 
 				<Routes>
 					<Route path="/login" element={<LoginPage />} />
 				</Routes>
-			: 
 				<div className="wrapper">
 					<HeaderContainer />
 					<Navbar />
@@ -37,9 +31,6 @@ function App() {
 						</Routes>
 					</div>
 				</div>
-			
-		}
-				
 			</>
 
 	);

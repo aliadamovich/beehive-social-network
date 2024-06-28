@@ -19,7 +19,7 @@
 	justify-content: center;
 	box-shadow: -5px 5px 10px rgba(64, 64, 64, 0.15);
 	border-radius: 8px;
-	padding: 20px 50px;
+	padding: 20px ;
 	text-align: center;
 	display: grid;
 	grid-auto-flow: row;
@@ -52,7 +52,7 @@
 	}
 
 	&__location{
-		margin-bottom: 20px;
+		margin-bottom: 10px;
 		font-family: 'Quicksand';
 			font-weight: 700;
 			font-size: 15px;
@@ -69,7 +69,7 @@
 		display: inline-flex;
 		position: relative;
 		font-size: 15px;
-		margin-bottom: 15px;
+		margin-bottom: 10px;
 		&::before{
 		content: '\275b';
 		top: 0;
