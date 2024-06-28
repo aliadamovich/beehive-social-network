@@ -4,6 +4,7 @@ import { loadMoreUsersThunkCreator, toggleFollowingProgressAC, toggleFollowAC, g
 import React from "react";
 import { withAuthRedirect } from './../../hoc/WithAuthRedirect';
 import { compose } from "redux";
+import { getFollowingInProgress, getIsFetching, getTotalUsers, getUsersOnPage, obtainUsers, setCurrentPage } from "../../redux/selectors/users-selectors";
 
 
 
@@ -32,12 +33,12 @@ class UsersAPIComponent extends React.Component {
 
 function mapStateToProps(state) {
 	return {
-		users: state.usersPage.users,
-		totalUsers: state.usersPage.totalUsers,
-		usersOnPage: state.usersPage.usersOnPage,
-		currentPage: state.usersPage.currentPage,
-		isFetching: state.usersPage.isFetching,
-		followingInProgress: state.usersPage.followingInProgress
+		users: obtainUsers(state),
+		totalUsers: getTotalUsers(state),
+		usersOnPage: getUsersOnPage(state),
+		currentPage: setCurrentPage(state),
+		isFetching: getIsFetching(state),
+		followingInProgress: getFollowingInProgress(state)
 	}
 }
  

@@ -6,6 +6,7 @@ import { Loader } from '../common/Loader/Loader';
 import user from './../../assets/images/user.png';
 import { Container } from '../common/Container';
 import cover from './../../assets/images/cover_example.jpg';
+import { ProfileStatus } from './ProfileStatus';
 
 export const ProfilePage = (props) => {
 	// debugger
@@ -26,21 +27,19 @@ export const ProfilePage = (props) => {
 								 <img src={user} alt="" />
 						}
 					 </div>
-					 <div className={c.name}>
-						 {props.userProfile.fullName}
-						 {/* Кот Вареникович */}
-						 {/* <p>Active 44 min ago</p> */}
-						 <p>{props.userProfile.aboutMe}</p>
-					 </div>
+					 <div className={c.name}>{props.userProfile.fullName}</div>
 				 </div>
-				 <ul className={c.profile_menu}>
-					 <li className={c.active}><a href="#" className="href">Activity</a></li>
-					 <li><a href="#" className="href">Profile</a></li>
-					 <li><a href="#" className="href">Friends</a></li>
-					 <li><a href="#" className="href">Groups</a></li>
-					 <li><a href="#" className="href">Forums</a></li>
-					 <li><a href="#" className="href">Media</a></li>
-				 </ul>
+				 <div className={c.profile_menu}>
+					<ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
+					<ul className={c.profile_menu__list}>
+						 <li className={c.active}><a href="#" className="href">Activity</a></li>
+						 <li><a href="#" className="href">Profile</a></li>
+						 <li><a href="#" className="href">Friends</a></li>
+						 <li><a href="#" className="href">Groups</a></li>
+						 <li><a href="#" className="href">Forums</a></li>
+						 <li><a href="#" className="href">Media</a></li>
+					 </ul>
+				 </div>
 				 <div className={c.photos}>
 					 <div className={c.friendsCounter}>
 						 <div className={c.friendsCounter__container}>

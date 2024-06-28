@@ -19,11 +19,11 @@ function App() {
   return (
 
 			<>
-			{/* {isLoginPage ? 
+			{isLoginPage ? 
 				<Routes>
 					<Route path="/login" element={<LoginPage />} />
 				</Routes>
-			:  */}
+			: 
 				<div className="wrapper">
 					<HeaderContainer />
 					<Navbar />
@@ -38,7 +38,7 @@ function App() {
 					</div>
 				</div>
 			
-			{/* } */}
+		}
 				
 			</>
 

@@ -27,9 +27,24 @@ export const usersAPI = {
 			.then(resp => resp.data)
 	},
 	setProfile(profileId) {
-		return axiosInstance.get(`profile/${profileId}`)
+		console.warn('Obsolete method! Use ProfileAPI')
+		return profileAPI.setProfile(profileId)
 	}
-	
+}
+
+export const profileAPI = {
+
+	setProfile(profileId) {
+		return axiosInstance.get(`profile/${profileId}`)
+	},
+
+	getStatus(profileId) {
+		return axiosInstance.get(`profile/status/${profileId}`)
+	},
+
+	updateStatus(status) {
+		return axiosInstance.put(`profile/status`, {status: status})
+	}
 }
 
 export const authAPI = {

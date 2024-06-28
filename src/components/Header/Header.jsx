@@ -17,7 +17,7 @@ export const Header = (props) => {
 				</div>
 				<div className={c.exit}>
 					
-					{/* {
+					{
 					props.isAuth ?
 					<div className={c.exit__auth}>
 						<span className={c.exit__text}>{props.login}</span>
@@ -26,13 +26,13 @@ export const Header = (props) => {
 						</a>
 					</div>
 					: <NavLink className={c.exit__text} to="/login">Login</NavLink> 
-					} */}
-					<div className={c.exit__auth}>
+					}
+					{/* <div className={c.exit__auth}>
 						<span className={c.exit__text}>{props.login}</span>
 						<a href='#' className={c.exit__avatar}>
 							<img src={user_min} alt="user logo" />
 						</a>
-					</div>
+					</div> */}
 				</div>
 			</div>
 		</header>

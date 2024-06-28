@@ -18,7 +18,7 @@
 .profile {
 	position: relative;
 	z-index: 100;
-	padding-top: 50px;
+	// padding-top: 50px;
 	padding-bottom: 20px;
 	column-gap: 20px;
 	row-gap: 40px;
@@ -26,20 +26,30 @@
 	grid-template-columns: 25% auto 20%;
 	grid-template-rows: 22% auto;
 	grid-template-areas: 
-	'a m m'
+	'u m m'
 	'ph posts act';
 
 	&_user {
-		grid-area: a;
-		text-align: center;
-	}
+			grid-area: u;
+			text-align: center;
+		}
+	
+		&_menu {
+			grid-area: m;
+			grid-column: 2 / 2;
+			display: flex;
+			flex-direction: column;
+			justify-content: end;
+		}
 
-	&_menu {
-		grid-area: m;
-		grid-column: 2 / 2;
-		display: flex;
-		gap: 10px;
-		align-items: end;
+		// &_status {
+		// 	margin-bottom: 60px;
+		// 	color: #FFF;
+		// }
+
+		&_menu__list {
+			display: flex;
+			gap: 10px;
 		li{
 			padding: 5px;
 			width: 60px;
@@ -78,8 +88,7 @@
 .avatar {
 	height: 100%;
 	width: 100%;
-	
-	margin-bottom: 10px;
+	padding: 20px;
 	img {
 		border-radius: 15px;
 		border: 3px solid white;

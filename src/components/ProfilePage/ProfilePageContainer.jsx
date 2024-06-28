@@ -1,7 +1,7 @@
 import { ProfilePage } from "./ProfilePage";
 import React from "react";
 import { connect } from "react-redux";
-import { getUserProfileThunkCreator } from "../../redux/reducers/profileReducer";
+import { getStatusThunkCreator, getUserProfileThunkCreator, updateStatusThunkCreator } from "../../redux/reducers/profileReducer";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { withAuthRedirect } from './../../hoc/WithAuthRedirect';
 import { compose } from "redux";
@@ -21,7 +21,6 @@ function withRouter(Component) {
 	return ComponentWithRouterProp;
 }
 
-
 class ProfileAPIComponent extends React.Component {
 	
 	componentDidMount() {
@@ -30,6 +29,7 @@ class ProfileAPIComponent extends React.Component {
 		if (!profileId) profileId = this.props.authorizedLoginId;
 
 		this.props.getUserProfileThunk(profileId);
+		this.props.getStatus(profileId);
 	}
 	render() {
 		return <ProfilePage {...this.props}/>
@@ -41,13 +41,16 @@ function mapStateToProps(state) {
 		userProfile: state.profilePage.userProfile,
 		photoGrid: state.grid.photoGrid,
 		isAuth: state.auth.isAuth,
-		authorizedLoginId: state.auth.autID.id
+		authorizedLoginId: state.auth.autID.id,
+		status: state.profilePage.status
 	}
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		getUserProfileThunk: (profile) => dispatch(getUserProfileThunkCreator(profile))
+		getUserProfileThunk: (profile) => dispatch(getUserProfileThunkCreator(profile)),
+		getStatus: (profile) => dispatch(getStatusThunkCreator(profile)),
+		updateStatus: (st) => dispatch(updateStatusThunkCreator(st))
 	}
 }
 
@@ -55,6 +58,6 @@ function mapDispatchToProps(dispatch) {
 export const ProfilePageContainer = compose(
 	connect(mapStateToProps, mapDispatchToProps),
 	withRouter,
-	withAuthRedirect
+	// withAuthRedirect
 )
 	(ProfileAPIComponent)
