@@ -1,7 +1,8 @@
+
 import c from './MyPost.module.scss';
 
 export const MyPost = (props) => {
-	// console.log(props)
+
 	return(
 		<div className={c.post}>
 			<div className={c.post__container}>

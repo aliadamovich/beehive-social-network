@@ -1,12 +1,15 @@
 import c from './Header.module.scss';
 import { NavLink } from 'react-router-dom';
-// import search from './../search.svg'
 import search from './../../assets/images/search.png'
 import user_min from './../../assets/images/user_example.jpeg';
+import { useSelector } from 'react-redux';
 
 
-export const Header = (props) => {
+export const Header = () => {
 	// debugger
+	const login = useSelector(state => state.auth.autID.login);
+	const isAuth = useSelector(state => state.auth.isAuth);
+
 	return(
 		<header className={c.header}>
 			<div className={c.container}>
@@ -18,21 +21,15 @@ export const Header = (props) => {
 				<div className={c.exit}>
 					
 					{
-					props.isAuth ?
+					isAuth ?
 					<div className={c.exit__auth}>
-						<span className={c.exit__text}>{props.login}</span>
+						<span className={c.exit__text}>{login}</span>
 						<a href='#' className={c.exit__avatar}>
 									<img src={user_min} alt="user logo" />
 						</a>
 					</div>
 					: <NavLink className={c.exit__text} to="/login">Login</NavLink> 
 					}
-					{/* <div className={c.exit__auth}>
-						<span className={c.exit__text}>{props.login}</span>
-						<a href='#' className={c.exit__avatar}>
-							<img src={user_min} alt="user logo" />
-						</a>
-					</div> */}
 				</div>
 			</div>
 		</header>

@@ -76,7 +76,7 @@ const setStatusAC = (status) => ({ type: 'SET-STATUS', status})
 
 export const getUserProfileThunkCreator = (profileId) => {
 	return function(dispatch) {
-		usersAPI.setProfile(profileId)
+		profileAPI.setProfile(profileId)
 			.then(resp => {
 				dispatch(setUserProfileAC(resp.data));
 			})

@@ -6,7 +6,7 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { withAuthRedirect } from './../../hoc/WithAuthRedirect';
 import { compose } from "redux";
 
-function withRouter(Component) {
+export function withRouter(Component) {
 	function ComponentWithRouterProp(props) {
 		let location = useLocation();
 		let navigate = useNavigate();
@@ -24,7 +24,7 @@ function withRouter(Component) {
 class ProfileAPIComponent extends React.Component {
 	
 	componentDidMount() {
-
+		// debugger
 		let profileId = this.props.router.params.userId;
 		if (!profileId) profileId = this.props.authorizedLoginId;
 
@@ -56,8 +56,8 @@ function mapDispatchToProps(dispatch) {
 
 //объединение всех контейнеров с помощью compose
 export const ProfilePageContainer = compose(
-	connect(mapStateToProps, mapDispatchToProps),
 	withRouter,
+	connect(mapStateToProps, mapDispatchToProps),
 	withAuthRedirect
 )
 	(ProfileAPIComponent)

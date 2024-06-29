@@ -3,9 +3,8 @@ import {FeedContainer} from './Feed/FeedContainer';
 import { ActivityContainer } from './Activity/ActivityContainer';
 import { PhotoGrid } from './../GalleryPage/Gallery';
 import { Loader } from '../common/Loader/Loader';
-import user from './../../assets/images/user.png';
+import null_user from './../../assets/images/user.png';
 import { Container } from '../common/Container';
-import cover from './../../assets/images/cover_example.jpg';
 import { ProfileStatus } from './ProfileStatus';
 
 export const ProfilePage = (props) => {
@@ -26,7 +25,7 @@ export const ProfilePage = (props) => {
 						{
 							 props.userProfile.photos.large !== null ?
 								 <img src={props.userProfile.photos.large} alt="" /> :
-								 <img src={user} alt="" />
+								 <img src={null_user} alt="user's picture" />
 						}
 					 </div>
 					 <div className={c.name}>{props.userProfile.fullName}</div>

@@ -1,40 +1,101 @@
 // import logo from './logo.svg';
-
+import React, { useEffect } from 'react';
 import './App.scss';
-import HeaderContainer from './components/Header/HeaderContainer';
 import  Navbar from './components/Navbar/Navbar';
-import { ProfilePageContainer } from './components/ProfilePage/ProfilePageContainer';
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { ProfilePageContainer, withRouter } from './components/ProfilePage/ProfilePageContainer';
+import { Route, Routes } from "react-router-dom";
 import { DialogsContainer } from './components/DialogsPage/DialogsContainer';
 import { UsersPage } from './components/UsersPage/UsersPage';
 import { LoginPage } from './components/LoginPage/LoginPage';
 import { GalleryContainer } from './components/GalleryPage/GalleryContainer';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { compose } from 'redux';
+import { initializeAppThunkCreator } from './redux/reducers/authReducer';
+import { Loader } from './components/common/Loader/Loader';
+import { Header } from './components/Header/Header';
 
 
 function App() {
-  return (
 
-			<>
-				<Routes>
-					<Route path="/login" element={<LoginPage />} />
-				</Routes>
-				<div className="wrapper">
-					<HeaderContainer />
-					<Navbar />
-					<div className='wrapper__container'>
-						<Routes>
-							<Route path="/" element={<ProfilePageContainer />} />
-							<Route path='/profile/:userId' element={<ProfilePageContainer />} />
-							<Route path='/dialogs/*' element={<DialogsContainer />} />
-							<Route path='/gallery' element={<GalleryContainer />} />
-							<Route path='/users' element={<UsersPage />} />
-						</Routes>
-					</div>
+	const dispatch = useDispatch();
+	const initialized = useSelector(state => state.auth.initialized);
+
+	useEffect(() => {
+		dispatch(initializeAppThunkCreator());
+	}, [dispatch]);
+
+	if (!initialized) {
+		return <Loader />;
+	}
+	return (
+		<>
+			<Routes>
+				<Route path="/login" element={<LoginPage />} />
+			</Routes>
+			<div className="wrapper">
+				<Header />
+				<Navbar />
+				<div className='wrapper__container'>
+					<Routes>
+						<Route path="/" element={<ProfilePageContainer />} />
+						<Route path='/profile/:userId?' element={<ProfilePageContainer />} />
+						<Route path='/dialogs/*' element={<DialogsContainer />} />
+						<Route path='/gallery' element={<GalleryContainer />} />
+						<Route path='/users' element={<UsersPage />} />
+					</Routes>
 				</div>
-			</>
-
-	);
+			</div>
+		</>
+	)
 }
 
 export default App;
 
+// class App extends React.Component {
+// 	componentDidMount() {
+// 		this.props.initializeApp()
+// 	}
+
+// 	render () {
+// 		if (!this.props.initialized) {
+// 			return <Loader />
+// 		}
+// 		return(
+// 			<>
+// 				<Routes>
+// 					<Route path="/login" element={<LoginPage />} />
+// 				</Routes>
+// 				<div className="wrapper">
+// 					<Header />
+// 					<Navbar />
+// 					<div className='wrapper__container'>
+// 						<Routes>
+// 							<Route path="/" element={<ProfilePageContainer />} />
+// 							<Route path='/profile/:userId?' element={<ProfilePageContainer />} />
+// 							<Route path='/dialogs/*' element={<DialogsContainer />} />
+// 							<Route path='/gallery' element={<GalleryContainer />} />
+// 							<Route path='/users' element={<UsersPage />} />
+// 						</Routes>
+// 					</div>
+// 				</div>
+// 			</>
+// 		)
+// 	}
+// }
+
+// function mapStateToProps(state) {
+// 	return {
+// 		initialized: state.auth.initialized
+// 	}
+// }
+
+// function mapDispatchToProps(dispatch) {
+// 	return {
+// 		initializeApp: () => dispatch(initializeAppThunkCreator())
+// 	}
+// }
+
+// export default compose(
+// 	withRouter,
+// 	connect(mapStateToProps, mapDispatchToProps)
+// ) (App);

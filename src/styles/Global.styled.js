@@ -57,6 +57,6 @@ export const GlobalStyles = createGlobalStyle`
 		font-family: inherit;
 	}
 	*:focus-visible {
-    outline: 1px solid ${theme.colors.mainFont};
+    outline: 1px solid ${theme.colors.accent};
 }
 `

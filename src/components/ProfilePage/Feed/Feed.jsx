@@ -5,21 +5,22 @@ import { PostCreate } from './PostCreate';
 
 
 
-export const Feed = (props) => {
-	// debugger
+export const Feed = React.memo((props) => {
 	const newPosts = props.profilePage.posts.map(p => <MyPost message={p.body} type={p.type} key={p.id}/>)
 
 	return (
 		<div className={c.posts}>
 			<div className={c.postCreate}>
 
-				<PostCreate 
+				<PostCreate
 				newPostText={props.profilePage.newPostText} 
 				addPost={props.addPost} 
 				updatePostText={props.updatePostText} />
 
 			</div>
+
 			{newPosts}
+
 		</div>
 	)
-}
+})

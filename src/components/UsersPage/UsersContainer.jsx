@@ -5,6 +5,7 @@ import React from "react";
 import { withAuthRedirect } from './../../hoc/WithAuthRedirect';
 import { compose } from "redux";
 import { getFollowingInProgress, getIsFetching, getTotalUsers, getUsersOnPage, obtainUsers, setCurrentPage } from "../../redux/selectors/users-selectors";
+import { withRouter } from "../ProfilePage/ProfilePageContainer";
 
 
 
@@ -55,4 +56,5 @@ function mapDispatchToProps(dispatch) {
 
 export const UsersContainer = compose(
 	connect(mapStateToProps, mapDispatchToProps),
-	withAuthRedirect)(UsersAPIComponent);
+	withAuthRedirect)
+	(UsersAPIComponent);
