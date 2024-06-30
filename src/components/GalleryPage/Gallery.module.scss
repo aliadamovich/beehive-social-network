@@ -1,32 +1,28 @@
 .gallery{
-
 	&__content {
 		display: flex;
-		gap: 25px;
-	}
+		gap: 40px;
+
+	>div:nth-child(2) {
+			flex: 1 1 auto;
+			padding-top: 60px;
+		}
+}
 
 	&__body{
 		flex: 0 1 60%;
-
 	}
-
-	&__grid{
-		margin-top: 30px;
-	}
-
-	&__recent{
-		flex: 1 1 auto;
-	}
+	
 }
 
 .grid {
-	&__photo {
+		margin-top: 30px;
 		padding: 10px;
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		gap: 10px;
 		grid-auto-flow: row;
-	}
+	
 
 	&__item {
 		overflow: hidden;

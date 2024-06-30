@@ -1,11 +1,14 @@
-.users__wrap{}
+.users__wrap{
+	position: relative;
+	overflow: hidden;
+	padding: 20px 0;
+}
 
 .users__load {
 	display: flex;
 	gap: 15px;
 	padding: 20px 5px 10px 5px;
 }
-
 
 
 .users__body{
@@ -54,8 +57,9 @@
 	&__location{
 		margin-bottom: 10px;
 		font-family: 'Quicksand';
-			font-weight: 700;
-			font-size: 15px;
+			font-weight: 500;
+			font-size: 14px;
+			line-height: 1.3;
 			color: #111111;
 	}
 	&__country{

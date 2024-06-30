@@ -6,12 +6,12 @@ import { Icon } from '../common/Icon';
 const Navbar = (props) => {
 	// debugger
 	return(
-		<div className={c.content}>
-			<NavLink to={'/profile/' + props.authorizedLoginId} className={c.logo} aria-label="initial Page">
+		<aside className={c.content}>
+			<NavLink to={'/profile/'} className={c.logo} aria-label="initial Page">
 				<img src={logo} alt="logo" />
 			</NavLink>
 			<nav className={c.nav}>
-				<NavLink to={'/profile/' + props.authorizedLoginId} className={({ isActive }) => isActive ? `${c.item} ${c.active}` : c.item} aria-label="Profile">
+				<NavLink to={'/profile/'} className={({ isActive }) => isActive ? `${c.item} ${c.active}` : c.item} aria-label="Profile">
 					<div className={c.svg}>
 						<Icon iconId='profile' fill='none'/>
 					</div>
@@ -43,7 +43,7 @@ const Navbar = (props) => {
 					</div>
 				</a>
 			</nav>
-		</div>
+		</aside>
 		
 	)
 }

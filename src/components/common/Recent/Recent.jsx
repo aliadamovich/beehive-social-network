@@ -25,20 +25,20 @@ export const Recent = () => {
 					<ul>
 						{recentData.map(d => {
 							return <li className={c.recent__chat} key={d.id}>
-											<Icon iconId='topic' viewBox='0 -5.5 65 65' fill="none" />
-											<span>{d.name}</span>
-							</li>
+												<Icon iconId='topic' viewBox='0 -5.5 65 65' fill="none" />
+												<span>{d.name}</span>
+											</li>
 						})}
 					</ul>
 				</div>
 			</div>
-			<div className={c.recent__disclaimer}>
+			<nav className={c.recent__navigation}>
 				<ul>
 					{linksData.map(l => {
 						return <li key={l.id}><a href={l.href}>{l.name}</a></li>
 					})}
 				</ul>
-			</div>
+			</nav>
 		</div>
 	)
 }

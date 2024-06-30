@@ -1,4 +1,5 @@
 import { authAPI } from "../../apiDal/apiDal";
+import { getUserProfileThunkCreator } from "./profileReducer";
 
 let initialState = {
 	initialized: false,
@@ -41,12 +42,14 @@ export const initializeAppThunkCreator = () => {
 
 
 export const getAuthUserDataThunkCreator = () => {
-	return function(dispatch) {
-		return authAPI.me()
-			.then(resp => {
-				if (resp.data.resultCode === 0) {
-					dispatch(setAuthProfileIdAC(resp.data.data))
-				}
-			})
+	return async function(dispatch) {
+		const resp = await authAPI.me();
+		if (resp.data.resultCode === 0) {
+			dispatch(setAuthProfileIdAC(resp.data.data));
+			
+			//я сделала этот запрос для отображения фото в хэдере но не сработало
+			// dispatch(getUserProfileThunkCreator(resp.data.data.id));
+
+		}
 	}
 }

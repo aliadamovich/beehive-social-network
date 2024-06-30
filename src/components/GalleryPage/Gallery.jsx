@@ -6,41 +6,25 @@ import { Container } from '../common/Container';
 export const Gallery = (props) => {
 
 	return (
-		<div className={c.gallery}>
+		<section className={c.gallery}>
 			<Container>
 				<div className={c.gallery__content}>
 					<div className={c.gallery__body}>
 						<Search />
-						<div className={c.gallery__grid}>
-							<PhotoGrid photoGrid={props.photoGrid}/>
-						</div>
+						<PhotoGrid photoGrid={props.photoGrid}/>
 					</div>
-					<div className={c.gallery__recent}>
-						<Recent />
-					</div>
+					<Recent />
 				</div>
 			</Container>
-		</div>
+		</section>
 	)
 }
 
 export const PhotoGrid = (props) => {
-	// debugger
+
 	return (
-		<div className={c.grid__content}>
-			<div className={c.grid__photo}>
-				{
-				 props.photoGrid.map(p => <div className={c.grid__item}><img src={p.photo} alt="photo grid" /></div>)
-				}
-				
+			<div className={c.grid}>
+				{ props.photoGrid.map(p => <div className={c.grid__item} key={p.id}><img src={p.photo} alt="photo grid" /></div>) }
 			</div>
-			{props.isUser ? <div className={c.grid__user}>
-				<div className={c.user__photo}><img src="" alt="" />
-					<span></span>
-				</div>
-			</div> 
-			: null }
-			
-		</div>
 	)
 }

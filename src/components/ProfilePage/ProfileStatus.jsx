@@ -13,9 +13,8 @@ export const ProfileStatus = (props) => {
 	useEffect(() => { setStatus(props.status) }, [props.status])
 
 	const changeEditMode = () => {
-		if(props.profileOwnerId === props.currentUserId) {
-			setEditMode(!editMode)
-		}
+		
+		if(props.isOwner) setEditMode(!editMode)
 	}
 	
 	const onInputChange = (e) => {
@@ -36,7 +35,7 @@ export const ProfileStatus = (props) => {
 					</FieldWrapper>
 				: <FlexWrapper gap='5px' align='center'>
 					<Status onDoubleClick={changeEditMode}>{status}</Status>
-					{props.profileOwnerId === props.currentUserId && <CiEdit onClick={changeEditMode} />}
+					{props.isOwner && <CiEdit onClick={changeEditMode} />}
 				 </FlexWrapper>
 			}
 		</StatusContainer>

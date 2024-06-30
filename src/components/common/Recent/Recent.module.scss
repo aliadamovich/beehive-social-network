@@ -1,5 +1,4 @@
 .recent {
-	padding: 40px 0 0 20px;
 
 	h3 {
 		position: relative;
@@ -23,7 +22,7 @@
 	}
 
 	&__container {
-		background: linear-gradient(to top left, rgb(245, 239, 252), white 70%, rgb(249, 246, 252));
+		background: linear-gradient(to top left, rgb(245, 239, 252), white 80%, rgb(249, 246, 252));
 		padding: 30px 20px;
 		border-radius: 8px;
 	}
@@ -55,7 +54,7 @@
 		}
 	}
 
-	&__disclaimer {
+	&__navigation {
 		margin-top: 13px;
 
 		ul {
@@ -67,6 +66,10 @@
 
 				a {
 					color: rgb(125, 127, 136);
+					transition: all 0.3s ease 0s;
+					&:hover{
+						color: #111010;
+					}
 				}
 			}
 		}

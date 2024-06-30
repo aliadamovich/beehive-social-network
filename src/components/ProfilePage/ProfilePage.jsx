@@ -8,9 +8,10 @@ import { Container } from '../common/Container';
 import { ProfileStatus } from './ProfileStatus';
 
 export const ProfilePage = (props) => {
-		// debugger
-	//выясняем чей профиль показан - авторизованного пользователя или нет чтобы потом использовать в статусе
-	const profileOwnerId = Number(props.router.params.userId) || props.authorizedLoginId
+	
+	const onPhotoChoose = (event) => {
+		props.savePhoto(event.target.files[0])
+	}
 
 	if (!props.userProfile) {
 		return <Loader />
@@ -24,22 +25,29 @@ export const ProfilePage = (props) => {
 					 <div className={c.avatar}>
 						{
 							 props.userProfile.photos.large !== null ?
-								 <img src={props.userProfile.photos.large} alt="" /> :
-								 <img src={null_user} alt="user's picture" />
+								 <img src={props.userProfile.photos.large} alt="user" /> :
+								 <img src={null_user} alt="user" />
 						}
+						 {props.isOwner && 
+						 <>
+						 	<input id='file' className={c.input__file} onChange={onPhotoChoose} type={'file'} />
+							 <label htmlFor="file">+</label>
+						 </>
+						 }
 					 </div>
+					 
 					 <div className={c.name}>{props.userProfile.fullName}</div>
 				 </div>
 				 <div className={c.profile_menu}>
-					 <ProfileStatus status={props.status} updateStatus={props.updateStatus} profileOwnerId={profileOwnerId} currentUserId={props.authorizedLoginId}/>
-					<ul className={c.profile_menu__list}>
-						 <li className={c.active}><a href="#" className="href">Activity</a></li>
-						 <li><a href="#" className="href">Profile</a></li>
-						 <li><a href="#" className="href">Friends</a></li>
-						 <li><a href="#" className="href">Groups</a></li>
-						 <li><a href="#" className="href">Forums</a></li>
-						 <li><a href="#" className="href">Media</a></li>
-					 </ul>
+						<ProfileStatus status={props.status} updateStatus={props.updateStatus} isOwner={props.isOwner}/>
+						<ul className={c.profile_menu__list}>
+							<li className={c.active}><a href="#" className="href">Activity</a></li>
+							<li><a href="#" className="href">Profile</a></li>
+							<li><a href="#" className="href">Friends</a></li>
+							<li><a href="#" className="href">Groups</a></li>
+							<li><a href="#" className="href">Forums</a></li>
+							<li><a href="#" className="href">Media</a></li>
+						</ul>
 				 </div>
 				 <div className={c.photos}>
 					 <div className={c.friendsCounter}>

@@ -1,15 +1,14 @@
 // import logo from './logo.svg';
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import './App.scss';
 import  Navbar from './components/Navbar/Navbar';
-import { ProfilePageContainer, withRouter } from './components/ProfilePage/ProfilePageContainer';
+import { ProfilePageContainer } from './components/ProfilePage/ProfilePageContainer';
 import { Route, Routes } from "react-router-dom";
 import { DialogsContainer } from './components/DialogsPage/DialogsContainer';
 import { UsersPage } from './components/UsersPage/UsersPage';
 import { LoginPage } from './components/LoginPage/LoginPage';
 import { GalleryContainer } from './components/GalleryPage/GalleryContainer';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { compose } from 'redux';
+import {  useDispatch, useSelector } from 'react-redux';
 import { initializeAppThunkCreator } from './redux/reducers/authReducer';
 import { Loader } from './components/common/Loader/Loader';
 import { Header } from './components/Header/Header';

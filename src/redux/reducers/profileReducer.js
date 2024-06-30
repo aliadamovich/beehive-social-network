@@ -1,4 +1,4 @@
-import { usersAPI, profileAPI } from "../../apiDal/apiDal";
+import { profileAPI } from "../../apiDal/apiDal";
 
 let initialState = {
 	posts: [
@@ -65,14 +65,21 @@ export const profileReducer = (state = initialState, action) => {
 				...state, status: action.status
 			}
 
+
+		case 'SET-PROFILE-PHOTO':
+			return {
+				...state, userProfile: { ...state.profile, photos: action.photos }
+			}
+
 		default: return state
 	}
 }
 
 export const addPostActionCreator = () => ({ type: 'ADD-POST' })
 export const updateNewPostTextActionCreator = (text) => ({type: 'UPDATE-NEW-POST-TEXT',newText: text})
-const setUserProfileAC = (profile) => ({type: 'SET-USER-PROFILE', profile});
+export const setUserProfileAC = (profile) => ({type: 'SET-USER-PROFILE', profile});
 const setStatusAC = (status) => ({ type: 'SET-STATUS', status})
+const setPhotoAC = (photos) => ({ type: 'SET-PROFILE-PHOTO', photos})
 
 export const getUserProfileThunkCreator = (profileId) => {
 	return function(dispatch) {
@@ -104,3 +111,18 @@ export const updateStatusThunkCreator = (status) => {
 		})
 	}
 }
+
+export const saveProfilePhotoThunkCreator = (file) => {
+
+	return function (dispatch) {
+		profileAPI.setProfilePhoto(file)
+			.then(resp => {
+			
+				if (resp.data.resultCode === 0) {
+					dispatch(setPhotoAC(resp.data.data.photos))
+					
+				}
+			})
+	}
+}
+

@@ -24,7 +24,7 @@
 	row-gap: 40px;
 	display: grid;
 	grid-template-columns: 25% auto 20%;
-	grid-template-rows: 22% auto;
+	grid-template-rows: 300px auto;
 	grid-template-areas: 
 	'u m m'
 	'ph posts act';
@@ -41,11 +41,6 @@
 			flex-direction: column;
 			justify-content: end;
 		}
-
-		// &_status {
-		// 	margin-bottom: 60px;
-		// 	color: #FFF;
-		// }
 
 		&_menu__list {
 			display: flex;
@@ -89,6 +84,7 @@
 	height: 100%;
 	width: 100%;
 	padding: 20px;
+	position: relative;
 	img {
 		border-radius: 15px;
 		border: 3px solid white;
@@ -153,5 +149,32 @@
 
 	&__groups {
 		
+	}
+}
+
+.input__file {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+	& + label {
+		font-size: 1.25em;
+		font-weight: 500;
+		color: #111010;
+		background-color: #fff;
+		border-radius: 50%;
+		display: inline-block;
+		position: absolute;
+		bottom: 5%;
+		right: 5%;
+		padding: 0 6px;
+		transition: all 0.3s ease 0s;
+		cursor: pointer;
+		&:hover{
+			background-color: #a34ef3;
+			color: #fff;
+		}
 	}
 }
