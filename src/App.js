@@ -12,12 +12,14 @@ import {  useDispatch, useSelector } from 'react-redux';
 import { initializeAppThunkCreator } from './redux/reducers/authReducer';
 import { Loader } from './components/common/Loader/Loader';
 import { Header } from './components/Header/Header';
+import styled from 'styled-components';
 
 
 function App() {
 
 	const dispatch = useDispatch();
 	const initialized = useSelector(state => state.auth.initialized);
+	const isAuth = useSelector(state => state.auth.isAuth);
 
 	useEffect(() => {
 		dispatch(initializeAppThunkCreator());
@@ -27,24 +29,24 @@ function App() {
 		return <Loader />;
 	}
 	return (
-		<>
-			<Routes>
-				<Route path="/login" element={<LoginPage />} />
-			</Routes>
-			<div className="wrapper">
+		<Wrapper>
+	
+			{/* <div className="wrapper"> */}
+			{isAuth && <Navbar />}
 				<Header />
-				<Navbar />
-				<div className='wrapper__container'>
+				
+				{/* <div className='wrapper__container'> */}
 					<Routes>
 						<Route path="/" element={<ProfilePageContainer />} />
 						<Route path='/profile/:userId?' element={<ProfilePageContainer />} />
 						<Route path='/dialogs/*' element={<DialogsContainer />} />
 						<Route path='/gallery' element={<GalleryContainer />} />
 						<Route path='/users' element={<UsersPage />} />
+						<Route path="/login" element={<LoginPage />} />
 					</Routes>
-				</div>
-			</div>
-		</>
+				{/* </div> */}
+			{/* </div> */}
+		</Wrapper>
 	)
 }
 
@@ -98,3 +100,7 @@ export default App;
 // 	withRouter,
 // 	connect(mapStateToProps, mapDispatchToProps)
 // ) (App);
+
+const Wrapper = styled.div`
+	display: flex;
+`

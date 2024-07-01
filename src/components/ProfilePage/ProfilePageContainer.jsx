@@ -1,7 +1,7 @@
 import { ProfilePage } from "./ProfilePage";
 import React from "react";
 import { connect } from "react-redux";
-import { getStatusThunkCreator, getUserProfileThunkCreator, saveProfilePhotoThunkCreator, updateStatusThunkCreator } from "../../redux/reducers/profileReducer";
+import { getStatusThunkCreator, getUserProfileThunkCreator, saveProfileInfoThunkCreator, saveProfilePhotoThunkCreator, updateStatusThunkCreator } from "../../redux/reducers/profileReducer";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { withAuthRedirect } from './../../hoc/WithAuthRedirect';
 import { compose } from "redux";
@@ -52,7 +52,7 @@ function mapStateToProps(state) {
 		userProfile: state.profilePage.userProfile,
 		photoGrid: state.grid.photoGrid,
 		isAuth: state.auth.isAuth,
-		authorizedLoginId: state.auth.autID.id,
+		authorizedLoginId: state.auth.userId,
 		status: state.profilePage.status,
 	}
 }
@@ -62,7 +62,8 @@ function mapDispatchToProps(dispatch) {
 		getUserProfileThunk: (profile) => dispatch(getUserProfileThunkCreator(profile)),
 		getStatus: (profile) => dispatch(getStatusThunkCreator(profile)),
 		updateStatus: (st) => dispatch(updateStatusThunkCreator(st)),
-		savePhoto: (photoFile) => dispatch(saveProfilePhotoThunkCreator(photoFile))
+		savePhoto: (photoFile) => dispatch(saveProfilePhotoThunkCreator(photoFile)),
+		saveProfileInfo: (form) => dispatch(saveProfileInfoThunkCreator(form))
 	}
 }
 

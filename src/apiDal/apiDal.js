@@ -47,12 +47,21 @@ export const profileAPI = {
 		formData.append('image', photo)
 		return axiosInstance.put(`profile/photo`, formData, {
 			headers: { "Content-Type": "multipart/form-data"}} )
+	},
+	setProfileInfo(form) {
+		return axiosInstance.put(`profile/`, form)
 	}
 }
 
 export const authAPI = {
 	me() {
 		return axiosInstance.get('auth/me')
+	},
+	login(email, password, rememberMe = false) {
+		return axiosInstance.post('auth/login', {email, password, rememberMe})
+	},
+	logout() {
+		return axiosInstance.delete('auth/login')
 	}
 }
 

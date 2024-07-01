@@ -1,20 +1,38 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { Icon } from '../common/Icon'
 import logo from './../../assets/images/logo.png'
-import { Button } from '../common/Button'
 import { theme } from '../../styles/Theme'
-import key from './../../assets/images/key.svg'
-import user from './../../assets/images/userSvg.svg'
 import video_webm from './../../assets/images/8_webm.webm'
 import video_mp4 from './../../assets/images/8.mp4'
+import { LoginForm } from './LoginForm'
+import { useDispatch, useSelector } from 'react-redux'
+import { LoginThunkCreator } from '../../redux/reducers/authReducer'
+import { Navigate } from 'react-router-dom'
+
+
 export const LoginPage = () => {
+
+	const dispatch = useDispatch();
+	const isAuth = useSelector(state => state.auth.isAuth);
+	const onLoginHandler = ({email, password}) => {
+		dispatch(LoginThunkCreator(email, password))
+		console.log(email)
+		console.log(password)
+	}
+
+	useEffect(() => {
+		console.log("isAuth:", isAuth); // Проверка значения isAuth
+	}, [isAuth]);
+
+	if (isAuth) return <Navigate to='/profile' />
+
 	return (
 		<Login>
-			<Video preload='auto' autoPlay muted loop>
+			{/* <Video preload='auto' autoPlay muted loop>
 				<source src={video_webm} type='video/webm'/>
 				<source src={video_mp4} type='video/mp4'/>
-			</Video>
+			</Video> */}
 			<FormContainer>
 				<FormInfo>
 					<LoginHeader fontSize="34x" color="#FFF">Join the club</LoginHeader>
@@ -53,24 +71,7 @@ export const LoginPage = () => {
 					<Logo src={logo} alt="" />
 					<LoginHeader>Welcome</LoginHeader>
 					<LoginDescription>Join gazillions of people online</LoginDescription>
-					<Form>
-						<FieldWrappper>
-							<span></span>
-							<Field height='40px' type="text" placeholder='Email or username'/>
-						</FieldWrappper>
-						<FieldWrappper>
-							<span></span>
-							<Field height='40px' type="password" placeholder='Password' id='password'/>
-						</FieldWrappper>
-						<LinksWrapper>
-							<CheckboxWrapper>
-								<Checkbox id='checkbox' type="checkbox" placeholder='Password'/>
-								<label htmlFor="checkbox">Remember</label>
-							</CheckboxWrapper>
-							<a href="#">Lost Password?</a>
-						</LinksWrapper>
-						<Button>Log into your account</Button>
-					</Form>
+					<LoginForm onLoginHandler={onLoginHandler}/>
 				</LoginContainer>
 			</FormContainer>
 		</Login>
@@ -78,6 +79,7 @@ export const LoginPage = () => {
 }
 
 const Login = styled.div`
+	width: 100%;
 	height: 100vh;
 	position: relative;
 	display: flex;
@@ -180,71 +182,3 @@ const Logo = styled.img`
 	height: 60px;
 `
 
-const Form = styled.form`
-	display: flex;
-	flex-direction: column;
-`
-
-const FieldWrappper = styled.div`
-	position: relative;
-	margin-bottom: 12px;
-	span {
-		display: inline-block;
-		width: 38px;
-		height: 38px;
-		padding: 10px;
-		background: #ffffff url(${user}) center/20px no-repeat;
-		border-radius: 50%;
-		position: absolute;
-		top: 0;
-		left: 2px;
-		z-index: 2;
-	}
-	&:nth-child(2){
-		span {
-			background: #ffffff url(${key}) center/20px no-repeat;
-		}
-	}
-
-
-`
-
-const Field = styled.input`
-	position: relative;
-	background-color: rgb(247, 247, 247);
-	border-radius: 20px;
-	padding-left: 50px;
-	width: 100%;
-	height: ${props => props.height};
-	&::placeholder {
-		font-size: 14px;
-		color: rgb(98, 108, 114);
-	}
-`
-
-const LinksWrapper = styled.div`
-	display: flex;
-	justify-content: space-between;
-		label {
-		display: inline-block;
-		font-size: 13px;
-	}
-	a {
-		font-size: 13px;
-		color: #111010;
-		&:hover{
-			color: #8c30e2;
-		}
-	}
-`
-
-const CheckboxWrapper = styled.div`
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	margin-bottom: 20px;
-`
-const Checkbox = styled.input`
-	height: 18px;
-	width: 18px;
-`

@@ -1,0 +1,32 @@
+.form {
+	
+	>*:not(:last-child) {
+		margin-bottom: 10px;
+	}
+
+	h2, h3 {
+		font-weight: 700;
+	}
+	label {
+
+	}
+	input, textarea {
+		// border: 1px solid #4f515b;
+	}
+
+	button {
+		&:disabled {
+			opacity: 0.35;
+		}
+	}
+}
+
+.error {
+	border: 2px solid #fc8181;
+	// background-color: red;
+}
+
+.errorMessage {
+	color: #fc8181;
+	font-size: 12px;
+}

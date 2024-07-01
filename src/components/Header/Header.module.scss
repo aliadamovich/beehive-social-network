@@ -2,6 +2,11 @@
 	grid-area: h;
 	border-bottom: 1px solid rgb(237, 241, 245);
 	background: #ffff;
+	position: fixed;
+	height: 60px;
+	width: 100%;
+	z-index: 1000;
+	top: 0;
 }
 .container{
 	height: 100%;

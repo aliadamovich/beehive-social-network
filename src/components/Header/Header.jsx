@@ -7,7 +7,7 @@ import null_user from './../../assets/images/user.png';
 
 export const Header = () => {
 	// debugger
-	const login = useSelector(state => state.auth.autID.login);
+	const login = useSelector(state => state.auth.login);
 	const isAuth = useSelector(state => state.auth.isAuth);
 	// const userProfile = useSelector(state => state.profilePage.userProfile)
 	return(

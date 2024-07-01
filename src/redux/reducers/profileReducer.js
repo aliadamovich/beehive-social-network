@@ -71,6 +71,10 @@ export const profileReducer = (state = initialState, action) => {
 				...state, userProfile: { ...state.profile, photos: action.photos }
 			}
 
+		// case 'SET-PROFILE-INFO': 
+		// return {
+		// 	...state, userProfile: 
+		// }
 		default: return state
 	}
 }
@@ -80,7 +84,7 @@ export const updateNewPostTextActionCreator = (text) => ({type: 'UPDATE-NEW-POST
 export const setUserProfileAC = (profile) => ({type: 'SET-USER-PROFILE', profile});
 const setStatusAC = (status) => ({ type: 'SET-STATUS', status})
 const setPhotoAC = (photos) => ({ type: 'SET-PROFILE-PHOTO', photos})
-
+const saveProfileInfoAC = (info) => ({type: 'SET-PROFILE-INFO', info})
 export const getUserProfileThunkCreator = (profileId) => {
 	return function(dispatch) {
 		profileAPI.setProfile(profileId)
@@ -126,3 +130,17 @@ export const saveProfilePhotoThunkCreator = (file) => {
 	}
 }
 
+//используем доп getState() чтобы получить доступ к другой части стейта и взять айди польз-ля
+export const saveProfileInfoThunkCreator = (formData) => {
+	
+	return async function (dispatch, getState) {
+		const userId = getState().auth.autID.id
+		console.log(userId);
+
+		let resp = await profileAPI.setProfileInfo(formData);
+			
+				if (resp.data.resultCode === 0) {
+					dispatch(getUserProfileThunkCreator(userId))
+				}
+	}
+}

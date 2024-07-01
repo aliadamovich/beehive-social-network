@@ -47,5 +47,5 @@ const Navbar = (props) => {
 		
 	)
 }
-const mapStateToProps = (state) => ({ authorizedLoginId: state.auth.autID.id })
+const mapStateToProps = (state) => ({ authorizedLoginId: state.auth.userId })
 export default connect(mapStateToProps, null)(Navbar)

@@ -2,6 +2,8 @@
 .content {
 	position: relative;
 	height: 100%;
+	width: 100%;
+	padding-top: 60px;
 	overflow: auto;
 }
 
@@ -177,4 +179,8 @@
 			color: #fff;
 		}
 	}
+}
+
+.profile__info {
+	grid-area: posts;
 }

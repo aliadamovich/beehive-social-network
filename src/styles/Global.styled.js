@@ -17,7 +17,7 @@ export const GlobalStyles = createGlobalStyle`
 		font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen','Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		font-size: 24px;
+		font-size: 16px;
 		font-weight: 400;
 		line-height: 120%;
 		color: ${theme.colors.mainFont};
@@ -40,7 +40,7 @@ export const GlobalStyles = createGlobalStyle`
 	button {
 	cursor: pointer;
 	background-color: unset;
-	border: none;
+	/* border: none; */
 	}
 
 	h1, h2, h4, h5, h6 {
@@ -51,11 +51,11 @@ export const GlobalStyles = createGlobalStyle`
 	
 	}
 	
-	input,
+	/* input,
 	button,
 	textarea {
 		font-family: inherit;
-	}
+	} */
 	*:focus-visible {
     outline: 1px solid ${theme.colors.accent};
 }

@@ -6,11 +6,18 @@ import { Loader } from '../common/Loader/Loader';
 import null_user from './../../assets/images/user.png';
 import { Container } from '../common/Container';
 import { ProfileStatus } from './ProfileStatus';
+import { ProfileForm } from './profile-form/ProfileForm';
+import { ProfileInfo } from './profile-form/ProfileInfo';
+import { useState } from 'react';
 
 export const ProfilePage = (props) => {
-	
+	const [editMode, setEditMode] = useState(false)
 	const onPhotoChoose = (event) => {
 		props.savePhoto(event.target.files[0])
+	}
+
+	const onEditClick = () => {
+		setEditMode(!editMode)
 	}
 
 	if (!props.userProfile) {
@@ -64,7 +71,14 @@ export const ProfilePage = (props) => {
 					 </div>
 					 <PhotoGrid photoGrid={props.photoGrid} />
 				 </div>
-				 <FeedContainer store={props.store}/>
+				 <div className={c.profile__info}>
+					<h2>Info:</h2>
+					 {editMode 
+						? <ProfileForm userProfile={props.userProfile} saveProfileInfo={props.saveProfileInfo} onEditClick={onEditClick} />
+						: <ProfileInfo userProfile={props.userProfile} onEditClick={onEditClick} />
+					}
+				 </div>
+				 {/* <FeedContainer store={props.store}/> */}
 				 <div className={c.activity}>
 					<ActivityContainer store={props.store} />
 				 </div>
