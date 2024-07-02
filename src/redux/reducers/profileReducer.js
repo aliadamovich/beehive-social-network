@@ -134,7 +134,7 @@ export const saveProfilePhotoThunkCreator = (file) => {
 export const saveProfileInfoThunkCreator = (formData) => {
 	
 	return async function (dispatch, getState) {
-		const userId = getState().auth.autID.id
+		const userId = getState().auth.userId
 		console.log(userId);
 
 		let resp = await profileAPI.setProfileInfo(formData);

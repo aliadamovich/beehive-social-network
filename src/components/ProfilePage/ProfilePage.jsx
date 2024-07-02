@@ -9,6 +9,7 @@ import { ProfileStatus } from './ProfileStatus';
 import { ProfileForm } from './profile-form/ProfileForm';
 import { ProfileInfo } from './profile-form/ProfileInfo';
 import { useState } from 'react';
+import { SectionTitle } from '../common/SectionTitle';
 
 export const ProfilePage = (props) => {
 	const [editMode, setEditMode] = useState(false)
@@ -72,7 +73,7 @@ export const ProfilePage = (props) => {
 					 <PhotoGrid photoGrid={props.photoGrid} />
 				 </div>
 				 <div className={c.profile__info}>
-					<h2>Info:</h2>
+					<SectionTitle>Personal Information:</SectionTitle>
 					 {editMode 
 						? <ProfileForm userProfile={props.userProfile} saveProfileInfo={props.saveProfileInfo} onEditClick={onEditClick} />
 						: <ProfileInfo userProfile={props.userProfile} onEditClick={onEditClick} />

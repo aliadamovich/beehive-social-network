@@ -6,6 +6,7 @@ import { Search } from '../common/Search/Search';
 import { Recent } from '../common/Recent/Recent';
 import {Button} from './../common/Button';
 import { IconsRow } from '../common/iconsrow/IconsRow';
+import { Container } from '../common/Container';
 
 export const DialogsPage = (props) => {
 	// debugger;
@@ -15,37 +16,37 @@ export const DialogsPage = (props) => {
 	.map(m => <Messages text={m.name} photos={props.dialogPage.photos[0]} key={m.id}/>)
 
 	return (
-		<div className={c.container}>
-			<div className={c.content}>
-
-				<Search />
-				
-				<div className={c.body}>
-					<div className={c.body__dialogs}>
-
-						{dialogsArray}
-
-					</div>
-					<div className={c.body__messages}>
-						<div className={c.body__content}>
-							{messagesArray}
+		<div className={c.dialogs}>
+			<Container>
+				<div className={c.content}>
+	
+					<Search />
+					
+					<div className={c.body}>
+						<div className={c.body__dialogs}>
+	
+							{dialogsArray}
+	
 						</div>
-						<div className={c.messageCreate}>
-							
-							<MessageCreate 
-								msg={props.dialogPage.messages}
-								newMessageText={props.dialogPage.newMessageText}
-								updateText={props.updateText}
-								addMessage={props.addMessage}
-							/>
-
+						<div className={c.body__messages}>
+							<div className={c.body__content}>
+								{messagesArray}
+							</div>
+							<div className={c.messageCreate}>
+								
+								<MessageCreate 
+									msg={props.dialogPage.messages}
+									newMessageText={props.dialogPage.newMessageText}
+									updateText={props.updateText}
+									addMessage={props.addMessage}
+								/>
+	
+							</div>
 						</div>
-					</div>
-					<div className={c.body__recent}>
 						<Recent />
 					</div>
 				</div>
-			</div>
+			</Container>
 		</div>
 	)
 }

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { theme } from '../../styles/Theme'
 import { CiEdit } from "react-icons/ci";
 import { FlexWrapper } from '../common/FlexWrapper';
+import { MdArrowRightAlt } from "react-icons/md";
 
 export const ProfileStatus = (props) => {
 	// debugger
@@ -30,7 +31,7 @@ export const ProfileStatus = (props) => {
 		<StatusContainer>
 			{ editMode 
 				? <FieldWrapper>
-					<StatusButton onClick={onButtonClickHandler}>&rarr;</StatusButton>
+					<StatusButton onClick={onButtonClickHandler}><MdArrowRightAlt /></StatusButton>
 					<Field type='text' value={status} onChange={onInputChange} autoFocus={true} maxLength={30}/>
 					</FieldWrapper>
 				: <FlexWrapper gap='5px' align='center'>
@@ -62,14 +63,15 @@ const FieldWrapper = styled.div`
 	flex-direction: row-reverse;
 `
 const Field = styled.input`
-	background-color: #e7e7e77f;
+	background-color: #e7e7e741;
 	backdrop-filter: blur(15px);
-	border-radius: 16px;
-	border: 1px solid #fff;
+	border-radius: 8px;
 	padding: 5px 0 5px 10px;
+	border: none;
 	width: 350px;
 	height: 35px;
 	font-size: 16px;
+	color: #fff;
 	&::placeholder {
 		font-size: 14px;
 		color: ${theme.colors.borderColor};
@@ -77,26 +79,25 @@ const Field = styled.input`
 `
 
 const StatusButton = styled.button`
-	background-color: #fff;
+	background-color: #edf1f5;
 	padding: 0 10px;
-	height: 35px;
+	height: 34px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border-radius: 50%;
-	font-weight: 500;
-	font-size: 20px;
+	border-radius: 8px;
+	border: none;
+	
 	position: relative;
-	right: 34px;
+	right: 40px;
 	z-index: 2;
 	color: ${theme.colors.accent};
 	transition: all 0.3s ease 0s;
 	
 	&:hover{
 		background-color: ${theme.colors.accent};
-		color: #fff;
-		~input {
-			border: 1px solid ${theme.colors.accent};
+		svg {
+			fill: #fff;
 		}
 	}
 `

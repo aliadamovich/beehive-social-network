@@ -23,6 +23,7 @@ export const UsersPage = () => {
 
 const StyledUsers = styled.section`
 	height: 100%;
+	width: 100%;
 	overflow: auto;
 `
 

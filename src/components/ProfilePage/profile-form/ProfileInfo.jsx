@@ -1,5 +1,3 @@
-import React from 'react'
-import c from './ProfileForm.module.scss'
 import { FiEdit } from "react-icons/fi";
 import styled from 'styled-components';
 import { theme } from '../../../styles/Theme';
@@ -9,10 +7,9 @@ import { theme } from '../../../styles/Theme';
 export const ProfileInfo = (props) => {
 	
 	return (
-	
-			<div>
-			<FiEdit onClick={props.onEditClick} />
 
+		<StyledProfile>
+			<FiEdit onClick={props.onEditClick} />
 			<InfoBlock>
 				<Description>About Me:</Description>
 				<Value>{props.userProfile.aboutMe}</Value>
@@ -22,46 +19,72 @@ export const ProfileInfo = (props) => {
 				<Description>Full name:</Description>
 				<Value>{props.userProfile.fullName}</Value>
 			</InfoBlock>
-			
+
 			<InfoBlock>
-					<Description>Lookin for a job:</Description>
+				<Description>Lookin for a job:</Description>
 				<Value>{props.userProfile.lookingForAJob ? 'Yes' : 'No'}</Value>
-				</InfoBlock>
+			</InfoBlock>
 
 			<InfoBlock>
 				<Description>Job Description:</Description>
 				<Value>{props.userProfile.lookingForAJobDescription}</Value>
 			</InfoBlock>
 
-			<h3>Contacts:</h3>
+			<ContactsTitle>Contacts:</ContactsTitle>
 			{Object.keys(props.userProfile.contacts).map(key => {
 				return <InfoBlock key={key}>
-								<Description>{key}:</Description>
-								<Value>{props.userProfile.contacts[key]}</Value>
-							</InfoBlock>
+					<Description>{key}:</Description>
+					<Value>{props.userProfile.contacts[key]}</Value>
+				</InfoBlock>
 			})}
-			</div>
+		</StyledProfile>
 	)
 }
 
-const InfoBlock = styled.div`
-	padding: 10px;
-	border-bottom: 1px sold #edf1f5;
+const StyledProfile = styled.div`
+	position: relative;
+	padding: 20px;
+	svg{
+		position: absolute;
+		top: 0;
+		right: 10%;
+		width: 18px;
+		height: 18px;
+		transition: all 0.3s ease 0s;
+		stroke: ${theme.colors.mainFont};
+		cursor: pointer;
+		&:hover{
+			stroke: ${theme.colors.accent};
+		}
+	}
+
+`
+ const InfoBlock = styled.div`
+	padding: 5px 10px;
+	border-bottom: 1px solid #edf1f5;
 	display: flex;
 	align-items: center;
 	gap: 15px;
+	
 `
 
-const Description = styled.span`
+export const Description = styled.span`
 	font-size: 14px;
 	font-weight: 600;
 	color: ${theme.colors.boldFont};
 	background-color: #edf1f5;
-	padding: 5px;
+	border-radius: 6px;
+	padding: 5px 10px;
 	min-width: 150px;
+	text-transform: capitalize;
 `
 
 const Value = styled.p`
-	font-weight: 400;
+	font-weight: 500;
 	font-size: 14px;
+`
+
+const ContactsTitle = styled.h3`
+	margin: 20px 0 10px 0;
+	font-size: 16px;
 `

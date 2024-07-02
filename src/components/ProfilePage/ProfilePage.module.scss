@@ -3,14 +3,13 @@
 	position: relative;
 	height: 100%;
 	width: 100%;
-	padding-top: 60px;
 	overflow: auto;
 }
 
 .cover {
 	position: absolute;
 	width: 100%;
-	top: 0;
+	top: 60px;
 	left: 0;
 	right: 0;
 	height: 200px;
@@ -20,7 +19,6 @@
 .profile {
 	position: relative;
 	z-index: 100;
-	// padding-top: 50px;
 	padding-bottom: 20px;
 	column-gap: 20px;
 	row-gap: 40px;
@@ -116,7 +114,6 @@
 }
 
 .photos {
-
 	justify-items: center;
 	padding-top: 30px;
 	border-top: 1px solid rgb(237, 241, 245);
@@ -163,6 +160,7 @@
 	z-index: -1;
 	& + label {
 		font-size: 1.25em;
+		line-height: 1;
 		font-weight: 500;
 		color: #111010;
 		background-color: #fff;
@@ -171,7 +169,7 @@
 		position: absolute;
 		bottom: 5%;
 		right: 5%;
-		padding: 0 6px;
+		padding: 4px 8px;
 		transition: all 0.3s ease 0s;
 		cursor: pointer;
 		&:hover{
@@ -182,5 +180,8 @@
 }
 
 .profile__info {
+	padding: 30px 20px 0;
 	grid-area: posts;
+	border-right: 1px solid #edf1f5;
+	border-left: 1px solid #edf1f5;
 }

@@ -1,39 +1,52 @@
-import c from './Header.module.scss';
 import { NavLink } from 'react-router-dom';
-import search from './../../assets/images/search.png'
-import { useSelector } from 'react-redux';
-import null_user from './../../assets/images/user.png';
-
+import { GoSearch } from "react-icons/go";
+import { useDispatch, useSelector } from 'react-redux';
+import { LogoutThunkCreator } from '../../redux/reducers/authReducer';
+import logo_1 from './../../assets/images/logo_login.svg'
+import { IoLogOutOutline } from "react-icons/io5";
+import {S}from './Header.styled'
 
 export const Header = () => {
 	// debugger
 	const login = useSelector(state => state.auth.login);
 	const isAuth = useSelector(state => state.auth.isAuth);
 	// const userProfile = useSelector(state => state.profilePage.userProfile)
-	return(
-		<header className={c.header}>
-			<div className={c.container}>
-				<div className={c.search}>
-					<label htmlFor=''></label>
-						<img className={c.search__icon} src={search} alt="search" />
-						<input placeholder='search' type="text" name="" id="" />
-				</div>
-				<div className={c.exit}>
-					
-					{
-					isAuth ?
-					<div className={c.exit__auth}>
-						<span className={c.exit__text}>{login}</span>
-									{/* {
+
+	const dispatch = useDispatch();
+	const onLogoutHandler = () => {
+		dispatch(LogoutThunkCreator())
+	}
+	return (
+		<S.Header>
+			{
+				isAuth ?
+					<S.HeaderContainer>
+						<S.HeaderSearch>
+							<label htmlFor=''></label>
+							<GoSearch />
+							<input placeholder='search' type="text" name="" id="" />
+						</S.HeaderSearch>
+						<S.UserData>
+							<S.UserName>{login}</S.UserName>
+
+							<S.LogOutButton onClick={onLogoutHandler}>
+								<IoLogOutOutline />
+								Log out
+							</S.LogOutButton>
+							{/* {
 										userProfile.photos.small !== null ?
 											<img src={userProfile.photos.small} alt="user" /> :
 											<img src={null_user} alt="user" />
 									} */}
-					</div>
-					: <NavLink className={c.exit__text} to="/login">Login</NavLink> 
-					}
-				</div>
-			</div>
-		</header>
+						</S.UserData>
+					</S.HeaderContainer>
+					:
+					<S.HeaderLogin>
+						<NavLink to='/login'><img src={logo_1} alt="logo" /></NavLink>
+						<NavLink to="/login">Login</NavLink>
+					</S.HeaderLogin>
+			}
+		</S.Header>
 	)
 }
+

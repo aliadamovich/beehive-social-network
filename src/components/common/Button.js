@@ -13,6 +13,7 @@ export const Button = styled.button`
 	transition: all 0.7s ease 0s;
 	font-size: 14px;
 	font-weight: 500;
+	border: none;
 	&:hover {
 		opacity: 0.8;
 	}

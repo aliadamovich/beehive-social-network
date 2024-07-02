@@ -57,6 +57,6 @@ export const GlobalStyles = createGlobalStyle`
 		font-family: inherit;
 	} */
 	*:focus-visible {
-    outline: 1px solid ${theme.colors.accent};
+    outline: 1px solid #edf1f5;
 }
 `

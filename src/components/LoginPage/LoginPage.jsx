@@ -15,10 +15,8 @@ export const LoginPage = () => {
 
 	const dispatch = useDispatch();
 	const isAuth = useSelector(state => state.auth.isAuth);
-	const onLoginHandler = ({email, password}) => {
-		dispatch(LoginThunkCreator(email, password))
-		console.log(email)
-		console.log(password)
+	const onLoginHandler = ({email, password, rememberMe}) => {
+		dispatch(LoginThunkCreator(email, password, rememberMe))
 	}
 
 	useEffect(() => {
@@ -29,13 +27,13 @@ export const LoginPage = () => {
 
 	return (
 		<Login>
-			{/* <Video preload='auto' autoPlay muted loop>
+			<Video preload='auto' autoPlay muted loop>
 				<source src={video_webm} type='video/webm'/>
 				<source src={video_mp4} type='video/mp4'/>
-			</Video> */}
+			</Video>
 			<FormContainer>
 				<FormInfo>
-					<LoginHeader fontSize="34x" color="#FFF">Join the club</LoginHeader>
+					<LoginHeader fontSize="34px" color="#FFF">Join the club</LoginHeader>
 					<LoginDescription color="#FFF">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus.</LoginDescription>
 					<ClubList>
 						<ClubItem>
@@ -122,7 +120,10 @@ const FormContainer = styled.div`
 const FormInfo = styled.div`
 	flex: 0 1 50%;
 	background-color: ${theme.colors.accent};
-	padding: 80px 40px;
+	padding: 0 40px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	>*:not(:last-child) {
 		margin-bottom: 20px;
 	}
@@ -142,7 +143,7 @@ const LoginDescription = styled.p`
 `
 const ClubList = styled.ul`
 >*:not(:last-child) {
-	margin-bottom: 12px;
+	margin-bottom: 25px;
 }`
 
 const ClubItem = styled.li`
