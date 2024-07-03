@@ -1,29 +1,59 @@
 import c from './ProfilePage.module.scss';
-import {FeedContainer} from './Feed/FeedContainer';
+import {FeedContainer} from './tabsContent/Feed/FeedContainer';
 import { ActivityContainer } from './Activity/ActivityContainer';
 import { PhotoGrid } from './../GalleryPage/Gallery';
 import { Loader } from '../common/Loader/Loader';
 import null_user from './../../assets/images/user.png';
 import { Container } from '../common/Container';
 import { ProfileStatus } from './ProfileStatus';
-import { ProfileForm } from './profile-form/ProfileForm';
-import { ProfileInfo } from './profile-form/ProfileInfo';
 import { useState } from 'react';
 import { SectionTitle } from '../common/SectionTitle';
+import styled from 'styled-components';
+import { ProfileForm } from './tabsContent/profileInfo/ProfileForm';
+import { ProfileInfo } from './tabsContent/profileInfo/ProfileInfo';
+import { ProfileInfoSection } from './tabsContent/profileInfo/ProfileInfoSection';
+
+const tabsData = [
+	{ id: 1, tab: 'Activity' },
+	{ id: 2, tab: 'Profile' },
+	{ id: 3, tab: 'Friends' },
+	{ id: 4, tab: 'Groups' },
+	{ id: 5, tab: 'Forums' },
+	{ id: 6, tab: 'Media' },
+]
+
 
 export const ProfilePage = (props) => {
-	const [editMode, setEditMode] = useState(false)
+	
+	const [activeTab, setActiveTab] = useState('Activity');
+
 	const onPhotoChoose = (event) => {
 		props.savePhoto(event.target.files[0])
-	}
-
-	const onEditClick = () => {
-		setEditMode(!editMode)
 	}
 
 	if (!props.userProfile) {
 		return <Loader />
 	}
+
+	const renderTabContent = () => {
+		switch (activeTab) {
+			case 'Activity':
+				return <FeedContainer store={props.store}/>
+			case 'Profile':
+				return <ProfileInfoSection userProfile={props.userProfile} saveProfileInfo={props.saveProfileInfo} />
+			case 'Friends':
+				return <div>Here will be friends</div>
+			case 'Groups':
+				return <div>Here will be Groups</div>
+			case 'Forums':
+				return <div>Here will be Forums</div>
+			case 'Media':
+				return <div>Here will be Media</div>
+			default:
+				return <FeedContainer store={props.store} />
+		}
+	}
+
  return(
 	 <div className={c.content}>
 		 <div className={c.cover}></div>
@@ -46,17 +76,18 @@ export const ProfilePage = (props) => {
 					 
 					 <div className={c.name}>{props.userProfile.fullName}</div>
 				 </div>
-				 <div className={c.profile_menu}>
-						<ProfileStatus status={props.status} updateStatus={props.updateStatus} isOwner={props.isOwner}/>
-						<ul className={c.profile_menu__list}>
-							<li className={c.active}><a href="#" className="href">Activity</a></li>
-							<li><a href="#" className="href">Profile</a></li>
-							<li><a href="#" className="href">Friends</a></li>
-							<li><a href="#" className="href">Groups</a></li>
-							<li><a href="#" className="href">Forums</a></li>
-							<li><a href="#" className="href">Media</a></li>
-						</ul>
-				 </div>
+				 
+				 <ProfileStatus status={props.status} updateStatus={props.updateStatus} isOwner={props.isOwner} />
+				
+				 <nav className={c.profile_menu}>
+					 <ul className={c.profile_menu__list}>
+						{tabsData.map(tab => {
+							// const onTabClick = () => {renderTabContent(tab.name)}
+						 	return <li onClick={()=> {setActiveTab(tab.tab)}} className={activeTab === tab.tab ? c.active : ''}>{tab.tab}</li>
+						})}
+					 </ul>
+				 </nav>
+
 				 <div className={c.photos}>
 					 <div className={c.friendsCounter}>
 						 <div className={c.friendsCounter__container}>
@@ -72,14 +103,8 @@ export const ProfilePage = (props) => {
 					 </div>
 					 <PhotoGrid photoGrid={props.photoGrid} />
 				 </div>
-				 <div className={c.profile__info}>
-					<SectionTitle>Personal Information:</SectionTitle>
-					 {editMode 
-						? <ProfileForm userProfile={props.userProfile} saveProfileInfo={props.saveProfileInfo} onEditClick={onEditClick} />
-						: <ProfileInfo userProfile={props.userProfile} onEditClick={onEditClick} />
-					}
-				 </div>
-				 {/* <FeedContainer store={props.store}/> */}
+				 {renderTabContent()}
+
 				 <div className={c.activity}>
 					<ActivityContainer store={props.store} />
 				 </div>
@@ -89,3 +114,4 @@ export const ProfilePage = (props) => {
 	 </div>
  )
 }
+

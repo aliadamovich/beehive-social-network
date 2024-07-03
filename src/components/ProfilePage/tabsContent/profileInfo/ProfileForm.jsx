@@ -2,11 +2,8 @@ import React from 'react'
 import c from './ProfileForm.module.scss'
 import { useFormik } from 'formik'
 import { basicSchema } from './schema'
-import styled from 'styled-components'
-import { theme } from '../../../styles/Theme'
-import { Description } from './ProfileInfo'
-import s from './../../LoginPage/LoginForm.module.scss'
 import { MdSaveAlt } from "react-icons/md";
+import { Description } from './ProfileInfo';
 
 
 export const ProfileForm = (props) => {

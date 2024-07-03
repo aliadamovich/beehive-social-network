@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from 'formik'
-import { loginSchema } from '../ProfilePage/profile-form/schema'
+import { loginSchema } from '../ProfilePage/tabsContent/profileInfo/schema'
 import c from './LoginForm.module.scss'
 import { RiKey2Line } from "react-icons/ri";
 import { LuUser2 } from "react-icons/lu";

@@ -1,7 +1,7 @@
 import c from './PostCreate.module.scss';
 import React from 'react';
-import { Button } from './../../common/Button';
-import { IconsRow } from '../../common/iconsrow/IconsRow';
+import { Button } from '../../../common/Button';
+import { IconsRow } from '../../../common/iconsrow/IconsRow';
 
 
 export const PostCreate = (props) => {

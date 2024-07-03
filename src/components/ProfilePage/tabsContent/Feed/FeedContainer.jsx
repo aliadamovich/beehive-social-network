@@ -1,4 +1,4 @@
-import { addPostActionCreator, updateNewPostTextActionCreator } from '../../../redux/reducers/profileReducer'
+import { addPostActionCreator, updateNewPostTextActionCreator } from '../../../../redux/reducers/profileReducer'
 import { Feed } from './Feed';
 import { connect } from 'react-redux';
 

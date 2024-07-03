@@ -53,7 +53,7 @@ const StatusContainer = styled.div`
 		width: 20px;
 		height: 20px;
 		&:hover{
-			fill: ${theme.colors.accent};
+			scale: 1.2;
 		}
 	}
 `
@@ -63,7 +63,7 @@ const FieldWrapper = styled.div`
 	flex-direction: row-reverse;
 `
 const Field = styled.input`
-	background-color: #e7e7e741;
+	background-color: #e7e7e72e;
 	backdrop-filter: blur(15px);
 	border-radius: 8px;
 	padding: 5px 0 5px 10px;
@@ -79,23 +79,22 @@ const Field = styled.input`
 `
 
 const StatusButton = styled.button`
-	background-color: #edf1f5;
 	padding: 0 10px;
-	height: 34px;
+	height: 35px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	border-radius: 8px;
-	border: none;
-	
+	border: 1px solid #fff;
 	position: relative;
-	right: 40px;
+	right: 42px;
 	z-index: 2;
-	color: ${theme.colors.accent};
+	color: #fff;
 	transition: all 0.3s ease 0s;
 	
 	&:hover{
-		background-color: ${theme.colors.accent};
+		background-color: #ffffff4f;
+		
 		svg {
 			fill: #fff;
 		}

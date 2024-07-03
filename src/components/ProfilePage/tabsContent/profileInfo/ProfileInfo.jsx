@@ -1,7 +1,6 @@
 import { FiEdit } from "react-icons/fi";
 import styled from 'styled-components';
-import { theme } from '../../../styles/Theme';
-
+import { theme } from "../../../../styles/Theme";
 
 
 export const ProfileInfo = (props) => {

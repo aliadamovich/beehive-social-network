@@ -1,4 +1,4 @@
-import { PostTitle } from '../Feed/MyPost/MyPost';
+import { PostTitle } from '../tabsContent/Feed/MyPost/MyPost';
 import c from './Activity.module.scss';
 
 export const Activity = (props) => {
