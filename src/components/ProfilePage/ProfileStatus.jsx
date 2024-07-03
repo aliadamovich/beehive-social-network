@@ -44,9 +44,11 @@ export const ProfileStatus = (props) => {
 }
 
 const StatusContainer = styled.div`
-	margin-bottom: 60px;
 	color: #FFF;
-
+	position: absolute;
+	top: 50%;
+	right: -180px;
+	
 	svg {
 		cursor: pointer;
 		transition: all 0.3s ease 0s;
