@@ -5,6 +5,8 @@ import { getStatusThunkCreator, getUserProfileThunkCreator, saveProfileInfoThunk
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { withAuthRedirect } from './../../hoc/WithAuthRedirect';
 import { compose } from "redux";
+import { followUsersThunkCreator, getAllFollowedUsersThunkCreator, getUsersThunkCreator } from "../../redux/reducers/usersReducer";
+import { getUsersOnPage, obtainUsers, setCurrentPage } from "../../redux/selectors/users-selectors";
 
 export function withRouter(Component) {
 	function ComponentWithRouterProp(props) {
@@ -54,6 +56,7 @@ function mapStateToProps(state) {
 		isAuth: state.auth.isAuth,
 		authorizedLoginId: state.auth.userId,
 		status: state.profilePage.status,
+
 	}
 }
 
@@ -63,7 +66,7 @@ function mapDispatchToProps(dispatch) {
 		getStatus: (profile) => dispatch(getStatusThunkCreator(profile)),
 		updateStatus: (st) => dispatch(updateStatusThunkCreator(st)),
 		savePhoto: (photoFile) => dispatch(saveProfilePhotoThunkCreator(photoFile)),
-		saveProfileInfo: (form) => dispatch(saveProfileInfoThunkCreator(form))
+		saveProfileInfo: (form) => dispatch(saveProfileInfoThunkCreator(form)),
 	}
 }
 

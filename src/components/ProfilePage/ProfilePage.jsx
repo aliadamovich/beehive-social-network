@@ -1,4 +1,3 @@
-import c from './ProfilePage.module.scss';
 import {FeedContainer} from './tabsContent/Feed/FeedContainer';
 import { ActivityContainer } from './Activity/ActivityContainer';
 import { PhotoGrid } from './../GalleryPage/Gallery';
@@ -8,11 +7,13 @@ import { ProfileStatus } from './ProfileStatus';
 import { useState } from 'react';
 import { ProfileInfoSection } from './tabsContent/profileInfo/ProfileInfoSection';
 import { ProfilePhoto } from './ProfilePhoto';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ProfileCounter } from './ProfileCounter';
 import cover from './../../assets/images/cover_example.jpg'
+import { FollowedFriends } from './tabsContent/followedFriends/FollowedFriends';
 
 export const ProfilePage = (props) => {
+	// debugger
 	const tabsData = [
 		{ id: 1, tab: 'Activity' },
 		{ id: 2, tab: 'Profile' },
@@ -38,7 +39,7 @@ export const ProfilePage = (props) => {
 			case 'Profile':
 				return <ProfileInfoSection userProfile={props.userProfile} saveProfileInfo={props.saveProfileInfo} />
 			case 'Friends':
-				return <div>Here will be friends</div>
+				return <FollowedFriends toggleFollowUsers={props.toggleFollowUsers}/>
 			case 'Groups':
 				return <div>Here will be Groups</div>
 			case 'Forums':
@@ -51,8 +52,7 @@ export const ProfilePage = (props) => {
 	}
 
  return(
-	 <div className={c.content}>
-		 <ProfileCover></ProfileCover>
+	 <ProfileSection>
 		 <Container>
 
 			<StyledProfile>
@@ -65,7 +65,7 @@ export const ProfilePage = (props) => {
 				 <TabsMenu>
 					 <ul>
 						{tabsData.map(tab => {
-						 	return <li onClick={()=> {setActiveTab(tab.tab)}} className={activeTab === tab.tab ? c.active : ''} key={tab.id}>{tab.tab}</li>
+							return <li onClick={()=> {setActiveTab(tab.tab)}} className={activeTab === tab.tab ? 'active' : ''} key={tab.id}>{tab.tab}</li>
 						})}
 					 </ul>
 				 </TabsMenu>
@@ -84,10 +84,23 @@ export const ProfilePage = (props) => {
 			 </StyledProfile>
 
 		 </Container>
-	 </div>
+	 </ProfileSection>
  )
 }
 
+const ProfileSection = styled.section`
+	position: relative;
+		&::before{
+			content: '';
+			position: absolute;
+			width: 100%;
+			top: 60px;
+			left: 0;
+			right: 0;
+			height: 200px;
+			background: url(${cover}) center/ cover no-repeat;
+		}
+`
 
 const StyledProfile = styled.div`
 	position: relative;
@@ -102,6 +115,7 @@ const StyledProfile = styled.div`
 	'user tabs tabs'
 	'photos tabsContent activity';
 `
+
 const GridProfileUser = styled.div`
 	grid-area: user;
 	text-align: center;
@@ -117,7 +131,6 @@ const GridProfileGallery = styled.div`
 
 const TabsMenu = styled.nav`
 	grid-area: tabs;
-	/* grid-column: 2 / 2; */
 	display: flex;
 	flex-direction: column;
 	justify-content: end;
@@ -139,15 +152,15 @@ const TabsMenu = styled.nav`
 		font-weight: 500;
 		transition: all 0.3s ease 0s;
 		cursor: pointer;
-		&.active, 
-		&:hover {
+
+		&:hover,
+		&.active {
 			background: linear-gradient(to bottom right,rgb(189, 139, 237), rgb(129, 29, 222));
 			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 			color: #fff;
 		}
 	}
 `
-
 
 const GridTabsContent = styled.div`
 	padding: 30px 20px 0;
@@ -162,13 +175,4 @@ const GridProfileActivity = styled.div`
 	grid-area: activity;
 	padding-top: 30px;
 	border-top: 1px solid rgb(237, 241, 245);
-`
-const ProfileCover = styled.div`
-	position: absolute;
-	width: 100%;
-	top: 60px;
-	left: 0;
-	right: 0;
-	height: 200px;
-	background: url(${cover}) center/ cover no-repeat;
 `

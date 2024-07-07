@@ -7,7 +7,7 @@ let initialState = {
 	usersOnPage: 9,
 	isFetching: false,
 	followingInProgress: [],
-	// isFollowingInProgress: false
+	friends: []
 }
 
 export const usersReducer = (state = initialState, action) => {
@@ -15,7 +15,6 @@ export const usersReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case 'TOGGLE-FOLLOW':
 			return {
-
 				users: state.users.map(u => {
 					if (u.id === action.userId) {
 						return {
@@ -24,7 +23,7 @@ export const usersReducer = (state = initialState, action) => {
 						};
 					}
 					return u;
-				})
+				}),
 			}
 
 		case 'SET-USERS':
@@ -56,6 +55,7 @@ export const usersReducer = (state = initialState, action) => {
 					? [...state.followingInProgress, action.userId]
 					: state.followingInProgress.filter(id => id !== action.userId)
 			}
+
 		default:
 			return state;
 	}
@@ -71,18 +71,19 @@ export const toggleIsFetchingAC = (isFetching) => ({ type: 'TOGGLE-IS-FETCHING',
 export const toggleFollowingProgressAC = (isFetching, userId) => ({ type: 'TOGGLE-FOLLOWING-PROGRESS', isFetching, userId})
 
 
-export const getUsersThunkCreator = (currentPage, usersOnPage) => {
+export const getUsersThunkCreator = (currentPage, usersOnPage, isFriend = false) => {
 	return (dispatch) => {
 
 		dispatch(toggleIsFetchingAC(true));
 
-		usersAPI.getUsers(currentPage, usersOnPage).then(data => {
+		usersAPI.getUsers(currentPage, usersOnPage, isFriend).then(data => {
 			dispatch(toggleIsFetchingAC(false));
 			dispatch(setUsersAC(data.items));
 			dispatch(getUsersQuantityAC(data.totalCount));
 		})
 	}
 }
+
 
 export const loadMoreUsersThunkCreator = (currentPage, usersOnPage) => {
 	return async (dispatch) => {
@@ -98,6 +99,7 @@ export const loadMoreUsersThunkCreator = (currentPage, usersOnPage) => {
 		dispatch(toggleIsFetchingAC(false));
 	}
 }
+
 
 export const followUsersThunkCreator = (userId) => {
 	return (dispatch) => {

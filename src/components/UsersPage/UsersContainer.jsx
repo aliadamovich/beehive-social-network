@@ -47,7 +47,6 @@ function mapDispatchToProps(dispatch) {
 	return{
 		toggleFollow: (userId) => { dispatch(toggleFollowAC(userId))},
 		toggleFollowingProgress: (isFetching, userId) => { dispatch(toggleFollowingProgressAC(isFetching, userId))},
-
 		getUsersThunk: (currentPage, usersOnPage) => { dispatch(getUsersThunkCreator(currentPage, usersOnPage))},
 		loadMoreUsersThunk: (currentPage, usersOnPage) => { dispatch(loadMoreUsersThunkCreator(currentPage, usersOnPage))},
 		toggleFollowUsers: (userId) => { dispatch(followUsersThunkCreator(userId))}

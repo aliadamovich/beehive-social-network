@@ -32,12 +32,12 @@ export const ProfileStatus = (props) => {
 			{ editMode 
 				? <FieldWrapper>
 					<StatusButton onClick={onButtonClickHandler}><MdArrowRightAlt /></StatusButton>
-					<Field type='text' value={status} onChange={onInputChange} autoFocus={true} maxLength={30}/>
+					<Field type='text' value={status} onChange={onInputChange} onBlur={onButtonClickHandler} autoFocus={true} maxLength={30}/>
 					</FieldWrapper>
-				: <FlexWrapper gap='5px' align='center'>
+				: <StatusWrapper>
 					<Status onDoubleClick={changeEditMode}>{status}</Status>
 					{props.isOwner && <CiEdit onClick={changeEditMode} />}
-				 </FlexWrapper>
+				 </StatusWrapper>
 			}
 		</StatusContainer>
 	)
@@ -47,7 +47,8 @@ const StatusContainer = styled.div`
 	color: #FFF;
 	position: absolute;
 	top: 50%;
-	right: -180px;
+	right: -150%;
+	transform: translateY(-50%);
 	
 	svg {
 		cursor: pointer;
@@ -66,7 +67,6 @@ const FieldWrapper = styled.div`
 `
 const Field = styled.input`
 	background-color: #e7e7e72e;
-	backdrop-filter: blur(15px);
 	border-radius: 8px;
 	padding: 5px 0 5px 10px;
 	border: none;
@@ -102,10 +102,17 @@ const StatusButton = styled.button`
 		}
 	}
 `
+
+const StatusWrapper = styled.div`
+	display: flex;
+	gap: 5px;
+	align-items: center;
+	width: 392px;
+`
 const Status = styled.div`
+	
 	display: inline-block;
-	padding: 2px 10px;
-	backdrop-filter: blur(15px);
+	padding: 4px 10px;
 	font-size: 16px;
 	background-color: #e7e7e72a;
 	border-radius: 8px;

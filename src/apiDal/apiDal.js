@@ -10,9 +10,10 @@ const axiosInstance = axios.create({
 
 //доп объекты с методами
 export const usersAPI = {
-	getUsers (currentPage, usersOnPage) {
-		return axiosInstance.get(`users?page=${currentPage}&count=${usersOnPage}`)
-			.then(resp => resp.data)
+	getUsers (currentPage, usersOnPage, isFriend ) {
+		const friendQuery = isFriend ? `&friend=${isFriend}` : '';
+		return axiosInstance.get(`users?page=${currentPage}&count=${usersOnPage}${friendQuery}`)
+	.then(resp => resp.data)
 	},
 	checkFollow(userId) {
 		return axiosInstance.get(`follow/${userId}`)
