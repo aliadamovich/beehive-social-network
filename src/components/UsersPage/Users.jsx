@@ -10,6 +10,7 @@ import { Pagination } from '../common/pagination/Pagination';
 
 
 export const Users = () => {
+	
 
 	//все ранее приходящие из контейнерной комп. пропсы переписываем на useSelector()
 	const users = useSelector(obtainUsers)
@@ -33,6 +34,7 @@ export const Users = () => {
 	}
 
 	const toggleFollowUsers = (userId) => {
+		// debugger
 		dispatch(followUsersThunkCreator(userId))
 	}
 

@@ -4,20 +4,17 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FaAnglesRight } from "react-icons/fa6";
 import { FaAnglesLeft } from "react-icons/fa6";
-
+import { Loader } from './../../common/Loader/Loader'
 export const Pagination = ({ usersOnPage, totalUsers, changeCurrentPage, activePage, setActivePage, portionSize = 5 }) => {
+	const [currentPortion, setCurrentPortion] = useState(1);
+	
 	const numberOfPages = Math.ceil(totalUsers / usersOnPage);
 	
 	//создаем массив по количеству страниц чтобы пробежаться по нему map
-	const pagesArray = Array(numberOfPages).fill().reduce((acc, _, index) => {
-		acc.push(index + 1)
-		return acc
-	}, [])
-
+	const pagesArray = Array.from({ length: numberOfPages }, (_, index) => index + 1);
 	//рассчитываем порции страниц
 	const portionsCount = Math.ceil(numberOfPages / portionSize);
-	console.log(portionsCount)
-	const [currentPortion, setCurrentPortion] = useState(1);
+
 	const startPage = (currentPortion - 1) * portionSize + 1;
 	const endPage = currentPortion * portionSize;
 
@@ -26,12 +23,9 @@ export const Pagination = ({ usersOnPage, totalUsers, changeCurrentPage, activeP
 		setActivePage(Number(e.currentTarget.textContent))
 	}
 
-	if (usersOnPage <= 0) {
-		console.error('usersOnPage should be greater than 0');
-		return null;
-	}
+	
 	return (
-
+		
 		<PaginationWrapper>
 			{currentPortion > 1 && <FaAnglesLeft onClick={() => setCurrentPortion(currentPortion - 1)}/>}
 			<StyledPages>
@@ -70,7 +64,7 @@ const PaginationWrapper = styled.div`
 `
 
 const StyledPages = styled.div`
-	width: 160px;
+	/* width: 160px; */
 	display: flex;
 	justify-content: space-between;
 `

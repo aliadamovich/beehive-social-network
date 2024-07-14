@@ -39,7 +39,7 @@ export const ProfilePage = (props) => {
 			case 'Profile':
 				return <ProfileInfoSection userProfile={props.userProfile} saveProfileInfo={props.saveProfileInfo} />
 			case 'Friends':
-				return <FollowedFriends toggleFollowUsers={props.toggleFollowUsers}/>
+				return <FollowedFriends />
 			case 'Groups':
 				return <div>Here will be Groups</div>
 			case 'Forums':
@@ -50,9 +50,15 @@ export const ProfilePage = (props) => {
 				return <FeedContainer store={props.store} />
 		}
 	}
+	const indicatorStyle = {
+		width: '350px',
+		marginLeft: '10px',
+		backgroundColor: props.active ? 'white' : 'red'
+	}
 
 	return (
 		<ProfileSection>
+			<div style={indicatorStyle}></div>
 			<Container>
 
 				<StyledProfile>
@@ -63,7 +69,6 @@ export const ProfilePage = (props) => {
 					</GridProfileUser>
 
 					<TabsMenu>
-						Я Коммит2 !!!!!
 						<ul>
 							{tabsData.map(tab => {
 								return <li

@@ -18,7 +18,6 @@ export const User = ({ u, toggleFollowUsers }) => {
 			<Button
 				// disabled={props.followingInProgress.some(el => el === u.id)} 
 				onClick={() => {
-
 					toggleFollowUsers(u.id)
 				}}
 				className={u.followed ? c.followedBtn : c.unfollowedBtn}>

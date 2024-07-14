@@ -4,9 +4,9 @@ import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 import { getTotalUsers, getUsersOnPage, obtainUsers, setCurrentPage } from '../../../../redux/selectors/users-selectors'
 import { Pagination } from '../../../common/pagination/Pagination'
-import { getUsersThunkCreator } from '../../../../redux/reducers/usersReducer'
+import { followUsersThunkCreator, getUsersThunkCreator } from '../../../../redux/reducers/usersReducer'
 
-export const FollowedFriends = ({toggleFollowUsers}) => {
+export const FollowedFriends = () => {
 
 	const users = useSelector(state => obtainUsers(state));
 	const usersOnPage= useSelector(state => getUsersOnPage(state));
@@ -14,7 +14,7 @@ export const FollowedFriends = ({toggleFollowUsers}) => {
 	const totalUsers = useSelector(state => getTotalUsers(state));
 
 	const dispatch = useDispatch();
-
+	const toggleFollowUsers = (userId) => { dispatch(followUsersThunkCreator(userId)) }
 	const [activePage, setActivePage] = useState(1)
 
 	useEffect(() => { dispatch(getUsersThunkCreator(currentPage, usersOnPage, true)) }, 

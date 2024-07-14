@@ -15,6 +15,7 @@ export const usersReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case 'TOGGLE-FOLLOW':
 			return {
+				...state, 
 				users: state.users.map(u => {
 					if (u.id === action.userId) {
 						return {
