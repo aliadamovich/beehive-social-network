@@ -61,7 +61,7 @@ let initialState = {
 			"username": "Moriah.Stanton",
 			"email": "Rey.Padberg@karina.biz",
 		}
-	],
+	] as Array<{id: number, name: string, username: string, email: string}>,
 	photos: [
 		{ id: 1, photo: 'https://static.scientificamerican.com/sciam/cache/file/32665E6F-8D90-4567-9769D59E11DB7F26_source.jpg?w=1200' },
 		{ id: 2, photo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEnIBb3pDED2IMNh5AxAKPlMZdQN6xw8Cg2g&usqp=CAU' },
@@ -73,7 +73,7 @@ let initialState = {
 		{ id: 8, photo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-YIGV8GTRHiW_KACLMhhi9fEq2T5BDQcEyA&usqp=CAU' },
 		{ id: 9, photo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoDim25Sj5loXJbpYM0NKMZI2geNtFbDme5A&usqp=CAU' },
 		{ id: 10, photo: 'https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1500w,f_auto,q_auto:best/rockcms/2022-08/220805-domestic-cat-mjf-1540-382ba2.jpg' }
-	],
+	] as Array<{id: number, photo: string}>,
 	messages: [
 		{
 			"postId": 1,
@@ -152,15 +152,16 @@ let initialState = {
 			"email": "Veronica_Goodwin@timmothy.net",
 			"body": "ut dolorum nostrum id quia aut est\nfuga est inventore vel eligendi explicabo quis consectetur\naut occaecati repellat id natus quo est\nut blanditiis quia ut vel ut maiores ea"
 		},
-	],
-	newMessageText: '',
+	] as Array<{postId: number, id: number, name: string, email: string, body: string}>,
+	newMessageText: '' as string,
 }
 
-export const dialogReducer = (state = initialState, action) => {
+type InitialStateType = typeof initialState
+
+export const dialogReducer = (state = initialState, action: any): InitialStateType => {
 
 	switch (action.type) {
 		case 'UPDATE-NEW-MESSAGE-TEXT':
-			// state.newMessageText = action.body;
 			return {
 				...state,
 				newMessageText: action.body
@@ -174,8 +175,6 @@ export const dialogReducer = (state = initialState, action) => {
 				"email": "Eliseo@gardner.biz",
 				"body": 'abfhds'
 			}
-			// state.messages = [...state.messages, newMsg]
-			// state.newMessageText = '';
 			return {
 				...state,
 				messages: [...state.messages, newMsg],
@@ -186,9 +185,18 @@ export const dialogReducer = (state = initialState, action) => {
 
 	}
 }
+type updateMessageActionType = {
+	type: 'UPDATE-NEW-MESSAGE-TEXT'
+	body: string
+}
 
-export const updateNewMessageTextActionCreator = (msg) => ({
+export const updateNewMessageTextActionCreator = (msg: string): updateMessageActionType => ({
 	type: 'UPDATE-NEW-MESSAGE-TEXT',
 	body: msg
 })
-export const sendNewMessageActionCreator = () => ({ type: 'ADD-MESSAGE' })
+
+type sendMessageActionType = {
+	type: 'ADD-MESSAGE'
+}
+
+export const sendNewMessageActionCreator = (): sendMessageActionType => ({ type: 'ADD-MESSAGE' })

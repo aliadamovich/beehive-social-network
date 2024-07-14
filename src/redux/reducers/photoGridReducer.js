@@ -13,7 +13,7 @@ let initialState = {
 export const photoGridReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case 'LOAD-PHOTO-GRID':
-			return{...state}
+			return {...state}
 	
 		default:
 			return state

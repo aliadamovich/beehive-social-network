@@ -1,15 +1,25 @@
 import { authAPI } from "../../apiDal/apiDal";
 import { getUserProfileThunkCreator } from "./profileReducer";
 
+// type InitialStateType2 = {
+// 	initialized: boolean
+// 	userId: number | null
+// 	login: string | null
+// 	email: string | null
+// 	isAuth: boolean
+// }
+
+type InitialStateType = typeof initialState;
+
 let initialState = {
 	initialized: false,
-	userId: null, 
-	login: null, 
-	email: null,
+	userId: null as number | null, 
+	login: null as string | null, 
+	email: null as string | null, 
 	isAuth: false
 }
 
-export const authReducer = (state = initialState, action) => {
+export const authReducer = (state = initialState, action: any): InitialStateType => {
 
 	switch (action.type) {
 		case 'INITIALIZE-SUCCESS':
@@ -28,12 +38,27 @@ export const authReducer = (state = initialState, action) => {
 	}
 }
 
-const setInitializedSuccessAC = () => ({ type: 'INITIALIZE-SUCCESS' })
-const setAuthProfileIdAC = (userId, email, login, isAuth) => ({ type: 'SET-AUTH-PROFILE', payload: { userId, email, login, isAuth } })
+type InitializedSuccessActionType = {
+	type: 'INITIALIZE-SUCCESS'
+}
+
+type PayloadType = {
+	userId: number | null
+	email: string | null
+	login: string | null
+	isAuth: boolean
+}
+type authProfileActionType = {
+	type: 'SET-AUTH-PROFILE'
+	payload: PayloadType
+}
+
+const setInitializedSuccessAC = (): InitializedSuccessActionType => ({ type: 'INITIALIZE-SUCCESS' })
+const setAuthProfileIdAC = (userId: number | null, email: string | null, login: string | null, isAuth: boolean): authProfileActionType => ({ type: 'SET-AUTH-PROFILE', payload: { userId, email, login, isAuth } })
 
 //инициализация приложения
 export const initializeAppThunkCreator = () => {
-	return function (dispatch) {
+	return function (dispatch: any) {
 		let promise = dispatch(getAuthUserDataThunkCreator());
 		promise.then(() => {
 			dispatch(setInitializedSuccessAC());
@@ -43,7 +68,7 @@ export const initializeAppThunkCreator = () => {
 
 //auth.me
 export const getAuthUserDataThunkCreator = () => {
-	return async function(dispatch) {
+	return async function(dispatch: any) {
 		const resp = await authAPI.me();
 		if (resp.data.resultCode === 0) {
 			const { id, email, login } = resp.data.data //деструктуризируем полученный с сервера объект 
@@ -56,8 +81,8 @@ export const getAuthUserDataThunkCreator = () => {
 }
 
 //thunkcreator для login
-export const LoginThunkCreator = (email, password) => {
-	return function (dispatch) {
+export const LoginThunkCreator = (email: string, password: string) => {
+	return function (dispatch: any) {
 		authAPI.login(email, password)
 		.then(resp => {
 			if (resp.data.resultCode === 0) {
@@ -69,7 +94,7 @@ export const LoginThunkCreator = (email, password) => {
 
 //thunkcreator для logout
 export const LogoutThunkCreator = () => {
-	return function (dispatch) {
+	return function (dispatch: any) {
 		authAPI.logout()
 			.then(resp => {
 				if (resp.data.resultCode === 0) {
