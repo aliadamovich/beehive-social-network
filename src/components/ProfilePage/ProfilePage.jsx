@@ -63,6 +63,7 @@ export const ProfilePage = (props) => {
 					</GridProfileUser>
 
 					<TabsMenu>
+						Я Коммит2 !!!!!
 						<ul>
 							{tabsData.map(tab => {
 								return <li
@@ -73,12 +74,12 @@ export const ProfilePage = (props) => {
 							})}
 						</ul>
 					</TabsMenu>
-
+				
 					<GridProfileGallery>
 						<ProfileCounter />
 						<PhotoGrid photoGrid={props.photoGrid} />
 					</GridProfileGallery>
-
+						
 					<GridTabsContent>{renderTabContent()}</GridTabsContent>
 
 					<GridProfileActivity>
