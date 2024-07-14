@@ -76,4 +76,4 @@ export const ProfilePageContainer = compose(
 	connect(mapStateToProps, mapDispatchToProps),
 	withAuthRedirect
 )
-	(ProfileAPIComponent)
+(ProfileAPIComponent)

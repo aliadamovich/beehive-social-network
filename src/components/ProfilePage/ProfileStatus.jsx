@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { theme } from '../../styles/Theme'
 import { CiEdit } from "react-icons/ci";
-import { FlexWrapper } from '../common/FlexWrapper';
 import { MdArrowRightAlt } from "react-icons/md";
 
 export const ProfileStatus = (props) => {

@@ -3,6 +3,7 @@ import { Search } from '../common/Search/Search';
 import { Container } from '../common/Container';
 import { Recent } from '../common/Recent/Recent';
 import styled from 'styled-components';
+import { Users } from './Users';
 
 
 export const UsersPage = () => {
@@ -12,7 +13,7 @@ export const UsersPage = () => {
 				<UsersContent>
 					<UsersWrapper>
 						<Search />
-							<UsersContainer />
+							<Users />
 					</UsersWrapper>
 					<Recent />
 				</UsersContent>

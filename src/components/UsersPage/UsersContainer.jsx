@@ -7,7 +7,8 @@ import { compose } from "redux";
 import { getFollowingInProgress, getIsFetching, getTotalUsers, getUsersOnPage, obtainUsers, setCurrentPage } from "../../redux/selectors/users-selectors";
 import { withRouter } from "../ProfilePage/ProfilePageContainer";
 
-
+//!ВНИМАНИЕ! ЭТА КОМПОНЕНТА БОЛЬШЕ НЕ ИСПОЛЬЗУЕТСЯ В ПРИЛОЖЕНИИ И ОСТАВЛЕНА В 
+//!КАЧЕСТВЕ ПРИМЕРА
 
 class UsersAPIComponent extends React.Component {
 
@@ -20,14 +21,13 @@ class UsersAPIComponent extends React.Component {
 	}
 
 	render() {
-			// debugger
 		return <Users 
-									users={this.props.users}
-									onLoadClick={this.onLoadClick.bind(this)}
-									isFetching={this.props.isFetching}
-									followingInProgress={this.props.followingInProgress}
-									toggleFollowUsers={this.props.toggleFollowUsers}
-									/>
+						users={this.props.users}
+						onLoadClick={this.onLoadClick.bind(this)}
+						isFetching={this.props.isFetching}
+						followingInProgress={this.props.followingInProgress}
+						toggleFollowUsers={this.props.toggleFollowUsers}
+					/>
 	}
 }
 
@@ -42,7 +42,7 @@ function mapStateToProps(state) {
 		followingInProgress: getFollowingInProgress(state)
 	}
 }
- 
+
 function mapDispatchToProps(dispatch) {
 	return{
 		toggleFollow: (userId) => { dispatch(toggleFollowAC(userId))},

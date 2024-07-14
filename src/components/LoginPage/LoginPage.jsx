@@ -12,16 +12,16 @@ import { Navigate } from 'react-router-dom'
 
 
 export const LoginPage = () => {
-
+	//хуки
 	const dispatch = useDispatch();
 	const isAuth = useSelector(state => state.auth.isAuth);
-	const onLoginHandler = ({email, password, rememberMe}) => {
-		dispatch(LoginThunkCreator(email, password, rememberMe))
-	}
-
 	useEffect(() => {
 		console.log("isAuth:", isAuth); // Проверка значения isAuth
 	}, [isAuth]);
+	
+	const onLoginHandler = ({ email, password, rememberMe }) => {
+		dispatch(LoginThunkCreator(email, password, rememberMe))
+	}
 
 	if (isAuth) return <Navigate to='/profile' />
 
@@ -38,7 +38,7 @@ export const LoginPage = () => {
 					<ClubList>
 						<ClubItem>
 							<SvgWrapper>
-							<Icon iconId='laptop'  viewBox="0 0 48 48" fill='#FFF'/>
+							<Icon iconId='laptop' viewBox="0 0 48 48" fill='#FFF'/>
 							</SvgWrapper>
 							<InfoWrapper>
 							<LoginHeader as='h3' fontSize='19px' color="#FFF">Community</LoginHeader>
