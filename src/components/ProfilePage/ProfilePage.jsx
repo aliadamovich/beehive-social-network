@@ -31,7 +31,7 @@ export const ProfilePage = (props) => {
 	if (!props.userProfile) {
 		return <Loader />
 	}
-
+	//рендерим таб контент в зависимости от выбранного таба
 	const renderTabContent = () => {
 		switch (activeTab) {
 			case 'Activity':
@@ -51,41 +51,45 @@ export const ProfilePage = (props) => {
 		}
 	}
 
- return(
-	 <ProfileSection>
-		 <Container>
+	return (
+		<ProfileSection>
+			<Container>
 
-			<StyledProfile>
+				<StyledProfile>
 
-				<GridProfileUser>
-				 	<ProfilePhoto userProfile={props.userProfile} onPhotoChoose={onPhotoChoose} isOwner={props.isOwner}/>
-					<ProfileStatus status={props.status} updateStatus={props.updateStatus} isOwner={props.isOwner} />
-				</GridProfileUser>
+					<GridProfileUser>
+						<ProfilePhoto userProfile={props.userProfile} onPhotoChoose={onPhotoChoose} isOwner={props.isOwner} />
+						<ProfileStatus status={props.status} updateStatus={props.updateStatus} isOwner={props.isOwner} />
+					</GridProfileUser>
 
-				 <TabsMenu>
-					 <ul>
-						{tabsData.map(tab => {
-							return <li onClick={()=> {setActiveTab(tab.tab)}} className={activeTab === tab.tab ? 'active' : ''} key={tab.id}>{tab.tab}</li>
-						})}
-					 </ul>
-				 </TabsMenu>
+					<TabsMenu>
+						<ul>
+							{tabsData.map(tab => {
+								return <li
+													onClick={() => { setActiveTab(tab.tab) }}
+													className={activeTab === tab.tab ? 'active' : ''}
+													key={tab.id}>{tab.tab}
+												</li>
+							})}
+						</ul>
+					</TabsMenu>
 
-				 <GridProfileGallery>
-					 <ProfileCounter />
-					 <PhotoGrid photoGrid={props.photoGrid} />
-				 </GridProfileGallery>
+					<GridProfileGallery>
+						<ProfileCounter />
+						<PhotoGrid photoGrid={props.photoGrid} />
+					</GridProfileGallery>
 
-				 <GridTabsContent>{renderTabContent()}</GridTabsContent>
+					<GridTabsContent>{renderTabContent()}</GridTabsContent>
 
-				<GridProfileActivity>
-					<ActivityContainer store={props.store} />
-				</GridProfileActivity>
+					<GridProfileActivity>
+						<ActivityContainer store={props.store} />
+					</GridProfileActivity>
 
-			 </StyledProfile>
+				</StyledProfile>
 
-		 </Container>
-	 </ProfileSection>
- )
+			</Container>
+		</ProfileSection>
+	)
 }
 
 const ProfileSection = styled.section`
