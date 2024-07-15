@@ -4,7 +4,7 @@ import { loadMoreUsersThunkCreator, toggleFollowingProgressAC, toggleFollowAC, g
 import React from "react";
 import { withAuthRedirect } from './../../hoc/WithAuthRedirect';
 import { compose } from "redux";
-import { getFollowingInProgress, getIsFetching, getTotalUsers, getUsersOnPage, obtainUsers, setCurrentPage } from "../../redux/selectors/users-selectors";
+import { getFollowingInProgress, getIsFetching, getTotalUsers, getUsersOnPage, obtainUsers, getCurrentPage } from "../../redux/selectors/users-selectors";
 import { withRouter } from "../ProfilePage/ProfilePageContainer";
 
 //!ВНИМАНИЕ! ЭТА КОМПОНЕНТА БОЛЬШЕ НЕ ИСПОЛЬЗУЕТСЯ В ПРИЛОЖЕНИИ И ОСТАВЛЕНА В 
@@ -37,7 +37,7 @@ function mapStateToProps(state) {
 		users: obtainUsers(state),
 		totalUsers: getTotalUsers(state),
 		usersOnPage: getUsersOnPage(state),
-		currentPage: setCurrentPage(state),
+		currentPage: getCurrentPage(state),
 		isFetching: getIsFetching(state),
 		followingInProgress: getFollowingInProgress(state)
 	}

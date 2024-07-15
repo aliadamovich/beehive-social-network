@@ -13,7 +13,7 @@ export const getUsersOnPage = (state: AppStateType) => {
 	return state.usersPage.usersOnPage;
 }
 
-export const setCurrentPage = (state: AppStateType) => {
+export const getCurrentPage = (state: AppStateType) => {
 	return state.usersPage.currentPage;
 }
 

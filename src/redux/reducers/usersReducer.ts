@@ -84,46 +84,50 @@ export const toggleIsFetchingAC = (isFetching: boolean): ToggleIsFetchingActionT
 export const toggleFollowingProgressAC = (isFetching: boolean, userId: number): ToggleFollowingProgresssActionType => ({ type: 'TOGGLE-FOLLOWING-PROGRESS', isFetching, userId})
 
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
-export const getUsersThunkCreator = (currentPage: number, usersOnPage: number, isFriend = false) => {
-	return (dispatch: Dispatch<ActionsType>) => {
 
-		dispatch(toggleIsFetchingAC(true));
-
-		usersAPI.getUsers(currentPage, usersOnPage, isFriend).then(data => {
-			dispatch(toggleIsFetchingAC(false));
-			dispatch(setUsersAC(data.items));
-			dispatch(getUsersQuantityAC(data.totalCount));
-		})
-	}
-}
+export const getUsersThunkCreator = ( currentPage: number, usersOnPage: number,isFriend = false): ThunkType => {
+  return async (dispatch) => {
+    dispatch(toggleIsFetchingAC(true));
+    const resp = await usersAPI.getUsers(currentPage, usersOnPage, isFriend);
+    dispatch(toggleIsFetchingAC(false));
+    dispatch(setUsersAC(resp.items));
+    dispatch(getUsersQuantityAC(resp.totalCount));
+  };
+};
 
 
 export const loadMoreUsersThunkCreator = (currentPage: number, usersOnPage: number): ThunkType => {
 	return async (dispatch) => {
+    dispatch(toggleIsFetchingAC(true));
+    const newPage = currentPage + 1;
+    dispatch(changeCurrentPageAC(newPage));
 
-		dispatch(toggleIsFetchingAC(true));
-		const newPage = currentPage + 1;
-		dispatch(changeCurrentPageAC(newPage));
-		
-		const response = await usersAPI.getUsers(newPage, usersOnPage);
-		
-		dispatch(loadMoreUsersAC(response.items));
-		dispatch(toggleIsFetchingAC(false));
-	}
+    const response = await usersAPI.getUsers(newPage, usersOnPage);
+
+    dispatch(loadMoreUsersAC(response.items));
+    dispatch(toggleIsFetchingAC(false));
+  };
 }
 
 
 
 export const followUsersThunkCreator = (userId: number): ThunkType => {
   return async (dispatch) => {
-    const resp = await usersAPI.checkFollow(userId);
+		// debugger
+		dispatch(toggleFollowingProgressAC(true, userId));
 
-    if (resp === false) {
-      const respData = await usersAPI.follow(userId);
-      if (respData.resultCode === 0) dispatch(toggleFollowAC(userId));
+    const isFollowed = await usersAPI.checkFollow(userId);
+		let respData;
+    if (isFollowed === false) {
+      respData = await usersAPI.follow(userId);
     } else {
-      const respData = await usersAPI.unfollow(userId);
-      if (respData.resultCode === 0) dispatch(toggleFollowAC(userId));
+      respData = await usersAPI.unfollow(userId);
     }
+
+		if (respData.resultCode === 0) {
+      dispatch(toggleFollowAC(userId));
+    }
+		dispatch(toggleFollowingProgressAC(false, userId));
+		
   };
 };

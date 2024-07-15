@@ -4,9 +4,11 @@ import { Loader } from '../common/Loader/Loader';
 import { Button } from '../common/Button';
 import { User } from './User';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFollowingInProgress, getIsFetching, getTotalUsers, getUsersOnPage, obtainUsers, setCurrentPage } from '../../redux/selectors/users-selectors';
+import { getFollowingInProgress, getIsFetching, getTotalUsers, getUsersOnPage, obtainUsers, getCurrentPage } from '../../redux/selectors/users-selectors';
 import { followUsersThunkCreator, getUsersThunkCreator, loadMoreUsersThunkCreator, toggleFollowingProgressAC } from '../../redux/reducers/usersReducer';
 import { Pagination } from '../common/pagination/Pagination';
+import { useAppDispatch } from '../../redux/app/hooks';
+import { AppDispatch } from '../../redux/redux-store';
 
 
 export const Users = () => {
@@ -15,15 +17,16 @@ export const Users = () => {
 	const users = useSelector(obtainUsers)
 	const totalUsers = useSelector(getTotalUsers)
 	const usersOnPage = useSelector(getUsersOnPage)
-	const currentPage = useSelector(setCurrentPage)
+	const currentPage = useSelector(getCurrentPage)
 	const isFetching = useSelector(getIsFetching)
 	const followingInProgress = useSelector(getFollowingInProgress) //пока не получилось реализовать:
 	
 	//useState
 	const [activePage, setActivePage] = useState<number>(1)
 
-	//вместо переданных диспатчей исп-ем useDispatch()
-	const dispatch = useDispatch()
+	//исп-ем useDispatch() c определенным в сторе типом appdispatch либо второй вариант с промежуточной ф-цией чтобы не испортировать тип каждый раз 
+	const dispatch = useDispatch<AppDispatch>()
+	// const dispatch = useAppDispatch()
 
 	//mapDispatchToProps из классовой переписываем на ф-ции и
 	//напрямую диспатчим из них thunk
@@ -32,10 +35,24 @@ export const Users = () => {
 		dispatch(loadMoreUsersThunkCreator(currentPage, usersOnPage));
 	}
 
-	const toggleFollowUsers = (userId: number) => {
-		// debugger
-		dispatch(followUsersThunkCreator(userId))
+	const toggleFollowUsers = async (userId: number) => {
+ 		dispatch(followUsersThunkCreator(userId));
 	}
+
+
+	// const toggleFollowUsers = async (userId: number) => {
+	// 	try {
+	// 		setFollowingInProgress([...followingInProgress, userId]);
+	// 		await dispatch(followUsersThunkCreator(userId));
+	// 	} catch (error) {
+	// 		// Обработка ошибки при выполнении followUsersThunkCreator
+	// 		console.error('Error during follow/unfollow:', error);
+	// 		// Здесь можно добавить логику обработки ошибки, например, откат состояния загрузки
+	// 	} finally {
+	// 		// Сброс состояния загрузки после завершения операции
+	// 		setFollowingInProgress(followingInProgress.filter(u => u !== userId));
+	// 	}
+	// };
 
 	//пока не получилось реализовать
 	const toggleFollowingProgress = (isFetching: boolean, userId: number) => {
@@ -68,7 +85,7 @@ export const Users = () => {
 					<User u={u} 
 						toggleFollowUsers={toggleFollowUsers} 
 						key={u.id} 
-						// followingInProgress={followingInProgress}
+						followingInProgress={followingInProgress}
 					/>
 				)}
 			</div>

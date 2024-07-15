@@ -1,3 +1,4 @@
+import { ThunkAction } from "@reduxjs/toolkit";
 import { profileAPI } from "../../apiDal/apiDal";
 import { PhotosType, PostType, ProfileType } from "../../types/types";
 import { AppStateType } from "../redux-store";
@@ -38,7 +39,7 @@ let initialState = {
 
 type InitialStateType = typeof initialState
 
-export const profileReducer = (state = initialState, action: any): InitialStateType => {
+export const profileReducer = (state = initialState, action: ActionsType): InitialStateType => {
 
 	switch (action.type) {
 		case 'ADD-POST':
@@ -77,10 +78,6 @@ export const profileReducer = (state = initialState, action: any): InitialStateT
 				...state, userProfile: { ...state.userProfile, photos: action.photos } as ProfileType
 			}
 
-		// case 'SET-PROFILE-INFO': 
-		// return {
-		// 	...state, userProfile: 
-		// }
 		default: return state
 	}
 }
@@ -91,71 +88,57 @@ type SetProfileActionType = {type: 'SET-USER-PROFILE', profile: ProfileType}
 type SetStatusActionType = {type: 'SET-STATUS', status: string}
 type SetPhotoActionType = {type: 'SET-PROFILE-PHOTO', photos: PhotosType}
 
+type ActionsType = AddPostActionType | UpdatePostActionType | SetProfileActionType | SetStatusActionType | SetPhotoActionType
+
 export const addPostActionCreator = (): AddPostActionType => ({ type: 'ADD-POST' })
 export const updateNewPostTextActionCreator = (text: string): UpdatePostActionType => ({type: 'UPDATE-NEW-POST-TEXT',newText: text})
 export const setUserProfileAC = (profile: ProfileType): SetProfileActionType => ({type: 'SET-USER-PROFILE', profile});
 const setStatusAC = (status: string): SetStatusActionType => ({ type: 'SET-STATUS', status})
 const setPhotoAC = (photos: PhotosType): SetPhotoActionType => ({ type: 'SET-PROFILE-PHOTO', photos})
-// const saveProfileInfoAC = (info) => ({type: 'SET-PROFILE-INFO', info})
 
 
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>;
 
-export const getUserProfileThunkCreator = (profileId: number) => {
-	return function(dispatch: any) {
-		profileAPI.setProfile(profileId)
-			.then(resp => {
-				dispatch(setUserProfileAC(resp.data));
-			})
-	}
-}
+export const getUserProfileThunkCreator = (profileId: number): ThunkType => {
+  return async (dispatch) => {
+    const resp = await profileAPI.setProfile(profileId)
+		 dispatch(setUserProfileAC(resp.data));
+  };
+};
 
-export const getStatusThunkCreator = (profileId: number) => {
+export const getStatusThunkCreator = (profileId: number): ThunkType => {
+  return async (dispatch) => {
+    const resp = await profileAPI.getStatus(profileId);
+    dispatch(setStatusAC(resp.data));
+  };
+};
 
-	return function (dispatch: any) {
-		profileAPI.getStatus(profileId)
-			.then(resp => {
-				dispatch(setStatusAC(resp.data))
-			})
-	}
-}
-
-export const updateStatusThunkCreator = (status: string) => {
-
-	return function(dispatch: any) {
-		profileAPI.updateStatus(status)
-		.then(resp => {
+export const updateStatusThunkCreator = (status: string): ThunkType => {
+	return async (dispatch) => {
+		const resp = await profileAPI.updateStatus(status)
 			if (resp.data.resultCode === 0) {
 				dispatch(setStatusAC(status))
 			}
-		})
 	}
 }
 
-export const saveProfilePhotoThunkCreator = (file: any) => {
-
-	return function (dispatch: any) {
-		profileAPI.setProfilePhoto(file)
-			.then(resp => {
-			
-				if (resp.data.resultCode === 0) {
-					dispatch(setPhotoAC(resp.data.data.photos))
-					
-				}
-			})
-	}
-}
+export const saveProfilePhotoThunkCreator = (file: any): ThunkType => {
+  return async (dispatch) => {
+    const resp = await profileAPI.setProfilePhoto(file);
+    if (resp.data.resultCode === 0) {
+      dispatch(setPhotoAC(resp.data.data.photos));
+    }
+  };
+};
 
 //используем доп getState() чтобы получить доступ к другой части стейта и взять айди польз-ля
-export const saveProfileInfoThunkCreator = (formData: ProfileType) => {
-	
-	return async function (dispatch: any, getState: () => AppStateType) {
-		const userId = getState().auth.userId
-		console.log(userId);
+export const saveProfileInfoThunkCreator = (formData: ProfileType): ThunkType => {
+  return async function (dispatch, getState: () => AppStateType) {
+    const userId = getState().auth.userId;
 
-		let resp = await profileAPI.setProfileInfo(formData);
-			
-				if (resp.data.resultCode === 0) {
-					dispatch(getUserProfileThunkCreator(userId))
-				}
-	}
-}
+    let resp = await profileAPI.setProfileInfo(formData);
+    if (resp.data.resultCode === 0) {
+      dispatch(getUserProfileThunkCreator(userId));
+    }
+  };
+};

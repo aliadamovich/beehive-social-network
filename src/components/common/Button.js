@@ -17,4 +17,10 @@ export const Button = styled.button`
 	&:hover {
 		opacity: 0.8;
 	}
+	&:disabled {
+		background-color: lightgray;
+		cursor: default;
+		border: none;
+
+	}
 `
