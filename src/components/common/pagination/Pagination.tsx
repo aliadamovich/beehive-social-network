@@ -1,11 +1,18 @@
-import React, { useState } from 'react'
-import { getTotalUsers, getUsersOnPage } from '../../../redux/selectors/users-selectors';
-import { useSelector } from 'react-redux';
+import React, {  useState } from 'react'
 import styled from 'styled-components';
 import { FaAnglesRight } from "react-icons/fa6";
 import { FaAnglesLeft } from "react-icons/fa6";
-import { Loader } from './../../common/Loader/Loader'
-export const Pagination = ({ usersOnPage, totalUsers, changeCurrentPage, activePage, setActivePage, portionSize = 5 }) => {
+
+type PaginationPropsType = {
+	usersOnPage: number
+	totalUsers: number 
+	changeCurrentPage: (currentPage: number) => void
+	activePage: number
+	setActivePage: (activePage: number) => void
+	portionSize?: number
+}
+
+export const Pagination = ({ usersOnPage, totalUsers, changeCurrentPage, activePage, setActivePage, portionSize = 5 }: PaginationPropsType) => {
 	const [currentPortion, setCurrentPortion] = useState(1);
 	
 	const numberOfPages = Math.ceil(totalUsers / usersOnPage);
@@ -18,8 +25,8 @@ export const Pagination = ({ usersOnPage, totalUsers, changeCurrentPage, activeP
 	const startPage = (currentPortion - 1) * portionSize + 1;
 	const endPage = currentPortion * portionSize;
 
-	const onPageClickHandler = (e) => {
-		changeCurrentPage(e.currentTarget.textContent)
+	const onPageClickHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		changeCurrentPage(Number(e.currentTarget.textContent))
 		setActivePage(Number(e.currentTarget.textContent))
 	}
 

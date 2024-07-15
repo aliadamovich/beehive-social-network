@@ -11,7 +11,6 @@ import { Pagination } from '../common/pagination/Pagination';
 
 export const Users = () => {
 	
-
 	//все ранее приходящие из контейнерной комп. пропсы переписываем на useSelector()
 	const users = useSelector(obtainUsers)
 	const totalUsers = useSelector(getTotalUsers)
@@ -21,7 +20,7 @@ export const Users = () => {
 	const followingInProgress = useSelector(getFollowingInProgress) //пока не получилось реализовать:
 	
 	//useState
-	const [activePage, setActivePage] = useState(1)
+	const [activePage, setActivePage] = useState<number>(1)
 
 	//вместо переданных диспатчей исп-ем useDispatch()
 	const dispatch = useDispatch()
@@ -33,18 +32,18 @@ export const Users = () => {
 		dispatch(loadMoreUsersThunkCreator(currentPage, usersOnPage));
 	}
 
-	const toggleFollowUsers = (userId) => {
+	const toggleFollowUsers = (userId: number) => {
 		// debugger
 		dispatch(followUsersThunkCreator(userId))
 	}
 
 	//пока не получилось реализовать
-	const toggleFollowingProgress = (isFetching, userId) => {
+	const toggleFollowingProgress = (isFetching: boolean, userId: number) => {
 		dispatch(toggleFollowingProgressAC(isFetching, userId))
 	}
 
 	//ф-ция для пагинатора
-	const changeCurrentPage = (currentPage) => {
+	const changeCurrentPage = (currentPage: number) => {
 		dispatch(getUsersThunkCreator(currentPage, usersOnPage))
 	}
  
@@ -69,7 +68,7 @@ export const Users = () => {
 					<User u={u} 
 						toggleFollowUsers={toggleFollowUsers} 
 						key={u.id} 
-						followingInProgress={followingInProgress}
+						// followingInProgress={followingInProgress}
 					/>
 				)}
 			</div>

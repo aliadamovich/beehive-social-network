@@ -1,5 +1,6 @@
 import { profileAPI } from "../../apiDal/apiDal";
 import { PhotosType, PostType, ProfileType } from "../../types/types";
+import { AppStateType } from "../redux-store";
 
 
 
@@ -147,7 +148,7 @@ export const saveProfilePhotoThunkCreator = (file: any) => {
 //используем доп getState() чтобы получить доступ к другой части стейта и взять айди польз-ля
 export const saveProfileInfoThunkCreator = (formData: ProfileType) => {
 	
-	return async function (dispatch: any, getState: any) {
+	return async function (dispatch: any, getState: () => AppStateType) {
 		const userId = getState().auth.userId
 		console.log(userId);
 
