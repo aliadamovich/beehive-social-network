@@ -32,16 +32,21 @@ const Navbar = (props) => {
 						<Icon iconId='gallery' viewBox="0 0 512 512" fill='none'/>
 					</div>
 				</NavLink>
-				<a className={c.item} href="/newsfeed" aria-label="newsfeed">
+				<NavLink to="/chat" className={({ isActive }) => isActive ? `${c.item} ${c.active}` : c.item} aria-label="Chat">
 					<div className={c.svg}>
 						<Icon iconId='newsfeed' viewBox="0 0 32 32" width="64px" height="64px" />
 					</div>
-				</a>
-				<a className={c.item} href="/cart" aria-label="cart">
+				</NavLink>
+				{/* <a className={c.item} href="/newsfeed" aria-label="newsfeed">
+					<div className={c.svg}>
+						<Icon iconId='newsfeed' viewBox="0 0 32 32" width="64px" height="64px" />
+					</div>
+				</a> */}
+				{/* <a className={c.item} href="/cart" aria-label="cart">
 					<div className={c.svg}>
 						<Icon iconId='cart' fill='none' viewBox="0 0 32 32" />
 					</div>
-				</a>
+				</a> */}
 			</nav>
 		</aside>
 		

@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { DialogItem } from './DialogItem/DialogItem';
 import c from './DialogsPage.module.scss';
 import { Messages } from './Messages/Messages';
@@ -7,13 +7,53 @@ import { Recent } from '../common/Recent/Recent';
 import {Button} from './../common/Button';
 import { IconsRow } from '../common/iconsrow/IconsRow';
 import { Container } from '../common/Container';
+import { useAppDispatch } from '../../redux/app/hooks';
+import { sendNewMessageActionCreator, updateNewMessageTextActionCreator } from '../../redux/reducers/dialogsReducer';
+import { useSelector } from 'react-redux';
+import { obtainUsers } from '../../redux/selectors/users-selectors';
+import { getUsersThunkCreator } from '../../redux/reducers/usersReducer';
+import { getMessages } from '../../redux/selectors/dialogs-selectors';
+import { SendMessage } from './Messages/SendMessage';
 
 export const DialogsPage = (props) => {
-	// debugger;
-	const dialogsArray = props.dialogPage.users
-	.map((d, index) => <DialogItem name={d.name} id={d.id} nickname={d.username} photos={props.dialogPage.photos[index]} key={d.id}/>)
-	const messagesArray = props.dialogPage.messages
-	.map(m => <Messages text={m.name} photos={props.dialogPage.photos[0]} key={m.id}/>)
+
+	const [messageText, setMessageText] = useState('')
+	const dispatch = useAppDispatch();
+	const users = useSelector(obtainUsers)
+	const messages = useSelector(getMessages)
+
+	useEffect(() => { dispatch(getUsersThunkCreator(1, 10, true)) },[]
+		// [currentPage, usersOnPage, dispatch]
+	)
+
+	// useEffect(() => {
+	// 	dispatch(getAllDialogsThunCreator())
+	// }, [])
+
+
+	const dialogsArray = users.map(u => <DialogItem 
+												key={u.id}
+												name={u.name} 
+												id={u.id} 
+												photo={u.photos.small} 
+											 />)
+
+	const messagesArray = messages.map(m => <Messages 
+												text={m.body} 
+												key={m.id} 
+												userName={m.email}
+												photo={null}
+												/>)
+
+
+	const updateText = (message) => {
+		setMessageText(message)
+		dispatch(updateNewMessageTextActionCreator(message))
+	}
+
+	const addMessage = () => {
+		dispatch(sendNewMessageActionCreator())
+	}
 
 	return (
 		<div className={c.dialogs}>
@@ -32,16 +72,13 @@ export const DialogsPage = (props) => {
 							<div className={c.body__content}>
 								{messagesArray}
 							</div>
-							<div className={c.messageCreate}>
 								
-								<MessageCreate 
-									msg={props.dialogPage.messages}
-									newMessageText={props.dialogPage.newMessageText}
-									updateText={props.updateText}
-									addMessage={props.addMessage}
+								<SendMessage 
+									messageText={messageText}
+									updateText={updateText}
+									addMessage={addMessage}
 								/>
 	
-							</div>
 						</div>
 						<Recent />
 					</div>
@@ -51,28 +88,7 @@ export const DialogsPage = (props) => {
 	)
 }
 
-export const MessageCreate = (props) => {
-	// debugger
-	function onAddMessage() {
-		props.addMessage()
 
-	}
-
-	function onUpdateText (e) {
-		let msg = e.target.value;
-		props.updateText(msg);
-	}
-
-	return (
-		<div className={c.messageCreate__content}>
-			<div className={c.messageCreate__body}>
-				<textarea onChange={onUpdateText} value={props.newMessageText} placeholder='Write your message...'></textarea>
-				<Button onClick={onAddMessage}>Send</Button>
-			</div>
-			<IconsRow />
-		</div>
-	)
-}
 
 
 

@@ -9,7 +9,9 @@ import { ProfileInfoSection } from './tabsContent/profileInfo/ProfileInfoSection
 import { ProfilePhoto } from './ProfilePhoto';
 import styled, { css } from 'styled-components';
 import { ProfileCounter } from './ProfileCounter';
-import cover from './../../assets/images/cover_example.jpg'
+import cover from './../../assets/images/main_cover.png';
+
+
 import { FollowedFriends } from './tabsContent/followedFriends/FollowedFriends';
 
 export const ProfilePage = (props) => {
@@ -108,7 +110,7 @@ const ProfileSection = styled.section`
 			left: 0;
 			right: 0;
 			height: 200px;
-			background: url(${cover}) center/ cover no-repeat;
+			background: url(${cover}) left 55%/ cover no-repeat;
 		}
 `
 

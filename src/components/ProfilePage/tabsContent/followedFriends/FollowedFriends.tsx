@@ -2,30 +2,36 @@ import React, { useEffect, useState } from 'react'
 import { User } from '../../../UsersPage/User'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
-import { getTotalUsers, getUsersOnPage, obtainUsers, getCurrentPage } from '../../../../redux/selectors/users-selectors'
+import { getTotalUsers, getUsersOnPage, obtainUsers, getCurrentPage, getFollowingInProgress, getIsFetching } from '../../../../redux/selectors/users-selectors'
 import { Pagination } from '../../../common/pagination/Pagination'
 import { followUsersThunkCreator, getUsersThunkCreator } from '../../../../redux/reducers/usersReducer'
+import { AppDispatch } from '../../../../redux/redux-store'
+import { Loader } from '../../../common/Loader/Loader'
 
 export const FollowedFriends = () => {
 
-	const users = useSelector(state => obtainUsers(state));
-	const usersOnPage= useSelector(state => getUsersOnPage(state));
-	const currentPage = useSelector(state => getCurrentPage(state));
-	const totalUsers = useSelector(state => getTotalUsers(state));
+	const users = useSelector(obtainUsers)
+	const totalUsers = useSelector(getTotalUsers)
+	const usersOnPage = useSelector(getUsersOnPage)
+	const currentPage = useSelector(getCurrentPage)
+	const followingInProgress = useSelector(getFollowingInProgress) 
+	const isFetching = useSelector(getIsFetching)
 
-	const dispatch = useDispatch();
-	const toggleFollowUsers = (userId) => { dispatch(followUsersThunkCreator(userId)) }
+	const dispatch = useDispatch<AppDispatch>();
+	const toggleFollowUsers = (userId: number) => { dispatch(followUsersThunkCreator(userId)) }
 	const [activePage, setActivePage] = useState(1)
 
 	useEffect(() => { dispatch(getUsersThunkCreator(currentPage, usersOnPage, true)) }, 
 		[currentPage, usersOnPage, dispatch])
 
-	const changeCurrentPage = (pageNumber) => {
+	const changeCurrentPage = (pageNumber: number) => {
 		dispatch(getUsersThunkCreator(pageNumber, usersOnPage, true))
 	}
 
 	return (
+
 		<>
+			{isFetching ? <Loader /> : null}
 			<Pagination 
 				usersOnPage={usersOnPage} 
 				changeCurrentPage={changeCurrentPage}
@@ -34,7 +40,7 @@ export const FollowedFriends = () => {
 				setActivePage={setActivePage}
 			/>
 			<StyledFriends>
-				{users.map(u => <User u={u} key={u.id} toggleFollowUsers={toggleFollowUsers}/>)}
+				{users.map(u => <User u={u} key={u.id} toggleFollowUsers={toggleFollowUsers} followingInProgress={followingInProgress}/>)}
 			</StyledFriends>
 		</>
 	)

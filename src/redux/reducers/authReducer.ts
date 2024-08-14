@@ -1,4 +1,4 @@
-import { authAPI } from "../../apiDal/apiDal";
+import { authAPI, ResultCodesEnum } from "../../apiDal/apiDal";
 import { getUserProfileThunkCreator } from "./profileReducer";
 
 // type InitialStateType2 = {
@@ -70,7 +70,7 @@ export const initializeAppThunkCreator = () => {
 export const getAuthUserDataThunkCreator = () => {
 	return async function(dispatch: any) {
 		const resp = await authAPI.me();
-		if (resp.data.resultCode === 0) {
+		if (resp.data.resultCode === ResultCodesEnum.Success) {
 			const { id, email, login } = resp.data.data //деструктуризируем полученный с сервера объект 
 			dispatch(setAuthProfileIdAC(id, email, login, true)); //добавляем флаг isAuth
 

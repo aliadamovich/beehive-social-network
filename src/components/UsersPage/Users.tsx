@@ -22,7 +22,7 @@ export const Users = () => {
 	const followingInProgress = useSelector(getFollowingInProgress) //пока не получилось реализовать:
 	
 	//useState
-	const [activePage, setActivePage] = useState<number>(1)
+	const [activePage, setActivePage] = useState(1)
 
 	//исп-ем useDispatch() c определенным в сторе типом appdispatch либо второй вариант с промежуточной ф-цией чтобы не испортировать тип каждый раз 
 	const dispatch = useDispatch<AppDispatch>()
@@ -72,7 +72,7 @@ export const Users = () => {
 	return (
 		<div className={c.users__wrap}>
 			{isFetching ? <Loader /> : null}
-			<Pagination 
+			<Pagination
 				usersOnPage={usersOnPage}
 				changeCurrentPage={changeCurrentPage}
 				totalUsers={totalUsers}
@@ -82,9 +82,9 @@ export const Users = () => {
 			<div className={c.users__body}>
 				{
 					users.map(u => 
-					<User u={u} 
-						toggleFollowUsers={toggleFollowUsers} 
-						key={u.id} 
+					<User u={u}
+						toggleFollowUsers={toggleFollowUsers}
+						key={u.id}
 						followingInProgress={followingInProgress}
 					/>
 				)}

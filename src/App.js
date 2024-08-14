@@ -11,6 +11,8 @@ import { initializeAppThunkCreator } from './redux/reducers/authReducer';
 import { Loader } from './components/common/Loader/Loader';
 import { Header } from './components/Header/Header';
 import styled from 'styled-components';
+import { ChatPage } from './components/ChatPage/ChatPage';
+import { DialogsPage } from './components/DialogsPage/DialogsPage';
 
 
 function App() {
@@ -34,9 +36,10 @@ function App() {
 			<Routes>
 				<Route path="/" element={<ProfilePageContainer />} />
 				<Route path='/profile/:userId?' element={<ProfilePageContainer />} />
-				<Route path='/dialogs/*' element={<DialogsContainer />} />
-				<Route path='/gallery' element={<GalleryContainer />} />
+				<Route path='/dialogs/*' element={<DialogsPage />} />
 				<Route path='/users' element={<UsersPage />} />
+				<Route path='/gallery' element={<GalleryContainer />} />
+				<Route path='/chat' element={<ChatPage />} />
 				<Route path="/login" element={<LoginPage />} />
 			</Routes>
 		</Wrapper>

@@ -135,10 +135,11 @@ export const saveProfilePhotoThunkCreator = (file: any): ThunkType => {
 export const saveProfileInfoThunkCreator = (formData: ProfileType): ThunkType => {
   return async function (dispatch, getState: () => AppStateType) {
     const userId = getState().auth.userId;
-
-    let resp = await profileAPI.setProfileInfo(formData);
-    if (resp.data.resultCode === 0) {
-      dispatch(getUserProfileThunkCreator(userId));
-    }
+		if (userId ) {
+			let resp = await profileAPI.setProfileInfo(formData);
+			if (resp.data.resultCode === 0) {
+				dispatch(getUserProfileThunkCreator(userId));
+			}
+		}
   };
 };

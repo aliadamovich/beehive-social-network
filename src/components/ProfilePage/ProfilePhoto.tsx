@@ -1,7 +1,14 @@
 import styled from 'styled-components';
 import null_user from './../../assets/images/user.png';
+import { ProfileType } from '../../types/types';
 
-export const ProfilePhoto = (props) => {
+type ProfilePhotoType = {
+	userProfile: ProfileType
+	onPhotoChoose: () => void
+	isOwner: boolean
+}
+
+export const ProfilePhoto = (props: ProfilePhotoType) => {
 	return (
 		<>
 			<UserStyledPhoto>

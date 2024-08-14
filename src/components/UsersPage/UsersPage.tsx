@@ -1,4 +1,3 @@
-import { UsersContainer } from './UsersContainer';
 import { Search } from '../common/Search/Search';
 import { Container } from '../common/Container';
 import { Recent } from '../common/Recent/Recent';

@@ -1,3 +1,8 @@
+import { ResultCodesEnum } from './../../apiDal/apiDal';
+import { dialogsAPI } from "../../apiDal/apiDal";
+import { ThunkAction } from '@reduxjs/toolkit';
+import { AppStateType } from '../redux-store';
+
 let initialState = {
 	users: [
 		{
@@ -82,78 +87,9 @@ let initialState = {
 			"email": "Eliseo@gardner.biz",
 			"body": "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium"
 		},
-		{
-			"postId": 1,
-			"id": 2,
-			"name": "quo vero reiciendis velit similique earum",
-			"email": "Jayne_Kuhic@sydney.com",
-			"body": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et"
-		},
-		{
-			"postId": 1,
-			"id": 3,
-			"name": "odio adipisci rerum aut animi",
-			"email": "Nikita@garfield.biz",
-			"body": "quia molestiae reprehenderit quasi aspernatur\naut expedita occaecati aliquam eveniet laudantium\nomnis quibusdam delectus saepe quia accusamus maiores nam est\ncum et ducimus et vero voluptates excepturi deleniti ratione"
-		},
-		{
-			"postId": 1,
-			"id": 4,
-			"name": "alias odio sit",
-			"email": "Lew@alysha.tv",
-			"body": "non et atque\noccaecati deserunt quas accusantium unde odit nobis qui voluptatem\nquia voluptas consequuntur itaque dolor\net qui rerum deleniti ut occaecati"
-		},
-		{
-			"postId": 1,
-			"id": 5,
-			"name": "vero eaque aliquid doloribus et culpa",
-			"email": "Hayden@althea.biz",
-			"body": "harum non quasi et ratione\ntempore iure ex voluptates in ratione\nharum architecto fugit inventore cupiditate\nvoluptates magni quo et"
-		},
-		{
-			"postId": 2,
-			"id": 6,
-			"name": "et fugit eligendi deleniti quidem qui sint nihil autem",
-			"email": "Presley.Mueller@myrl.com",
-			"body": "doloribus at sed quis culpa deserunt consectetur qui praesentium\naccusamus fugiat dicta\nvoluptatem rerum ut voluptate autem\nvoluptatem repellendus aspernatur dolorem in"
-		},
-		{
-			"postId": 2,
-			"id": 7,
-			"name": "repellat consequatur praesentium vel minus molestias voluptatum",
-			"email": "Dallas@ole.me",
-			"body": "maiores sed dolores similique labore et inventore et\nquasi temporibus esse sunt id et\neos voluptatem aliquam\naliquid ratione corporis molestiae mollitia quia et magnam dolor"
-		},
-		{
-			"postId": 2,
-			"id": 8,
-			"name": "et omnis dolorem",
-			"email": "Mallory_Kunze@marie.org",
-			"body": "ut voluptatem corrupti velit\nad voluptatem maiores\net nisi velit vero accusamus maiores\nvoluptates quia aliquid ullam eaque"
-		},
-		{
-			"postId": 2,
-			"id": 9,
-			"name": "provident id voluptas",
-			"email": "Meghan_Littel@rene.us",
-			"body": "sapiente assumenda molestiae atque\nadipisci laborum distinctio aperiam et ab ut omnis\net occaecati aspernatur odit sit rem expedita\nquas enim ipsam minus"
-		},
-		{
-			"postId": 2,
-			"id": 10,
-			"name": "eaque et deleniti atque tenetur ut quo ut",
-			"email": "Carmen_Keeling@caroline.name",
-			"body": "voluptate iusto quis nobis reprehenderit ipsum amet nulla\nquia quas dolores velit et non\naut quia necessitatibus\nnostrum quaerat nulla et accusamus nisi facilis"
-		},
-		{
-			"postId": 3,
-			"id": 11,
-			"name": "fugit labore quia mollitia quas deserunt nostrum sunt",
-			"email": "Veronica_Goodwin@timmothy.net",
-			"body": "ut dolorum nostrum id quia aut est\nfuga est inventore vel eligendi explicabo quis consectetur\naut occaecati repellat id natus quo est\nut blanditiis quia ut vel ut maiores ea"
-		},
 	] as Array<{postId: number, id: number, name: string, email: string, body: string}>,
 	newMessageText: '' as string,
+	dialogs: []
 }
 
 type InitialStateType = typeof initialState
@@ -161,30 +97,51 @@ type InitialStateType = typeof initialState
 export const dialogReducer = (state = initialState, action: any): InitialStateType => {
 
 	switch (action.type) {
-		case 'UPDATE-NEW-MESSAGE-TEXT':
-			return {
-				...state,
-				newMessageText: action.body
-			}
+    case "UPDATE-NEW-MESSAGE-TEXT":
+      return {
+        ...state,
+        newMessageText: action.body,
+      };
 
-		case 'ADD-MESSAGE':
-			let newMsg = {
-				"postId": 1,
-				"id": 11,
-				"name": state.newMessageText,
-				"email": "Eliseo@gardner.biz",
-				"body": 'abfhds'
-			}
-			return {
-				...state,
-				messages: [...state.messages, newMsg],
-				newMessageText: ''
-			}
+    case "ADD-MESSAGE":
+      let newMsg = {
+        postId: 1,
+        id: 11,
+        name: state.newMessageText,
+        email: "Eliseo@gardner.biz",
+        body: "abfhds",
+      };
+      return {
+        ...state,
+        messages: [...state.messages, newMsg],
+        newMessageText: "",
+      };
 
-		default: return state
+    //!experiment send message to server
+    case "SEND-MESSAGE-TO-SERVER":
+      let newMessage = {
+        postId: 2,
+        id: 2,
+        name: "id labore ex et quam laborum",
+        email: "Eliseo@gardner.biz",
+        body: action.payload.message,
+      };
+      return { ...state, messages: [...state.messages, newMessage] };
 
-	}
+			case "GET-ALL-DIALOGS-FROM-SERVER":
+				return {...state, dialogs: action.payload.dialogs}
+
+    default:
+      return state;
+  }
 }
+
+type ActionsType =
+  | updateMessageActionType
+  | addMessageActionType
+  | SendMessageToServerType
+  | GetAllDialogsFromServerType;
+
 type updateMessageActionType = {
 	type: 'UPDATE-NEW-MESSAGE-TEXT'
 	body: string
@@ -195,8 +152,75 @@ export const updateNewMessageTextActionCreator = (msg: string): updateMessageAct
 	body: msg
 })
 
-type sendMessageActionType = {
+type addMessageActionType = {
 	type: 'ADD-MESSAGE'
 }
 
-export const sendNewMessageActionCreator = (): sendMessageActionType => ({ type: 'ADD-MESSAGE' })
+export const sendNewMessageActionCreator = (): addMessageActionType => ({
+  type: "ADD-MESSAGE",
+});
+
+
+//!experiment send message to server
+export const sendMessagesAC = (message: string): SendMessageToServerType => ({
+  type: "SEND-MESSAGE-TO-SERVER",
+  payload: {
+    message: message,
+  },
+});
+
+type SendMessageToServerType = {
+  type: "SEND-MESSAGE-TO-SERVER"
+	payload: {
+		message: string
+	}
+};
+
+//send message to a friend
+export const sendMessageThunCreator = (userId: number, message: string): ThunkType => {
+  return async (dispatch) => {
+    const resp = await dialogsAPI.sendMessageToServer(userId, message);
+    if (resp.data.resultCode === 0) {
+      dispatch(sendMessagesAC(message));
+    }
+  };
+};
+
+
+export const getAllDialogsAC = (messages: any[]): GetAllDialogsFromServerType => ({
+  type: "GET-ALL-DIALOGS-FROM-SERVER",
+  payload: {
+    dialogs: messages,
+  },
+});
+
+type GetAllDialogsFromServerType = {
+  type: "GET-ALL-DIALOGS-FROM-SERVER"
+	payload: {
+		dialogs: any[]
+	}
+};
+
+//get all dialogs
+export const getAllDialogsThunCreator = (): ThunkType => {
+  return async (dispatch) => {
+    const resp = await dialogsAPI.getAllMessagesFromServer();
+    if (resp.data.resultCode === 0) {
+      dispatch(getAllDialogsAC(resp.data));
+    }
+  };
+};
+
+//start dialog with a friend
+export const startDialogThunCreator = (userId: number): ThunkType => {
+  return async (dispatch) => {
+    const resp = await dialogsAPI.startDialog(userId);
+    if (resp.data.resultCode === 0) {
+      dispatch(getAllDialogsAC(resp.data.data));
+    }
+  };
+};
+
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>;
+
+//!
