@@ -22,15 +22,20 @@ export const SendMessage = (props: SendMessageType) => {
 	return (
 		<StyledSendMessage>
 			<StyledContent>
+
 				<StyledMessageBody>
+
 					<textarea
 						onChange={(e) => { props.updateText(e.currentTarget.value) }}
 						value={props.messageText}
 						placeholder='Write your message...'>
 					</textarea>
+
 					<Button onClick={() => { props.addMessage() }}>Send</Button>
 					{/* <button onClick={onGetDialogs}>get dialogs</button> */}
+					
 				</StyledMessageBody>
+
 				<IconsRow />
 			</StyledContent>
 		</StyledSendMessage>

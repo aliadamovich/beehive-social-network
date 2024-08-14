@@ -18,13 +18,12 @@
 }
 
 .grid {
-		margin-top: 30px;
-		padding: 10px;
+		padding: 40px 10px 10px;
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		gap: 10px;
 		grid-auto-flow: row;
-	
+		border-top: 1px solid rgb(237, 241, 245);
 
 	&__item {
 		overflow: hidden;

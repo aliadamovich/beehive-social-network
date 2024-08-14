@@ -23,6 +23,7 @@ export const Chat = () => {
 	const [myMessageText, setMyMessageText] = useState('');
 
 	const wsRef = useRef<WebSocket | null>(null)
+	const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
 	//подписываемся на событие, отслеживаем его, сетаем, но тк при перерисовке каждый раз в useEffect
 	//будет попадать старый стейт, внутри usestate прописываем коллбэк - это нужно чтобы
@@ -36,6 +37,11 @@ export const Chat = () => {
 		})
 	}, [])
 
+	useEffect(() => {
+		if (messagesEndRef.current) {
+			messagesEndRef.current.scrollIntoView({behavior: 'smooth'})
+		}
+	}, [messages])
 
 	const updateText = (message: string) => {setMyMessageText(message)}
 
@@ -59,7 +65,7 @@ export const Chat = () => {
 				<StyledChatMessages>
 					
 					{messagesArray}
-	
+					<div ref={messagesEndRef}></div>
 				</StyledChatMessages>
 				<SendMessage
 					messageText={myMessageText}

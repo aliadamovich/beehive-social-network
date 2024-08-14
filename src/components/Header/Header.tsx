@@ -5,6 +5,7 @@ import { LogoutThunkCreator } from '../../redux/reducers/authReducer';
 import logo_1 from './../../assets/images/logo_login.svg'
 import { IoLogOutOutline } from "react-icons/io5";
 import {S}from './Header.styled'
+import { AppDispatch } from '../../redux/redux-store';
 
 export const Header = () => {
 	// debugger
@@ -12,7 +13,7 @@ export const Header = () => {
 	const isAuth = useSelector(state => state.auth.isAuth);
 	// const userProfile = useSelector(state => state.profilePage.userProfile)
 
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>()
 	const onLogoutHandler = () => {
 		dispatch(LogoutThunkCreator())
 	}

@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import  Navbar from './components/Navbar/Navbar';
 import { ProfilePageContainer } from './components/ProfilePage/ProfilePageContainer';
 import { Route, Routes } from "react-router-dom";
-import { DialogsContainer } from './components/DialogsPage/DialogsContainer';
 import { UsersPage } from './components/UsersPage/UsersPage';
 import { LoginPage } from './components/LoginPage/LoginPage';
 import { GalleryContainer } from './components/GalleryPage/GalleryContainer';
