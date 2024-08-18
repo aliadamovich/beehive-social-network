@@ -3,7 +3,7 @@ import AppTest from "../AppTest";
 import { Header } from "../components/layout/Header/Header";
 import { DialogsPage } from "../components/layout/DialogsPage/DialogsPage";
 import { Error404 } from "../components/common/Error404";
-import { ProfilePageContainer } from "../components/ProfilePage/ProfilePageContainer";
+import { ProfilePageContainer } from "../components/layout/ProfilePage/ProfilePageContainer";
 // import { PATH } from "./PATHS";
 
 

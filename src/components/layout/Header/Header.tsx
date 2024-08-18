@@ -4,16 +4,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LogoutThunkCreator } from '../../../redux/reducers/authReducer';
 import logo_1 from './../../../assets/images/logo_login.svg';
 import { IoLogOutOutline } from "react-icons/io5";
-import {S}from './Header.styled'
+import {S} from './_StylesHeader'
 import { AppDispatch } from '../../../redux/redux-store';
+import { getIsAuth, getLogin, getUserProfile } from '../../../redux/selectors/header-selectors';
+import { Avatar } from '../../common/Avatar';
+import { FlexWrapper } from '../../common/FlexWrapper';
 
 export const Header = () => {
-	// debugger
-	const login = useSelector(state => state.auth.login);
-	const isAuth = useSelector(state => state.auth.isAuth);
-	// const userProfile = useSelector(state => state.profilePage.userProfile)
+
+	const login = useSelector(getLogin);
+	const isAuth = useSelector(getIsAuth);
+	const userProfile = useSelector(getUserProfile)
 
 	const dispatch = useDispatch<AppDispatch>()
+
 	const onLogoutHandler = () => {
 		dispatch(LogoutThunkCreator())
 	}
@@ -27,19 +31,13 @@ export const Header = () => {
 							<GoSearch />
 							<input placeholder='search' type="text" name="" id="" />
 						</S.HeaderSearch>
-						<S.UserData>
-							<S.UserName>{login}</S.UserName>
-
-							<S.LogOutButton onClick={onLogoutHandler}>
-								<IoLogOutOutline />
-								Log out
-							</S.LogOutButton>
-							{/* {
-										userProfile.photos.small !== null ?
-											<img src={userProfile.photos.small} alt="user" /> :
-											<img src={null_user} alt="user" />
-									} */}
-						</S.UserData>
+						<FlexWrapper gap='30px'>
+							<S.UserData>
+								<S.UserName>{login}</S.UserName>
+								{userProfile?.photos.small && <Avatar photo={userProfile.photos.small} />}
+							</S.UserData>
+							<S.LogOutButton onClick={onLogoutHandler}><IoLogOutOutline />Log out</S.LogOutButton>
+						</FlexWrapper>
 					</S.HeaderContainer>
 					:
 					<S.HeaderLogin>

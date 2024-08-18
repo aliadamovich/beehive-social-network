@@ -7,41 +7,43 @@ const Header = styled.header`
 	width: 100%;
 	z-index: 1000;
 	top: 0;
-`
+`;
 
 const HeaderContainer = styled.div`
-	background: #ffffff;
-	border-bottom: 1px solid rgb(237, 241, 245);
-	height: 100%;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 0px 80px;
-`
+  background: #ffffff;
+  border-bottom: 1px solid rgb(237, 241, 245);
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 80px;
+  background-color: rgb(248, 249, 251);
+`;
 
 const HeaderSearch = styled.div`
-	display: flex;
-	gap: 8px;
-	align-items: center;
-	cursor: pointer;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
 
-	input {
-		padding: 5px;
-		border-radius: 5px;
-		min-width: 300px;
-		border: none;
-		cursor: pointer;
-	}
+  input {
+    padding: 5px;
+    border-radius: 5px;
+    min-width: 300px;
+    border: none;
+    cursor: pointer;
+  }
 
-	svg {
-		width: 18px;
-		height: 18px;
-	}
-`
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+`;
+
 const UserData = styled.div`
 	display: flex;
 	align-items: center;
-	gap: 50px;
+	gap: 10px;
 
 	svg{
 		width: 20px;

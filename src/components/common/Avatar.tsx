@@ -2,6 +2,11 @@ import React from 'react'
 import userPhoto from './../../assets/images/user.png'
 import styled from 'styled-components'
 
+type AvatarPropsType = {
+	photo: string | null
+	width?: string
+	height?: string
+}
 
 export const Avatar = (props: AvatarPropsType) => {
 	return (
@@ -11,11 +16,6 @@ export const Avatar = (props: AvatarPropsType) => {
 	)
 }
 
-type AvatarPropsType = {
-	photo: string | null
-	width?: string
-	height?: string
-}
 
 const StyledAvatar = styled.div<AvatarPropsType>`
 	position: relative;

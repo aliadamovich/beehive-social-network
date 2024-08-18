@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../styles/Theme'
 import { CiEdit } from "react-icons/ci";
 import { MdArrowRightAlt } from "react-icons/md";
 
-export const ProfileStatus = (props) => {
+type ProfileStatusPropsType = {
+	status: string
+	isOwner: boolean
+	updateStatus: (status: string) => void
+}
+
+export const ProfileStatus = (props: ProfileStatusPropsType) => {
 	// debugger
 	const [editMode, setEditMode] = useState(false)
 	const [status, setStatus] = useState(props.status)
@@ -17,7 +23,7 @@ export const ProfileStatus = (props) => {
 		if(props.isOwner) setEditMode(!editMode)
 	}
 	
-	const onInputChange = (e) => {
+	const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setStatus(e.currentTarget.value)
 	}
 
@@ -34,8 +40,13 @@ export const ProfileStatus = (props) => {
 					<Field type='text' value={status} onChange={onInputChange} onBlur={onButtonClickHandler} autoFocus={true} maxLength={30}/>
 					</FieldWrapper>
 				: <StatusWrapper>
-					<Status onDoubleClick={changeEditMode}>{status}</Status>
-					{props.isOwner && <CiEdit onClick={changeEditMode} />}
+					{status 
+					?	<>
+						<Status onDoubleClick={changeEditMode}>{status}</Status>
+							{props.isOwner && <CiEdit onClick={changeEditMode} />}
+						</>
+					: <Status>No status...</Status> }
+						
 				 </StatusWrapper>
 			}
 		</StatusContainer>
@@ -65,7 +76,7 @@ const FieldWrapper = styled.div`
 	flex-direction: row-reverse;
 `
 const Field = styled.input`
-	background-color: #e7e7e72e;
+	background-color: #7c06eb43;
 	border-radius: 8px;
 	padding: 5px 0 5px 10px;
 	border: none;
@@ -73,6 +84,7 @@ const Field = styled.input`
 	height: 35px;
 	font-size: 16px;
 	color: #fff;
+	outline: none;
 	&::placeholder {
 		font-size: 14px;
 		color: ${theme.colors.borderColor};
@@ -86,12 +98,13 @@ const StatusButton = styled.button`
 	align-items: center;
 	justify-content: center;
 	border-radius: 8px;
-	border: 1px solid #fff;
 	position: relative;
-	right: 42px;
+	right: 40px;
 	z-index: 2;
 	color: #fff;
 	transition: all 0.3s ease 0s;
+	outline: none;
+	border: none;
 	
 	&:hover{
 		background-color: #ffffff4f;
@@ -107,12 +120,13 @@ const StatusWrapper = styled.div`
 	gap: 5px;
 	align-items: center;
 	width: 392px;
+
 `
 const Status = styled.div`
-	
+	font-weight: 600;
 	display: inline-block;
 	padding: 4px 10px;
 	font-size: 16px;
-	background-color: #e7e7e72a;
+	background-color: #7c06eb74;
 	border-radius: 8px;
 `
