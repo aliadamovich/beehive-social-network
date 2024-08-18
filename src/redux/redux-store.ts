@@ -16,10 +16,9 @@ export const rootReducer = combineReducers({
 
 export const store = configureStore({ reducer: rootReducer })
 
-//rootReducer это ф-ция которая принимает глобальный стейт и возаращает глобальтный стейт. Чтобы протипизировать этот глобальный стейт
+//rootReducer это ф-ция которая принимает глобальный стейт и возаращает глобальтный стейт(главный над всеми редюсерами). Чтобы протипизировать этот глобальный стейт
 //есть ReturnType который типизирует то что возаращает ф-ция
-// export type rootReducerType = typeof rootReducer
-// export type AppStateType = ReturnType<rootReducerType>
+// export type AppStateType = ReturnType<typeof rootReducer>
 
 //мои изменения: также с помощью ReturnType создаем тип для возвращаемого стейта (записываем в одну строку) и создаем тип для dispatch
 //далее в отдельном файле hooks.ts 
