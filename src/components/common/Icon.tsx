@@ -1,8 +1,15 @@
-// import sprite from './../../assets/sprite/sprite.svg'
-import {theme} from './../../styles/Theme'
+import {theme} from '../../styles/Theme'
 import sprite from './../../assets/sprite/sprite.svg'
 
-export const Icon = (props) => {
+type IconPropsType = {
+	width?: string
+	height?: string
+	viewBox?: string
+	fill?: string
+	iconId?: string
+}
+
+export const Icon = (props: IconPropsType) => {
 	return (
 		<svg width={props.width || '24'}
 			height={props.height || '24'}

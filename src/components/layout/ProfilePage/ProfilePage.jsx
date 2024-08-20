@@ -11,6 +11,7 @@ import cover from './../../../assets/images/main_cover.png';
 import { FollowedFriends } from './tabsContent/followedFriends/FollowedFriends';
 import { Loader } from '../../common/Loader/Loader';
 import { Container } from '../../common/Container';
+import {ProfileTabs} from './ProfileTabs';
 
 export const ProfilePage = (props) => {
 	// debugger
@@ -70,13 +71,14 @@ export const ProfilePage = (props) => {
 
 					<TabsMenu>
 						<ul>
-							{tabsData.map(tab => {
+							<ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab}/>
+							{/* {tabsData.map(tab => {
 								return <li
 													onClick={() => { setActiveTab(tab.tab) }}
 													className={activeTab === tab.tab ? 'active' : ''}
 													key={tab.id}>{tab.tab}
 												</li>
-							})}
+							})} */}
 						</ul>
 					</TabsMenu>
 				
