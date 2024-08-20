@@ -66,6 +66,11 @@ const LogOutButton = styled.button`
 	color: ${theme.colors.boldFont};
 	transition: all 0.3s ease 0s;
 
+	svg {
+		width: 18px;
+		height: 18px;
+	}
+
 	&:hover{
 		color: ${theme.colors.accent};
 		svg {

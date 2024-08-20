@@ -1,13 +1,5 @@
-import { authAPI, ResultCodesEnum } from "../../apiDal/apiDal";
-import { getUserProfileThunkCreator } from "./profileReducer";
-
-// type InitialStateType2 = {
-// 	initialized: boolean
-// 	userId: number | null
-// 	login: string | null
-// 	email: string | null
-// 	isAuth: boolean
-// }
+import { authAPI, profileAPI, ResultCodesEnum } from "../../apiDal/apiDal";
+import { PhotosType } from "../../types/types";
 
 type InitialStateType = typeof initialState;
 
@@ -16,7 +8,8 @@ let initialState = {
 	userId: null as number | null, 
 	login: null as string | null, 
 	email: null as string | null, 
-	isAuth: false
+	isAuth: false,
+	photos: null as PhotosType | null
 }
 
 export const authReducer = (state = initialState, action: any): InitialStateType => {
@@ -43,18 +36,21 @@ type InitializedSuccessActionType = {
 }
 
 type PayloadType = {
-	userId: number | null
-	email: string | null
-	login: string | null
-	isAuth: boolean
-}
+  userId: number | null;
+  email: string | null;
+  login: string | null;
+  isAuth: boolean;
+  photos: PhotosType | null;
+};
 type authProfileActionType = {
 	type: 'SET-AUTH-PROFILE'
 	payload: PayloadType
 }
 
 const setInitializedSuccessAC = (): InitializedSuccessActionType => ({ type: 'INITIALIZE-SUCCESS' })
-const setAuthProfileIdAC = (userId: number | null, email: string | null, login: string | null, isAuth: boolean): authProfileActionType => ({ type: 'SET-AUTH-PROFILE', payload: { userId, email, login, isAuth } })
+const setAuthProfileIdAC = (userId: number | null, email: string | null, login: string | null, isAuth: boolean, photos: PhotosType | null): authProfileActionType => (
+	{ type: 'SET-AUTH-PROFILE', payload: { userId, email, login, isAuth, photos } }
+)
 
 //инициализация приложения
 export const initializeAppThunkCreator = () => {
@@ -72,10 +68,10 @@ export const getAuthUserDataThunkCreator = () => {
 		const resp = await authAPI.me();
 		if (resp.data.resultCode === ResultCodesEnum.Success) {
 			const { id, email, login } = resp.data.data //деструктуризируем полученный с сервера объект 
-			dispatch(setAuthProfileIdAC(id, email, login, true)); //добавляем флаг isAuth
 
-			//я сделала этот запрос для отображения фото в хэдере но не сработало
-			// dispatch(getUserProfileThunkCreator(resp.data.data.id));
+			const profileResp = await profileAPI.setProfile(id); //добавила асинхронный запрос профиля для получения фото для хэдера
+			
+			dispatch(setAuthProfileIdAC(id, email, login, true, profileResp.data.photos)); //добавляем флаг isAuth и фото поьзователя
 		}
 	}
 }
@@ -98,7 +94,7 @@ export const LogoutThunkCreator = () => {
 		authAPI.logout()
 			.then(resp => {
 				if (resp.data.resultCode === 0) {
-					dispatch(setAuthProfileIdAC(null, null, null, false));
+					dispatch(setAuthProfileIdAC(null, null, null, false, null));
 				}
 			})
 	}

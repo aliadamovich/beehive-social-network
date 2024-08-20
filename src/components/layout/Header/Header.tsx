@@ -6,7 +6,7 @@ import logo_1 from './../../../assets/images/logo_login.svg';
 import { IoLogOutOutline } from "react-icons/io5";
 import {S} from './_StylesHeader'
 import { AppDispatch } from '../../../redux/redux-store';
-import { getIsAuth, getLogin, getUserProfile } from '../../../redux/selectors/header-selectors';
+import { getAuthUserPhotos, getIsAuth, getLogin } from '../../../redux/selectors/header-selectors';
 import { Avatar } from '../../common/Avatar';
 import { FlexWrapper } from '../../common/FlexWrapper';
 
@@ -14,7 +14,7 @@ export const Header = () => {
 
 	const login = useSelector(getLogin);
 	const isAuth = useSelector(getIsAuth);
-	const userProfile = useSelector(getUserProfile)
+	const photos = useSelector(getAuthUserPhotos)
 
 	const dispatch = useDispatch<AppDispatch>()
 
@@ -31,10 +31,10 @@ export const Header = () => {
 							<GoSearch />
 							<input placeholder='search' type="text" name="" id="" />
 						</S.HeaderSearch>
-						<FlexWrapper gap='30px'>
+						<FlexWrapper gap='40px'>
 							<S.UserData>
 								<S.UserName>{login}</S.UserName>
-								{userProfile?.photos.small && <Avatar photo={userProfile.photos.small} />}
+								{photos?.small && <Avatar photo={photos.small} />}
 							</S.UserData>
 							<S.LogOutButton onClick={onLogoutHandler}><IoLogOutOutline />Log out</S.LogOutButton>
 						</FlexWrapper>

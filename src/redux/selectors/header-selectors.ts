@@ -8,6 +8,6 @@ export const getIsAuth = (state: AppStateType) => {
   return state.auth.isAuth;
 };
 
-export const getUserProfile = (state: AppStateType) => {
-  return state.profilePage.userProfile;
+export const getAuthUserPhotos = (state: AppStateType) => {
+  return state.auth.photos;
 };
