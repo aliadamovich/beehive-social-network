@@ -1,27 +1,17 @@
 .slider {
-	height: 100%;
 	width: 100%;
-	padding: 20px;
-	z-index: 2003;
 }
 
 .slide {
-	padding: 50px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
 	text-align: center;
-	position: relative;
+	padding: 10px;
 	img {
-		padding: 10px;
-		position: absolute;
-		top: 50%;
-		left: 50%;
 		width: 100%;
 		max-width: 800px;
 		min-height: 600px;
 		object-fit: cover;
 		aspect-ratio: 3 / 2;
-		transform: translate(-50%, -50%);
+		display: inline-block;
+		border-radius: 4px;
 	}
 }
