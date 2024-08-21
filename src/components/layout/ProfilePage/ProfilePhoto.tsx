@@ -1,31 +1,40 @@
 import styled from 'styled-components';
 import null_user from './../../../assets/images/user.png';
 import { ProfileType } from '../../../types/types';
+import { ChangeEvent } from 'react';
 
 type ProfilePhotoType = {
-	userProfile: ProfileType
-	onPhotoChoose: () => void
+	userProfile: ProfileType | null
+	onPhotoChoose: (file: File) => void
 	isOwner: boolean
 }
 
+
 export const ProfilePhoto = (props: ProfilePhotoType) => {
+
+	const onInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files && e.target.files.length > 0) {
+			console.log(e.target.files[0]);
+			props.onPhotoChoose(e.target.files[0])
+		}
+	}
 	return (
 		<>
 			<UserStyledPhoto>
 				{
-					props.userProfile.photos.large !== null ?
-						<img src={props.userProfile.photos.large} alt="user" /> :
+					props.userProfile?.photos.large !== null ?
+						<img src={props.userProfile?.photos.large} alt="user" /> :
 						<img src={null_user} alt="user" />
 				}
 				{props.isOwner &&
 					<>
-						<AddPhotoInput id='file' onChange={props.onPhotoChoose} type={'file'} />
+					<AddPhotoInput id='file' onChange={onInputChangeHandler} type={'file'} />
 						<label htmlFor="file">+</label>
 					</>
 				}
 			</UserStyledPhoto>
 
-			<ProfileUserName>{props.userProfile.fullName}</ProfileUserName>
+			<ProfileUserName>{props.userProfile?.fullName}</ProfileUserName>
 		</>
 	)
 }

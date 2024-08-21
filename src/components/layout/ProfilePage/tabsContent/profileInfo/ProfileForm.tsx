@@ -4,9 +4,15 @@ import { useFormik } from 'formik'
 import { basicSchema } from './schema'
 import { MdSaveAlt } from "react-icons/md";
 import { Description } from './ProfileInfo';
+import { ContactsType, ProfileType } from '../../../../../types/types';
 
+type ProfileFormPropsType = {
+	userProfile: ProfileType
+	saveProfileInfo: (values: ProfileType) => void
+	onEditClick: () => void
+}
 
-export const ProfileForm = (props) => {
+export const ProfileForm = (props: ProfileFormPropsType) => {
 	const formik = useFormik({
 		initialValues: {
 			...props.userProfile
@@ -17,7 +23,6 @@ export const ProfileForm = (props) => {
 			props.onEditClick()
 		}, //когда сработает событие onSubmit формик вызовет handleSubmit который в свою очередь вызовет ф-ю которую мы тут прописали (выше ееопределение)
 	})
-	// console.log(formik.errors)
 	
 	return (
 	
@@ -52,7 +57,6 @@ export const ProfileForm = (props) => {
 		<div className={c.infoBlock}>
 			<Description as='label' htmlFor="lookingForAJob">Lookin for a job: </Description>
 			<input type="checkbox" name="lookingForAJob" id="lookingForAJob"
-				// className={s.checkbox}
 				onChange={formik.handleChange}
 				onBlur={formik.handleBlur}
 			/>
@@ -78,16 +82,16 @@ export const ProfileForm = (props) => {
 				<Description as='label' htmlFor={`contacts.${key}`}>{key}:</Description>
 				<input
 					name={`contacts.${key}`}
-					value={formik.values.contacts[key]}
+					value={formik.values.contacts[key as keyof ContactsType]}
 					onChange={formik.handleChange}
 					onBlur={formik.handleBlur}
 					type="text" id={`contacts.${key}`}
-					className={formik.errors.contacts?.[key] && formik.touched.contacts?.[key] ? `${c.error} ${c.profileInput}` : c.profileInput}
+					className={formik.errors.contacts?.[key as keyof ContactsType] && formik.touched.contacts?.[key as keyof ContactsType] ? `${c.error} ${c.profileInput}` : c.profileInput}
 				/>
-				{formik.errors.contacts?.[key] && <p className={c.errorMessage}>{formik.errors.contacts?.[key]}</p>}
+				{formik.errors.contacts?.[key as keyof ContactsType] && <p className={c.errorMessage}>{formik.errors.contacts?.[key as keyof ContactsType]}</p>}
 			</div>
 		})}
-
+			{/* пришось делать приведение типов key as keyof ContactsType */}
 			<button disabled={formik.isSubmitting} className={c.profileButton} type='submit'>
 				<MdSaveAlt />
 				Save Info

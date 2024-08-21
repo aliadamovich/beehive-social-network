@@ -6,9 +6,10 @@ import logo_1 from './../../../assets/images/logo_login.svg';
 import { IoLogOutOutline } from "react-icons/io5";
 import {S} from './_StylesHeader'
 import { AppDispatch } from '../../../redux/redux-store';
-import { getAuthUserPhotos, getIsAuth, getLogin } from '../../../redux/selectors/header-selectors';
+import { getAuthUserPhotos, getLogin } from '../../../redux/selectors/header-selectors';
 import { Avatar } from '../../common/Avatar';
 import { FlexWrapper } from '../../common/FlexWrapper';
+import { getIsAuth } from '../../../redux/selectors/auth-selectors';
 
 export const Header = () => {
 

@@ -5,15 +5,16 @@ export type PostType = {
 	body: string
 }
 export type ProfileType = {
-	userId: number
-	lookingForAJob: boolean
-	lookingForAJobDescription: string
-	fullName: string
-	contacts: ContactsType
-	photos: PhotosType
-}
+  userId: number;
+  lookingForAJob: boolean;
+  lookingForAJobDescription: string;
+  fullName: string;
+  contacts: ContactsType;
+  photos: PhotosType;
+  aboutMe: string
+};
 
-export type ContactsType ={
+export type ContactsType = {
 	github: string
 	vk: string
 	facebook: string

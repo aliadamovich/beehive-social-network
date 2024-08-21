@@ -57,7 +57,7 @@ export const profileAPI = {
     });
   },
 
-  setProfilePhoto(photo: string) {
+  setProfilePhoto(photo: any) {
     const formData = new FormData();
     formData.append("image", photo);
     return axiosInstance.put(`profile/photo`, formData, {

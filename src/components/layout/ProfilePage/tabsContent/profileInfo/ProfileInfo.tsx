@@ -1,10 +1,16 @@
 import { FiEdit } from "react-icons/fi";
 import styled from 'styled-components';
 import { theme } from "../../../../../styles/Theme";
+import { ContactsType, ProfileType } from "../../../../../types/types";
 
+type ProfileInfoPropsType = {
+	userProfile: ProfileType | null
+	onEditClick: () => void
+}
 
-export const ProfileInfo = (props) => {
-	
+export const ProfileInfo = (props: ProfileInfoPropsType) => {
+	if (props.userProfile === null) return;
+
 	return (
 
 		<StyledProfile>
@@ -33,7 +39,7 @@ export const ProfileInfo = (props) => {
 			{Object.keys(props.userProfile.contacts).map(key => {
 				return <InfoBlock key={key}>
 					<Description>{key}:</Description>
-					<Value>{props.userProfile.contacts[key]}</Value>
+					<Value>{props.userProfile?.contacts[key as keyof ContactsType]}</Value>
 				</InfoBlock>
 			})}
 		</StyledProfile>
@@ -76,6 +82,7 @@ export const Description = styled.span`
 	padding: 5px 10px;
 	min-width: 150px;
 	text-transform: capitalize;
+	
 `
 
 const Value = styled.p`

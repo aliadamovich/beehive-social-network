@@ -1,4 +1,4 @@
-type PhotoGridType = {
+export type PhotoGridType = {
 	id: number
 	photo: string
 }

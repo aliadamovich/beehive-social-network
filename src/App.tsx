@@ -11,10 +11,10 @@ import { AppDispatch, AppStateType } from './redux/redux-store';
 import { EmptyDialogs } from './components/layout/DialogsPage/dialogs/EmptyDialogs';
 import { Dialogs } from './components/layout/DialogsPage/dialogs/Dialogs';
 import {Navbar} from './components/layout/Navbar/Navbar';
-import { ProfilePageContainer } from './components/layout/ProfilePage/ProfilePageContainer';
-import { GalleryContainer } from './components/layout/GalleryPage/GalleryContainer';
 import { ChatPage } from './components/layout/ChatPage/ChatPage';
 import { LoginPage } from './components/layout/LoginPage/LoginPage';
+import { Gallery } from './components/layout/GalleryPage/Gallery';
+import {  ProfilePageContainer } from './components/layout/ProfilePage/ProfilePage';
 
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
 					<Route path=":id" element={<Dialogs />} />
 				</Route>
 				<Route path='/users' element={<UsersPage />} />
-				<Route path='/gallery' element={<GalleryContainer />} />
+				<Route path='/gallery' element={<Gallery />} />
 				<Route path='/chat' element={<ChatPage />} />
 				<Route path="/login" element={<LoginPage />} />
 

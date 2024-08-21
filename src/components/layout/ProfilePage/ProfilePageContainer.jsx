@@ -6,6 +6,13 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { compose } from "redux";
 import { withAuthRedirect } from "../../../hoc/WithAuthRedirect";
 
+
+
+//!ВНИМАНИЕ! ЭТА КОМПОНЕНТА БОЛЬШЕ НЕ ИСПОЛЬЗУЕТСЯ В ПРИЛОЖЕНИИ И ОСТАВЛЕНА В 
+//!КАЧЕСТВЕ ПРИМЕРА
+
+
+
 export function withRouter(Component) {
 	function ComponentWithRouterProp(props) {
 		let location = useLocation();
@@ -31,7 +38,6 @@ class ProfileAPIComponent extends React.Component {
 		this.props.getStatus(profileId);
 	}
 	componentDidMount() {
-		// debugger
 		this.refreshProfile()
 	}
 

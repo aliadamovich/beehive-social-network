@@ -54,7 +54,7 @@ export const ProfileStatus = (props: ProfileStatusPropsType) => {
 }
 
 const StatusContainer = styled.div`
-	color: #FFF;
+	/* color: #FFF; */
 	position: absolute;
 	top: 50%;
 	right: -150%;
@@ -76,15 +76,16 @@ const FieldWrapper = styled.div`
 	flex-direction: row-reverse;
 `
 const Field = styled.input`
-	background-color: #7c06eb43;
-	border-radius: 8px;
 	padding: 5px 0 5px 10px;
 	border: none;
 	width: 350px;
 	height: 35px;
 	font-size: 16px;
-	color: #fff;
+	color: currentColor;
 	outline: none;
+
+	background-color: #edf1f5c2;
+	border-radius: 6px;
 	&::placeholder {
 		font-size: 14px;
 		color: ${theme.colors.borderColor};
@@ -101,7 +102,7 @@ const StatusButton = styled.button`
 	position: relative;
 	right: 40px;
 	z-index: 2;
-	color: #fff;
+	color: currentColor;
 	transition: all 0.3s ease 0s;
 	outline: none;
 	border: none;
@@ -110,7 +111,7 @@ const StatusButton = styled.button`
 		background-color: #ffffff4f;
 		
 		svg {
-			fill: #fff;
+			scale: 1.2;
 		}
 	}
 `
@@ -125,8 +126,8 @@ const StatusWrapper = styled.div`
 const Status = styled.div`
 	font-weight: 600;
 	display: inline-block;
-	padding: 4px 10px;
+	padding: 6px 10px;
 	font-size: 16px;
-	background-color: #7c06eb74;
-	border-radius: 8px;
+	background-color: #edf1f5b4;
+	border-radius: 6px;
 `

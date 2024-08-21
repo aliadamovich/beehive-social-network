@@ -122,6 +122,7 @@ export const updateStatusThunkCreator = (status: string): ThunkType => {
 	}
 }
 
+
 export const saveProfilePhotoThunkCreator = (file: any): ThunkType => {
   return async (dispatch) => {
     const resp = await profileAPI.setProfilePhoto(file);
