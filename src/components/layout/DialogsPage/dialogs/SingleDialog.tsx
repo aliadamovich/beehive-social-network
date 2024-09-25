@@ -1,18 +1,19 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Avatar } from '../../../common/Avatar';
 
 type SingleDialogPropsType = {
 	text: string
 	userName: string
 	photo: string | null
+	fromMe: boolean
 }
 
 export const SingleDialog = (props: SingleDialogPropsType) => {
 
 	return(
-		<StyledMessage>
-			<Avatar photo={props.photo}/>
-			<StyledTextBox>
+		<StyledMessage fromMe={props.fromMe}>
+			<Avatar photo={props.photo} width={'50px'} height={'50px'} />
+			<StyledTextBox fromMe={props.fromMe}>
 				<StyledName>{props.userName}</StyledName>
 				<p>{props.text}</p>
 			</StyledTextBox>
@@ -20,20 +21,22 @@ export const SingleDialog = (props: SingleDialogPropsType) => {
 	)
 }
 
-const StyledMessage = styled.div`
+const StyledMessage = styled.div<{ fromMe: boolean }>`
 	display: flex;
 	align-items: center;
 	gap: 25px;
 	padding: 8px 0;
 	>:first-child{
-		flex: 0 0 35px;
+		flex: 0 0 50px;
 	}
+	${props => props.fromMe && css<{ fromMe: boolean }>`
+		flex-direction: row-reverse;
+	`}
 `
 
-const StyledTextBox = styled.div`
+const StyledTextBox = styled.div<{fromMe: boolean}>`
 	font-size: 16px;
 	position: relative;
-	// border: 1px solid rgb(129, 29, 222);
 	box-shadow: 0px 1px 2px 0px rgba(29, 33, 38, 0.1), 0px 5px 20px 0px rgba(29, 33, 38, 0.03);
 	background: rgb(245, 247, 251);
 	padding: 10px;
@@ -51,12 +54,22 @@ const StyledTextBox = styled.div`
 		border-left: 10px solid rgb(245, 247, 251);
 		transform: rotate(-90deg);
 	}
+	${props => props.fromMe && css<{fromMe: boolean}>`
+		background: rgb(174, 115, 230);
+		color: #fff;
+		&::before {
+		border-left: 10px solid  rgb(174, 115, 230);
+			left: none;
+			right: -5px;
+			left: unset;
+		}
+	`}
 `
 
 const StyledName = styled.span`
 	font-size: 13px;
 	font-weight: 700;
-	color: rgb(79, 81, 91);
+	color: inherit;
 	margin-bottom: 5px;
 	display: inline-block;
 `

@@ -3,11 +3,11 @@ import { PiWechatLogoThin } from "react-icons/pi";
 import styled from 'styled-components';
 import { theme } from '../../../../styles/Theme';
 
-export const EmptyDialogs = () => {
+export const EmptyDialogs = ({text}: {text: string}) => {
 	return (
 		<EmptyContainer>
 			<PiWechatLogoThin />
-			<span>Choose you dialog...</span>
+			<span>{text}</span>
 		</EmptyContainer>
 	)
 }
@@ -18,7 +18,7 @@ const EmptyContainer = styled.div`
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	border-top: 1px solid rgb(237, 241, 245);
+	/* border-top: 1px solid rgb(237, 241, 245); */
 	
 	gap: 20px;
 	svg {

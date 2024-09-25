@@ -1,6 +1,7 @@
-import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
+import { NavLink, useParams } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 import { Avatar } from '../../../common/Avatar';
+import { PATH } from '../../../../routes/routes';
 
 type SideDialogItemPropsType = {
 	name: string
@@ -10,11 +11,12 @@ type SideDialogItemPropsType = {
 
 export const SideDialogItem = (props: SideDialogItemPropsType) => {
 
-	let path = `/dialogs/${props.id}`;
+	let path = `${PATH.DIALOGS}/${props.id}`;
+	const {id} = useParams();
 
 	return (
 		<StyledNavLink to={path}>
-			<StyledDialog>
+			<StyledDialog active={Number(id) === props.id}>
 				<Avatar photo={props.photo} width='50px' height='50px' />
 				<StyledName>
 					{props.name}
@@ -29,7 +31,7 @@ const StyledNavLink = styled(NavLink)`
 	padding: 0 5px;
 `
 
-const StyledDialog = styled.div`
+const StyledDialog = styled.div<{active: boolean}>`
 	display: flex;
 	align-items: center;
 	gap: 20px;
@@ -37,8 +39,13 @@ const StyledDialog = styled.div`
 	padding: 5px;
 	border-radius: 8px;
 	&:hover{
-		box-shadow: 2px 2px 5px 0px rgba(139, 139, 139, 0.31);
+		background-color: rgba(219, 190, 246, 0.238);
+
 	}
+
+	${props => props.active && css<{ active: boolean }>`
+		background-color: rgba(219, 190, 246, 0.238);
+	`}
 `
 
 const StyledName = styled.div`

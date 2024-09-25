@@ -116,9 +116,9 @@ export const getStatusThunkCreator = (profileId: number): ThunkType => {
 export const updateStatusThunkCreator = (status: string): ThunkType => {
 	return async (dispatch) => {
 		const resp = await profileAPI.updateStatus(status)
-			if (resp.data.resultCode === 0) {
-				dispatch(setStatusAC(status))
-			}
+		if (resp.data.resultCode === 0) {
+			dispatch(setStatusAC(status))
+		}
 	}
 }
 

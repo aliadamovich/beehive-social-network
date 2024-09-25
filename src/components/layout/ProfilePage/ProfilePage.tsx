@@ -1,12 +1,10 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
-import { connect, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { getStatusThunkCreator, getUserProfileThunkCreator, saveProfileInfoThunkCreator, saveProfilePhotoThunkCreator, updateStatusThunkCreator } from "../../../redux/reducers/profileReducer";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { compose } from "redux";
 import { withAuthRedirect } from "../../../hoc/WithAuthRedirect";
 import { useSelector } from "react-redux";
-import { getAuthorizedLoginId, getIsAuth } from "../../../redux/selectors/auth-selectors";
-import { useAppDispatch } from "../../../redux/app/hooks";
+import { getAuthorizedLoginId } from "../../../redux/selectors/auth-selectors";
 import styled from "styled-components";
 import cover from './../../../assets/images/main_cover.png';
 import { ProfilePhoto } from "./ProfilePhoto";
@@ -56,12 +54,15 @@ export const ProfilePage = () => {
 	}
 
 	const updateStatus = (status: string) => {
-		updateStatusThunkCreator(status)
+		dispatch(updateStatusThunkCreator(status))
 	}
 
 	const saveProfileInfo = (form: ProfileType) => {
 		dispatch(saveProfileInfoThunkCreator(form))
 	}
+
+	//доделать логику по открытию фото галереи
+	const openPhotoGallery = () => {}
 
 	const renderTabContent = () => {
 		switch (activeTab) {
@@ -103,7 +104,7 @@ export const ProfilePage = () => {
 
 					<GridProfileGallery>
 						<ProfileCounter />
-						<PhotoGrid photoGrid={photoGrid} />
+						<PhotoGrid photoGrid={photoGrid} openPhoto={openPhotoGallery}/>
 					</GridProfileGallery>
 
 					<GridTabsContent>{renderTabContent()}</GridTabsContent>

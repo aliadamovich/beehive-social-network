@@ -1,5 +1,5 @@
 import { AppStateType } from "../redux-store";
 
 export const getMessages = (state: AppStateType) => {
-	return state.dialoPage.messages;
-}
+  return state.dialoPage.dialogs;
+};

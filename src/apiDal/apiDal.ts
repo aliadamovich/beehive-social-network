@@ -1,6 +1,7 @@
 import { UserType } from './../types/types';
 import axios from "axios";
 import { ProfileType } from "../types/types";
+import { string } from 'yup';
 
 //с помощью встроенного метода create создается объект с базовыми насройками
 const axiosInstance = axios.create({
@@ -9,13 +10,8 @@ const axiosInstance = axios.create({
 	headers: { "API-KEY": "18ed5bfc-0aae-47f2-8e6a-4b855e26e81b" }
 })
 
-type UsersResponseType = {
-  items: Array< UserType >
-	totalCount: number
-	error: string | null
-};
 
-//доп объекты с методами
+//*usersAPI
 export const usersAPI = {
 	async getUsers (currentPage: number, usersOnPage: number, isFriend?: boolean ) {
 		const friendQuery = isFriend ? `&friend=${isFriend}` : '';
@@ -27,21 +23,16 @@ export const usersAPI = {
 		return resp.data;
 	},
 	async follow(userId: number) {
-		const resp = await axiosInstance.post<StatusResponseType>( `follow/${userId}`);
+		const resp = await axiosInstance.post<ResponseType>( `follow/${userId}`);
 		return resp.data;
 	},
 	async unfollow(userId: number) {
-		const resp = await axiosInstance.delete<StatusResponseType>(`follow/${userId}`);
+		const resp = await axiosInstance.delete<ResponseType>(`follow/${userId}`);
 		return resp.data;
 	},
 }
 
-type StatusResponseType = {
-	resultCode: ResultCodesEnum
-	messages: Array<string | null>
-	data: {}
-}
-
+//*profileAPI
 export const profileAPI = {
   setProfile(profileId: number) {
     return axiosInstance.get<ProfileType>(`profile/${profileId}`);
@@ -52,7 +43,7 @@ export const profileAPI = {
   },
 
   updateStatus(status: string) {
-    return axiosInstance.put<StatusResponseType>(`profile/status`, {
+    return axiosInstance.put<ResponseType>(`profile/status`, {
       status: status,
     });
   },
@@ -69,53 +60,92 @@ export const profileAPI = {
   },
 };
 
-type MeResponseType = {
-  data: { id: number; email: string; login: string };
-  resultCode: ResultCodesEnum
-  messages: Array<string>;
-};
 
-type LoginLogoutResponseType = {
-  resultCode: ResultCodesEnum
-  messages: Array<string>;
-  data: { userId: number } | {};
-};
-
-//enum прописываем чтобы не запоминать какой код что означает
-export enum ResultCodesEnum {
-	Success = 0,
-	Error = 1
-}
-
+//*authAPI
 export const authAPI = {
 	me() {
-		return axiosInstance.get<MeResponseType>("auth/me");
+		return axiosInstance.get<ResponseType<{ id: number; email: string; login: string } | {}>>("auth/me");
 	},
 	login(email: string, password: string, rememberMe: boolean = false) {
-		return axiosInstance.post<LoginLogoutResponseType>("auth/login", {
+		return axiosInstance.post<ResponseType<{ userId: number } | {}>>("auth/login", {
       email,
       password,
       rememberMe,
     });
 	},
 	logout() {
-		return axiosInstance.delete<LoginLogoutResponseType>("auth/login");
+		return axiosInstance.delete<ResponseType<{ userId: number } | {}>>("auth/login");
 	}
 }
 
+//*dialogsAPI
 export const dialogsAPI = {
-	async sendMessageToServer(userId: number, message: string) {
-		return axiosInstance.post(`dialogs/${userId}/messages`, { message });
-		// return resp.data;
-	},
+  async getAllMessagesFromServer(userId: number) {
+    return await axiosInstance.get<getAllDialogsWithUserResponseType>(
+      `dialogs/${userId}/messages`
+    );
+  },
 
-	async getAllMessagesFromServer() {
-		return await axiosInstance.get('dialogs');
-		// return resp.data;
-	},
+  async sendMessageToServer(userId: number, message: string) {
+    return axiosInstance.post<ResponseType<{ message: SingleDialogItemType }>>(
+      `dialogs/${userId}/messages`, { body: message }
+    );
+  },
 
-	async startDialog(userId: number) {
-		return axiosInstance.put(`dialogs/${userId}`);
-	}
+};
+
+
+
+//* Types 
+type UsersResponseType = {
+  items: Array<UserType>;
+  totalCount: number;
+  error: string | null;
+};
+
+export type ResponseType<D = {}> = {
+  data: D;
+  resultCode: number;
+  messages: Array<string>;
+};
+
+//тип диаогов под вопросом 
+// export type DialogMessageFromServerType = {
+//     id: string
+//     body: string
+//     translatedBody: null
+//     addedAt: string
+//     senderId: number
+//     senderName: string
+//     recipientId: number
+//     recipientName: string
+//     viewed: boolean
+//     deletedBySender: boolean
+//     deletedByRecipient: boolean
+//     isSpam: boolean
+//     distributionId: null
+// };
+
+
+export type SingleDialogItemType = {
+  id: string
+  body: string
+  translatedBody: null;
+  addedAt: string
+  senderId: number
+  senderName: string
+  recipientId: number
+  viewed: boolean
+};
+
+type getAllDialogsWithUserResponseType = {
+	error: string 
+	items: SingleDialogItemType[]
+	totalCount: number
 }
 
+//enum прописываем чтобы не запоминать какой код что означает
+export enum ResultCodesEnum {
+	Success = 0,
+	Error = 1
+}

@@ -5,8 +5,9 @@ import {store} from './redux/redux-store'
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from 'react-redux';
-import { HashRouter} from "react-router-dom";
+import { HashRouter, RouterProvider} from "react-router-dom";
 import { GlobalStyles } from './styles/Global.styled';
+import { router } from './routes/routes';
 
 
 
@@ -17,12 +18,11 @@ if (rootElement) {
 	root.render(
 		<Provider store={store}>
 		<GlobalStyles />
-			<HashRouter>
+			{/* <HashRouter>
 				<App />
-			</HashRouter>
+			</HashRouter> */}
 
-			{/* <RouterProvider router={router} /> */}
-			{/* <AppTest /> */}
+			<RouterProvider router={router} />
 
 		</Provider>
 	);

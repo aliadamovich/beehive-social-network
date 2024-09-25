@@ -27,7 +27,7 @@ export const SideDialogs = () => {
 
 	return (
 		<StyledDialogItems>
-			<DialogsBox>{dialogsArray}</DialogsBox>
+			<StyledDialogsBox>{dialogsArray}</StyledDialogsBox>
 		</StyledDialogItems>
 
 	)
@@ -43,7 +43,7 @@ const StyledDialogItems = styled.div`
 	overflow: hidden;
 `
 
-const DialogsBox = styled.div`
+const StyledDialogsBox = styled.div`
 	height: 100%;
 	display: flex;
 	flex-direction: column;

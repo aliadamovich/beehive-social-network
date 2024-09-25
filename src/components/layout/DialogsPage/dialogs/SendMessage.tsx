@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Button } from "../../../common/Button"
 import { IconsRow } from "../../../common/iconsrow/IconsRow"
+import { useAppDispatch } from "../../../../redux/app/hooks";
+import { sendMessageThunCreator } from "../../../../redux/reducers/dialogsReducer";
 
 type SendMessageType = {
 	messageText: string
@@ -9,15 +11,6 @@ type SendMessageType = {
 }
 
 export const SendMessage = (props: SendMessageType) => {
-
-	// const dispatch = useAppDispatch()
-	// const onGetDialogs = () => {
-	// 	dispatch(startDialogThunCreator(31278))
-	// }
-
-	// const onAddMessage = () => {
-	// 	dispatch(sendMessageThunCreator(31278, 'this is my first message'))
-	// }
 
 	return (
 		<StyledSendMessage>
@@ -32,8 +25,7 @@ export const SendMessage = (props: SendMessageType) => {
 					</textarea>
 
 					<Button onClick={() => { props.addMessage() }}>Send</Button>
-					{/* <button onClick={onGetDialogs}>get dialogs</button> */}
-					
+
 				</StyledMessageBody>
 
 				<IconsRow />

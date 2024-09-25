@@ -8,11 +8,6 @@ import { SideDialogs } from './side-dialogs/SideDialogs';
 
 export const DialogsPage = () => {
 
-	// 
-	// useEffect(() => {
-	// 	dispatch(getAllDialogsThunCreator())
-	// }, [])
-
 	return (
 		<>
 			<StyledDialogPage>

@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import React, { useEffect, useRef, useState } from 'react'
 import { SingleDialog } from '../DialogsPage/dialogs/SingleDialog'
 import { SendMessage } from '../DialogsPage/dialogs/SendMessage'
+import { useSelector } from 'react-redux'
+import { AppStateType } from '../../../redux/redux-store'
 
 
 // type ChatPropsType ={
@@ -20,6 +22,7 @@ export type ChatMessageType = {
 export const Chat = () => {
 	const [messages, setMessages] = useState<ChatMessageType[]>([])
 	const [myMessageText, setMyMessageText] = useState('');
+	const myUserId = useSelector<AppStateType>(state => state.auth.userId)
 
 	const wsRef = useRef<WebSocket | null>(null)
 	const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -30,10 +33,15 @@ export const Chat = () => {
 	useEffect(() => {
 		wsRef.current = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx')
 		const ws = wsRef.current;
-		ws.addEventListener('message', (e) => {
 
+		const messageHandler = (e: MessageEvent) => {
 			setMessages((prevMessages) => [...prevMessages, ...JSON.parse(e.data)])
-		})
+		}
+		ws.addEventListener('message', messageHandler)
+		return () => {
+			ws.removeEventListener('message', messageHandler)
+			ws.close()
+		}
 	}, [])
 
 	useEffect(() => {
@@ -51,6 +59,7 @@ export const Chat = () => {
 	}
 
 	const messagesArray = messages.map((m, i) => <SingleDialog
+		fromMe={m.userId === myUserId}
 		text={m.message}
 		key={i} 
 		userName={m.userName}
