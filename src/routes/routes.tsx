@@ -8,6 +8,7 @@ import { Gallery } from "../components/layout/GalleryPage/Gallery";
 import { ChatPage } from "../components/layout/ChatPage/ChatPage";
 import { Dialogs } from "../components/layout/DialogsPage/dialogs/Dialogs";
 import { EmptyDialogs } from "../components/layout/DialogsPage/dialogs/EmptyDialogs";
+import { LoginPage } from "../components/layout/LoginPage/LoginPage";
 // import { PATH } from "./PATHS";
 
 
@@ -66,6 +67,10 @@ export const router = createBrowserRouter([
 			{
 				path: PATH.CHAT,
 				element: <ChatPage />,
+			},
+			{
+				path: PATH.LOGIN,
+				element: <LoginPage />,
 			},
 			{
 				path: PATH.ERROR,

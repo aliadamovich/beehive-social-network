@@ -9,6 +9,7 @@ import { followUsersThunkCreator, getUsersThunkCreator, loadMoreUsersThunkCreato
 import { Pagination } from '../../common/pagination/Pagination';
 import { useAppDispatch } from '../../../redux/app/hooks';
 import { AppDispatch } from '../../../redux/redux-store';
+import { Recent } from '../../common/Recent/Recent';
 
 
 export const Users = () => {
@@ -72,26 +73,26 @@ export const Users = () => {
 	return (
 		<div className={c.users__wrap}>
 			{isFetching ? <Loader /> : null}
-			<Pagination
-				usersOnPage={usersOnPage}
-				changeCurrentPage={changeCurrentPage}
-				totalUsers={totalUsers}
-				activePage={activePage}
-				setActivePage={setActivePage}
-			/>
-			<div className={c.users__body}>
-				{
-					users.map(u => 
-					<User u={u}
-						toggleFollowUsers={toggleFollowUsers}
-						key={u.id}
-						followingInProgress={followingInProgress}
-					/>
-				)}
+			<div className={c.users__content}>
+				<Pagination
+					usersOnPage={usersOnPage}
+					changeCurrentPage={changeCurrentPage}
+					totalUsers={totalUsers}
+					activePage={activePage}
+					setActivePage={setActivePage}
+				/>
+				<div className={c.users__body}>
+					{
+						users.map(u => 
+						<User u={u}
+							toggleFollowUsers={toggleFollowUsers}
+							key={u.id}
+							followingInProgress={followingInProgress}
+						/>
+					)}
+				</div>
 			</div>
-			<div className={c.users__load}>
-				<Button onClick={onLoadButtonClick}>Load more</Button>
-			</div>
+			<Recent />
 		</div>
 	)
 }

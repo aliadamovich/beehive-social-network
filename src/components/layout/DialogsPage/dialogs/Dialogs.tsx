@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { useAppDispatch } from "../../../../redux/app/hooks";
 import { useSelector } from "react-redux";
 import { SingleDialog } from "./SingleDialog";
-import { SendMessage } from "./SendMessage";
+import { SendMessage } from "../../../common/sendMessageField/SendMessage";
 import { DialogsType, getAllDialogsTC, sendMessageThunCreator } from "../../../../redux/reducers/dialogsReducer";
 import { useParams } from "react-router-dom";
 import { AppStateType } from "../../../../redux/redux-store";

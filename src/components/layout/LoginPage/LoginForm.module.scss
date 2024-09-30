@@ -1,7 +1,12 @@
-
+form {
+	button {
+		width: 100%;
+	}
+}
 
 .fieldWrapper {
 	position: relative;
+	
 	
 	svg {
 		display: inline-block;
@@ -91,5 +96,11 @@
 	border: none;
 	&:hover {
 		opacity: 0.8;
+	}
+
+	&:disabled {
+		background: rgba(210, 176, 242, 0.857);
+		cursor: default;
+		border: none;
 	}
 }

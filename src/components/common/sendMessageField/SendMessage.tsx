@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { Button } from "../../../common/Button"
-import { IconsRow } from "../../../common/iconsrow/IconsRow"
-import { useAppDispatch } from "../../../../redux/app/hooks";
-import { sendMessageThunCreator } from "../../../../redux/reducers/dialogsReducer";
+import { Button } from "../Button"
+import { IconsRow } from "../iconsrow/IconsRow"
+import { useAppDispatch } from "../../../redux/app/hooks";
+import { sendMessageThunCreator } from "../../../redux/reducers/dialogsReducer";
 
 type SendMessageType = {
 	messageText: string

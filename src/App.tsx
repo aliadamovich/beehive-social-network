@@ -15,6 +15,7 @@ import { ChatPage } from './components/layout/ChatPage/ChatPage';
 import { LoginPage } from './components/layout/LoginPage/LoginPage';
 import { Gallery } from './components/layout/GalleryPage/Gallery';
 import {  ProfilePageContainer } from './components/layout/ProfilePage/ProfilePage';
+import { ErrorBanner } from './components/common/ErrorBanner';
 
 
 
@@ -36,6 +37,7 @@ function App() {
 			{isAuth && <Navbar />}
 			<Header />
 			<Outlet />
+			<ErrorBanner />
 			{/* <Routes>
 				<Route path="/" element={<Navigate to='/profile' />} />
 				<Route path='/profile/:userId?' element={<ProfilePageContainer />} />

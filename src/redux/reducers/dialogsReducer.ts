@@ -7,7 +7,6 @@ let initialState = {
   dialogs: {} as DialogsType,
 };
 
-
 export const dialogReducer = (state = initialState, action: ActionsType): InitialStateType => {
 
 	switch (action.type) {
@@ -74,10 +73,7 @@ export type DialogsType = {
   [userId: number]: SingleDialogItemType[];
 };
 
-type ActionsType =
-  | ReturnType<typeof sendMessageAC>
-  | ReturnType<typeof getAllMessagesAC>;
-
+type ActionsType = ReturnType<typeof sendMessageAC> | ReturnType<typeof getAllMessagesAC>;
 
 type ThunkType<ReturnType = Promise<void>> = ThunkAction<ReturnType, AppStateType, unknown, ActionsType>
 

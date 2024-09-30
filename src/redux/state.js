@@ -1,6 +1,9 @@
 import { dialogReducer } from "./reducers/dialogsReducer";
 import { profileReducer } from "./reducers/profileReducer";
 
+//!ВНИМАНИЕ! ЭТОТ МОДУЛЛЬ БОЛЬШЕ НЕ ИСПОЛЬЗУЕТСЯ В ПРИЛОЖЕНИИ И ОСТАВЛЕН В 
+//!КАЧЕСТВЕ ПРИМЕРА
+
 export let store = {
 	
 	_state: {

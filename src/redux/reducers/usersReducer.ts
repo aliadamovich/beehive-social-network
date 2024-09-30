@@ -1,8 +1,7 @@
 import { Dispatch } from "redux";
 import { usersAPI } from "../../apiDal/apiDal";
-import { PhotosType, UserType } from "../../types/types";
-import { ThunkAction } from "@reduxjs/toolkit";
-import { AppStateType } from "../redux-store";
+import { UserType } from "../../types/types";
+import { AppStateType, AppThunk } from "../redux-store";
 
 
 let initialState = {
@@ -13,7 +12,7 @@ let initialState = {
 	isFetching: false,
 	followingInProgress: [] as Array<number>, //Array od usersId
 }
-type InitialStateType = typeof initialState
+
 
 export const usersReducer = (state = initialState, action: ActionsType): InitialStateType => {
 
@@ -66,26 +65,19 @@ export const usersReducer = (state = initialState, action: ActionsType): Initial
 			return state;
 	}
 }
-type ActionsType = ToggleFollowActionType | SetUsersActionType | SetUsersActionType | GetUsersQuantityActionType | ChangeCurrentPageActionType | LoadMoreUsersActionType | ToggleIsFetchingActionType | ToggleFollowingProgresssActionType
-type ToggleFollowActionType = {type: 'TOGGLE-FOLLOW', userId: number }
-type SetUsersActionType = {type: 'SET-USERS', users: Array<UserType> }
-type GetUsersQuantityActionType = {type: 'GET-USERS-QUANTITY', number: number }
-type ChangeCurrentPageActionType = {type: 'CHANGE-CURRENT-PAGE', num: number }
-type LoadMoreUsersActionType = {type: 'LOAD-MORE-USERS', users: Array<UserType> }
-type ToggleIsFetchingActionType = {type: 'TOGGLE-IS-FETCHING', isFetching: boolean }
-type ToggleFollowingProgresssActionType = {type: 'TOGGLE-FOLLOWING-PROGRESS', isFetching: boolean, userId: number }
 
-export const toggleFollowAC = (userId: number): ToggleFollowActionType => ({ type: 'TOGGLE-FOLLOW', userId })
-export const setUsersAC =(users: Array<UserType>): SetUsersActionType => ({type: 'SET-USERS', users });
-export const getUsersQuantityAC = (number: number): GetUsersQuantityActionType => ({ type: 'GET-USERS-QUANTITY', number });
-export const changeCurrentPageAC = (num: number): ChangeCurrentPageActionType => ({ type: 'CHANGE-CURRENT-PAGE', num});
-export const loadMoreUsersAC = (users: Array<UserType>): LoadMoreUsersActionType => ({type: 'LOAD-MORE-USERS', users});
-export const toggleIsFetchingAC = (isFetching: boolean): ToggleIsFetchingActionType => ({ type: 'TOGGLE-IS-FETCHING', isFetching})
-export const toggleFollowingProgressAC = (isFetching: boolean, userId: number): ToggleFollowingProgresssActionType => ({ type: 'TOGGLE-FOLLOWING-PROGRESS', isFetching, userId})
+//* Action Creators
+export const toggleFollowAC = (userId: number) => ({ type: 'TOGGLE-FOLLOW', userId } as const)
+export const setUsersAC =(users: Array<UserType>) => ({type: 'SET-USERS', users }) as const;
+export const getUsersQuantityAC = (number: number) => ({ type: 'GET-USERS-QUANTITY', number } as const);
+export const changeCurrentPageAC = (num: number) => ({ type: 'CHANGE-CURRENT-PAGE', num} as const);
+export const loadMoreUsersAC = (users: Array<UserType>) => ({type: 'LOAD-MORE-USERS', users} as const);
+export const toggleIsFetchingAC = (isFetching: boolean) => ({ type: 'TOGGLE-IS-FETCHING', isFetching} as const)
+export const toggleFollowingProgressAC = (isFetching: boolean, userId: number) => ({ type: 'TOGGLE-FOLLOWING-PROGRESS', isFetching, userId} as const)
 
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
 
-export const getUsersThunkCreator = ( currentPage: number, usersOnPage: number,isFriend = false): ThunkType => {
+//* Thunks
+export const getUsersThunkCreator = ( currentPage: number, usersOnPage: number,isFriend = false): AppThunk => {
   return async (dispatch) => {
     dispatch(toggleIsFetchingAC(true));
     const resp = await usersAPI.getUsers(currentPage, usersOnPage, isFriend);
@@ -96,7 +88,7 @@ export const getUsersThunkCreator = ( currentPage: number, usersOnPage: number,i
 };
 
 
-export const loadMoreUsersThunkCreator = (currentPage: number, usersOnPage: number): ThunkType => {
+export const loadMoreUsersThunkCreator = (currentPage: number, usersOnPage: number): AppThunk => {
 	return async (dispatch) => {
     dispatch(toggleIsFetchingAC(true));
     const newPage = currentPage + 1;
@@ -110,8 +102,7 @@ export const loadMoreUsersThunkCreator = (currentPage: number, usersOnPage: numb
 }
 
 
-
-export const followUsersThunkCreator = (userId: number): ThunkType => {
+export const followUsersThunkCreator = (userId: number): AppThunk => {
   return async (dispatch) => {
 		// debugger
 		dispatch(toggleFollowingProgressAC(true, userId));
@@ -131,3 +122,18 @@ export const followUsersThunkCreator = (userId: number): ThunkType => {
 		
   };
 };
+
+
+
+
+//* Types
+type InitialStateType = typeof initialState;
+
+type ActionsType =
+  | ReturnType<typeof toggleFollowAC>
+  | ReturnType<typeof setUsersAC>
+  | ReturnType<typeof getUsersQuantityAC>
+  | ReturnType<typeof changeCurrentPageAC>
+  | ReturnType<typeof loadMoreUsersAC>
+  | ReturnType<typeof toggleIsFetchingAC>
+  | ReturnType<typeof toggleFollowingProgressAC>;

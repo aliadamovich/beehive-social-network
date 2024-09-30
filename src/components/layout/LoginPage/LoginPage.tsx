@@ -1,31 +1,36 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components'
 import { Icon } from '../../common/Icon'
 import logo from './../../../assets/images/logo.png'
 import video_webm from './../../../assets/images/8_webm.webm'
 import video_mp4 from './../../../assets/images/8.mp4'
 import { LoginForm } from './LoginForm'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { theme } from '../../../styles/Theme'
-import { LoginThunkCreator } from '../../../redux/reducers/authReducer'
+import { AppStateType } from '../../../redux/redux-store'
 
+export type SubmittedValueType = {
+	email: string
+	password: string
+	rememberMe: boolean
+}
 
 export const LoginPage = () => {
-	//хуки
-	const dispatch = useDispatch();
-	const isAuth = useSelector(state => state.auth.isAuth);
+console.log(222);
+
+	const isAuth = useSelector<AppStateType>(state => state.auth.isAuth);
+
+
 	useEffect(() => {
 		console.log("isAuth:", isAuth); // Проверка значения isAuth
 	}, [isAuth]);
 	
-	const onLoginHandler = ({ email, password, rememberMe }) => {
-		dispatch(LoginThunkCreator(email, password, rememberMe))
-	}
 
 	if (isAuth) return <Navigate to='/profile' />
 
 	return (
+		
 		<Login>
 			<Video preload='auto' autoPlay muted loop>
 				<source src={video_webm} type='video/webm'/>
@@ -47,7 +52,7 @@ export const LoginPage = () => {
 						</ClubItem>
 						<ClubItem>
 							<SvgWrapper>
-								<Icon iconId='gal2' viewBox="0 0 26 26" fill='#FFF' />
+								<Icon iconId='megaphone' viewBox="0 0 26 26" fill='#FFF' />
 							</SvgWrapper>
 							<InfoWrapper>
 								<LoginHeader as='h3' fontSize='19px' color="#FFF">Your Photo Gallery</LoginHeader>
@@ -69,7 +74,7 @@ export const LoginPage = () => {
 					<Logo src={logo} alt="" />
 					<LoginHeader>Welcome</LoginHeader>
 					<LoginDescription>Join gazillions of people online</LoginDescription>
-					<LoginForm onLoginHandler={onLoginHandler}/>
+					<LoginForm />
 				</LoginContainer>
 			</FormContainer>
 		</Login>
@@ -129,7 +134,7 @@ const FormInfo = styled.div`
 	}
 `
 
-const LoginHeader = styled.h2`
+const LoginHeader = styled.h2<{fontSize?: string}>`
 	font-family: 'Quicksand';
 	font-weight: 700;
 	font-size: ${props => props.fontSize };

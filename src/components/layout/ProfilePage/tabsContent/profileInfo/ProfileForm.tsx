@@ -6,6 +6,7 @@ import { MdSaveAlt } from "react-icons/md";
 import { Description } from './ProfileInfo';
 import { ContactsType, ProfileType } from '../../../../../types/types';
 
+
 type ProfileFormPropsType = {
 	userProfile: ProfileType
 	saveProfileInfo: (values: ProfileType) => void

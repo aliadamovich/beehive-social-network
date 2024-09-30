@@ -1,7 +1,8 @@
 import { authAPI, profileAPI, ResultCodesEnum } from "../../apiDal/apiDal";
 import { PhotosType } from "../../types/types";
-
-type InitialStateType = typeof initialState;
+import { handleNetworkError, handleServerError } from "../../utils/errorHandlers";
+import { AppThunk } from "../redux-store";
+import { setAppErrorAC, setAppStatusAC } from "./appReducer";
 
 let initialState = {
 	initialized: false,
@@ -12,7 +13,7 @@ let initialState = {
 	photos: null as PhotosType | null
 }
 
-export const authReducer = (state = initialState, action: any): InitialStateType => {
+export const authReducer = (state = initialState, action: ActionsType): InitialStateType => {
 
 	switch (action.type) {
 		case 'INITIALIZE-SUCCESS':
@@ -30,67 +31,73 @@ export const authReducer = (state = initialState, action: any): InitialStateType
 		default: return state
 	}
 }
+//* Action Creators
+const setInitializedSuccessAC = () => ({ type: 'INITIALIZE-SUCCESS' } as const)
+const setAuthProfileIdAC = (userId: number | null, email: string | null, login: string | null, isAuth: boolean, photos: PhotosType | null) =>
+  ({
+    type: "SET-AUTH-PROFILE",
+    payload: { userId, email, login, isAuth, photos },
+  } as const);
 
-type InitializedSuccessActionType = {
-	type: 'INITIALIZE-SUCCESS'
-}
 
-type PayloadType = {
-  userId: number | null;
-  email: string | null;
-  login: string | null;
-  isAuth: boolean;
-  photos: PhotosType | null;
-};
-type authProfileActionType = {
-	type: 'SET-AUTH-PROFILE'
-	payload: PayloadType
-}
-
-const setInitializedSuccessAC = (): InitializedSuccessActionType => ({ type: 'INITIALIZE-SUCCESS' })
-const setAuthProfileIdAC = (userId: number | null, email: string | null, login: string | null, isAuth: boolean, photos: PhotosType | null): authProfileActionType => (
-	{ type: 'SET-AUTH-PROFILE', payload: { userId, email, login, isAuth, photos } }
-)
-
+	//* Thunks
 //инициализация приложения
-export const initializeAppThunkCreator = () => {
-	return function (dispatch: any) {
-		let promise = dispatch(getAuthUserDataThunkCreator());
-		promise.then(() => {
-			dispatch(setInitializedSuccessAC());
-		})
-	}
-}
+export const initializeAppThunkCreator = (): AppThunk => {
+  return (dispatch) => {
+   return dispatch(getAuthUserDataThunkCreator())
+    .then(() => {
+      dispatch(setInitializedSuccessAC());
+    });
+  };
+};
 
 //auth.me
-export const getAuthUserDataThunkCreator = () => {
-	return async function(dispatch: any) {
-		const resp = await authAPI.me();
-		if (resp.data.resultCode === ResultCodesEnum.Success) {
-			const { id, email, login } = resp.data.data //деструктуризируем полученный с сервера объект 
+export const getAuthUserDataThunkCreator = (): AppThunk => {
 
-			const profileResp = await profileAPI.setProfile(id); //добавила асинхронный запрос профиля для получения фото для хэдера
-			
-			dispatch(setAuthProfileIdAC(id, email, login, true, profileResp.data.photos)); //добавляем флаг isAuth и фото поьзователя
+ return (dispatch) => {
+   return authAPI.me()
+	 	.then((resp) => {
+
+		if (resp.data.resultCode === ResultCodesEnum.Success) {
+			const { id, email, login } = resp.data.data; //деструктуризируем полученный с сервера объект
+			 profileAPI.setProfile(id)
+			.then((profileResp) => {
+			//добавила асинхронный запрос профиля для получения фото для хэдера
+			 dispatch(setAuthProfileIdAC(id, email, login, true, profileResp.data.photos)); //добавляем флаг isAuth и фото поьзователя
+			})
+		} else {
+			// handleServerError(dispatch, resp.data)
 		}
-	}
-}
+	 })
+	 .catch((err) => {
+
+	 })
+ };
+};
 
 //thunkcreator для login
-export const LoginThunkCreator = (email: string, password: string) => {
-	return function (dispatch: any) {
-		authAPI.login(email, password)
+export const LoginTC = (email: string, password: string, rememberMe: boolean): AppThunk => {
+	return function (dispatch) {
+		dispatch(setAppStatusAC('loading'))
+		authAPI.login(email, password, rememberMe)
 		.then(resp => {
-			if (resp.data.resultCode === 0) {
-				dispatch(getAuthUserDataThunkCreator())
-			}
+			if (resp.data.resultCode === ResultCodesEnum.Success) {
+        dispatch(setAppStatusAC("success"));
+        dispatch(getAuthUserDataThunkCreator());
+      } else {
+        handleServerError(dispatch, resp.data);
+      }
+		})
+		.catch((err) => {
+			console.log(err)
+			handleNetworkError(dispatch, err);
 		})
 	}
 }
 
 //thunkcreator для logout
-export const LogoutThunkCreator = () => {
-	return function (dispatch: any) {
+export const LogoutThunkCreator = (): AppThunk => {
+	return function (dispatch) {
 		authAPI.logout()
 			.then(resp => {
 				if (resp.data.resultCode === 0) {
@@ -99,3 +106,10 @@ export const LogoutThunkCreator = () => {
 			})
 	}
 }
+
+
+//* Types
+type InitializedSuccessActionType = ReturnType<typeof setInitializedSuccessAC>;
+type authProfileActionType = ReturnType<typeof setAuthProfileIdAC>;
+type ActionsType = InitializedSuccessActionType | authProfileActionType;
+type InitialStateType = typeof initialState;

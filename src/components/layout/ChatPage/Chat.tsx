@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useEffect, useRef, useState } from 'react'
 import { SingleDialog } from '../DialogsPage/dialogs/SingleDialog'
-import { SendMessage } from '../DialogsPage/dialogs/SendMessage'
+import { SendMessage } from '../../common/sendMessageField/SendMessage'
 import { useSelector } from 'react-redux'
 import { AppStateType } from '../../../redux/redux-store'
 

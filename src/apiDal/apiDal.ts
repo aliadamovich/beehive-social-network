@@ -66,7 +66,7 @@ export const authAPI = {
 	me() {
 		return axiosInstance.get<ResponseType<{ id: number; email: string; login: string } | {}>>("auth/me");
 	},
-	login(email: string, password: string, rememberMe: boolean = false) {
+	login(email: string, password: string, rememberMe: boolean) {
 		return axiosInstance.post<ResponseType<{ userId: number } | {}>>("auth/login", {
       email,
       password,

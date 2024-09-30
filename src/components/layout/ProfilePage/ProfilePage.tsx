@@ -18,9 +18,9 @@ import { ProfileInfoSection } from "./tabsContent/profileInfo/ProfileInfoSection
 import { AppDispatch } from "../../../redux/redux-store";
 import { getProfile, getStatus } from "../../../redux/selectors/profile-selectors";
 import { ProfileType } from "../../../types/types";
-import { Feed } from "./tabsContent/Feed/Feed";
 import { getPhotoGrid } from "../../../redux/selectors/photogrid-selectors";
 import { Activity } from "./Activity/Activity";
+import { PostsFeed } from "./tabsContent/postsFeed/PostsFeed";
 
 
 export const ProfilePage = () => {
@@ -67,7 +67,7 @@ export const ProfilePage = () => {
 	const renderTabContent = () => {
 		switch (activeTab) {
 			case 'Activity':
-				return <Feed />
+				return <PostsFeed />
 			case 'Profile':
 				return <ProfileInfoSection userProfile={userProfile} saveProfileInfo={saveProfileInfo} />
 			case 'Friends':
@@ -79,7 +79,7 @@ export const ProfilePage = () => {
 			case 'Media':
 				return <div>Here will be Media</div>
 			default:
-				return <Feed/>
+				return <PostsFeed/>
 		}
 	}
 
