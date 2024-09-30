@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter, createHashRouter, Navigate } from "react-router-dom";
 import { DialogsPage } from "../components/layout/DialogsPage/DialogsPage";
 import { Error404 } from "../components/common/Error404";
 import { ProfilePageContainer } from "../components/layout/ProfilePage/ProfilePageContainer";
@@ -9,8 +9,6 @@ import { ChatPage } from "../components/layout/ChatPage/ChatPage";
 import { Dialogs } from "../components/layout/DialogsPage/dialogs/Dialogs";
 import { EmptyDialogs } from "../components/layout/DialogsPage/dialogs/EmptyDialogs";
 import { LoginPage } from "../components/layout/LoginPage/LoginPage";
-// import { PATH } from "./PATHS";
-
 
 
 export const PATH = {
@@ -22,12 +20,12 @@ export const PATH = {
 	GALLERY: '/gallery',
 	CHAT: '/chat',
 	LOGIN: '/login',
-	ERROR: '/error'
+	ERROR: '/error404'
 } as const;
 
 
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
 	{
 		path: PATH.ROOT,
 		element: <App />,
@@ -75,6 +73,10 @@ export const router = createBrowserRouter([
 			{
 				path: PATH.ERROR,
 				element: <Error404 />,
+			},
+			{
+				path: '*',
+				element: <Navigate to={PATH.ERROR} replace />,
 			},
 		]
 	}
