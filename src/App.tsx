@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { initializeAppThunkCreator } from './redux/reducers/authReducer';
 import { Loader } from './components/common/Loader/Loader';
 import { AppDispatch, AppStateType } from './redux/redux-store';
-import { Layout, theme } from 'antd';
+import { ConfigProvider, Layout, theme } from 'antd';
 import { SiderBlock } from './components/layout/Navbar/Sider';
 import { HeaderBlock } from './components/layout/Header/HeaderBlock';
+import { myTheme } from "./styles/Theme";
+
 
 function App() {
-
 	const dispatch = useDispatch<AppDispatch>()
 	const initialized = useSelector<AppStateType>(state => state.auth.initialized);
 	const isAuth = useSelector<AppStateType>(state => state.auth.isAuth);
@@ -28,28 +29,38 @@ function App() {
 
 	return (
 
-		<Layout>
-			{isAuth ?
-				<>
-					<SiderBlock collapsed={collapsed} />
+
+		 <ConfigProvider
+			theme={{
+				token: {
+						fontFamily: `${myTheme.fonts.main}`,
+				},
+		}}
+	>
+			<Layout>
+				{isAuth ?
+					<>
+						<SiderBlock collapsed={collapsed} />
+						<Layout>
+							<HeaderBlock collapsed={collapsed} setCollapsed={setCollapsed} />
+							<Content style={{ margin: '24px 16px', minHeight: 280, background: colorBgContainer, borderRadius: borderRadiusLG }} >
+								<Outlet />
+							</Content>
+							<Footer style={{ textAlign: 'center', padding: '0px 24px 5px' }}>
+								Beehive ©{new Date().getFullYear()} Created by Alesya Adamovich
+							</Footer>
+						</Layout>
+					</>
+					:
 					<Layout>
-					<HeaderBlock collapsed={collapsed} setCollapsed={setCollapsed} />
-					<Content style={{ margin: '24px 16px', minHeight: 280, background: colorBgContainer, borderRadius: borderRadiusLG}} >
-						<Outlet />
-					</Content>
-					<Footer style={{ textAlign: 'center', padding: '0px 24px 5px' }}>
-						Beehive ©{new Date().getFullYear()} Created by Alesya Adamovich
-					</Footer> 
+						<Content>
+							<Outlet />
+						</Content>
 					</Layout>
-				</>
-				: 
-				<Layout>
-					<Content>
-						<Outlet />
-					</Content>
-				</Layout>
-			}
+				}
 			</Layout>
+        </ConfigProvider>
+		
 
 	);
 };

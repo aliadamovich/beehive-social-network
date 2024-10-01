@@ -1,5 +1,4 @@
-import React from 'react'
-import c from './ProfileForm.module.scss'
+
 import { useFormik } from 'formik'
 import { basicSchema } from './schema'
 import { MdSaveAlt } from "react-icons/md";
@@ -7,6 +6,8 @@ import { Description } from './ProfileInfo';
 import { ContactsType, ProfileType } from '../../../../../types/types';
 import { Checkbox, Input } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import { MainButton } from '../../../../common/MainButton';
+import styled from 'styled-components';
 
 
 type ProfileFormPropsType = {
@@ -29,22 +30,21 @@ export const ProfileForm = (props: ProfileFormPropsType) => {
 	
 	return (
 	
-		<form onSubmit={formik.handleSubmit} className={c.form}>
+		<StyledForm onSubmit={formik.handleSubmit}>
 
-			<div className={c.infoBlock}>
+			<StyledFormBlock>
 				<Description as='label' htmlFor="aboutMe">About Me:</Description>
 				<TextArea value={formik.values.aboutMe}
-					showCount maxLength={100} style={{ height: 60, resize: 'none' }}
+					showCount maxLength={100} 
 					onChange={formik.handleChange}
 					onBlur={formik.handleBlur}
 					id='aboutMe'
-					className={formik.errors.aboutMe && formik.touched.aboutMe ? `${c.error} ${c.profileTextArea}` : c.profileTextArea}
+					style={{ border: formik.errors.aboutMe && formik.touched.aboutMe ? '1px solid #f8a0a0' : '1px solid #d9d9d9' }}
 				/>
-				{formik.errors.aboutMe && formik.touched.aboutMe && <p className={c.errorMessage}>{formik.errors.aboutMe}</p>}
-			</div>
+			</StyledFormBlock>
+			{formik.errors.aboutMe && formik.touched.aboutMe && <StyledError>{formik.errors.aboutMe}</StyledError>}
 
-
-		<div className={c.infoBlock}>
+		<StyledFormBlock>
 			<Description as='label' htmlFor="fullName">Full name:</Description>
 				<Input
 				value={formik.values.fullName}
@@ -52,22 +52,20 @@ export const ProfileForm = (props: ProfileFormPropsType) => {
 				onBlur={formik.handleBlur}
 				type="text" id='fullName' name='fullName'
 				showCount maxLength={20}
-				//добавляем класс с ошибкой в случае если в формик эррорс есть класс нашего инпута и он был тронут 
-				className={formik.errors.fullName && formik.touched.fullName ? `${c.error} ${c.profileInput}` : c.profileInput}
+				style={{ border: formik.errors.fullName && formik.touched.fullName ? '1px solid #f8a0a0' : '1px solid #d9d9d9' }}
 			/>
-			{/* сообщение об ошибке */}
-			{formik.errors.fullName && formik.touched.fullName && <p className={c.errorMessage}>{formik.errors.fullName}</p>}
-		</div>
+		</StyledFormBlock>
+			{formik.errors.fullName && formik.touched.fullName && <StyledError>{formik.errors.fullName}</StyledError>}
 
-		<div className={c.infoBlock}>
+		<StyledFormBlock>
 			<Description as='label' htmlFor="lookingForAJob">Lookin for a job: </Description>
 			<Checkbox name="lookingForAJob" id="lookingForAJob"
 				onChange={formik.handleChange}
 				onBlur={formik.handleBlur}
 			/>
-		</div>
+		</StyledFormBlock>
 
-		<div className={c.infoBlock}>
+		<StyledFormBlock>
 			<Description as='label' htmlFor="lookingForAJobDescription">Job Description:</Description>
 			<Input
 				maxLength={40}
@@ -76,34 +74,59 @@ export const ProfileForm = (props: ProfileFormPropsType) => {
 				onBlur={formik.handleBlur}
 				type="text" id='lookingForAJobDescription'
 				name='lookingForAJobDescription'
-				className={formik.errors.lookingForAJobDescription && formik.touched.lookingForAJobDescription ? `${c.error} ${c.profileInput}` : c.profileInput}
 			/>
-			{formik.errors.lookingForAJobDescription && formik.touched.lookingForAJobDescription && <p className={c.errorMessage}>{formik.errors.lookingForAJobDescription}</p>}
-		</div>
-
+		</StyledFormBlock>
+			{formik.errors.lookingForAJobDescription && formik.touched.lookingForAJobDescription && <StyledError>{formik.errors.lookingForAJobDescription}</StyledError>}
 		<h3>Contacts:</h3>
 
 		{Object.keys(props.userProfile.contacts).map(key => {
-			return <div className={c.infoBlock} key={key}>
-				<Description as='label' htmlFor={`contacts.${key}`}>{key}:</Description>
-				<Input
-					name={`contacts.${key}`}
-					value={formik.values.contacts[key as keyof ContactsType]}
-					onChange={formik.handleChange}
-					onBlur={formik.handleBlur}
-					type="text" id={`contacts.${key}`}
-					className={formik.errors.contacts?.[key as keyof ContactsType] && formik.touched.contacts?.[key as keyof ContactsType] ? `${c.error} ${c.profileInput}` : c.profileInput}
-				/>
-				{formik.errors.contacts?.[key as keyof ContactsType] && <p className={c.errorMessage}>{formik.errors.contacts?.[key as keyof ContactsType]}</p>}
-			</div>
+			return <>
+			 	<StyledFormBlock key={key}>
+					<Description as='label' htmlFor={`contacts.${key}`}>{key}:</Description>
+					<Input
+						name={`contacts.${key}`}
+						value={formik.values.contacts[key as keyof ContactsType]}
+						onChange={formik.handleChange}
+						onBlur={formik.handleBlur}
+						type="text" id={`contacts.${key}`}
+					/>
+				</StyledFormBlock>
+				{ formik.errors.contacts?.[key as keyof ContactsType] && <StyledError>{formik.errors.contacts?.[key as keyof ContactsType]}</StyledError> }
+	
+			 	</>
 		})}
 			{/* пришось делать приведение типов key as keyof ContactsType */}
-			<button disabled={formik.isSubmitting} className={c.profileButton} type='submit'>
-				<MdSaveAlt />
-				Save Info
-			</button>
-		</form>
+			<MainButton children='Save Info' icon={<MdSaveAlt />} disabled={formik.isSubmitting} htmlType='submit'/>
+		</StyledForm>
 
 	)
 }
 
+
+
+const StyledForm = styled.form`
+	>* {
+			margin-bottom: 10px;
+		}
+
+	textarea {
+		height: 60px;
+			resize: none;
+	}
+
+	button {
+		margin-top: 10px;
+		max-width: 250px;
+	}
+`
+
+const StyledFormBlock = styled.div`
+	padding: 5px 10px;
+	display: flex;
+	gap: 15px;
+`
+
+const StyledError = styled.p`
+	font-size: 12px;
+	text-align: right;
+`

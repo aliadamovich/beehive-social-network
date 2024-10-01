@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Avatar } from '../../../common/Avatar';
+import { myTheme } from '../../../../styles/Theme';
 
 type SingleDialogPropsType = {
 	text: string
@@ -23,6 +24,7 @@ export const SingleDialog = (props: SingleDialogPropsType) => {
 
 const StyledMessage = styled.div<{ fromMe: boolean }>`
 	display: flex;
+	flex-direction: row;
 	align-items: center;
 	gap: 25px;
 	padding: 8px 0;
@@ -55,7 +57,7 @@ const StyledTextBox = styled.div<{fromMe: boolean}>`
 		transform: rotate(-90deg);
 	}
 	${props => props.fromMe && css<{fromMe: boolean}>`
-		background: rgb(174, 115, 230);
+		background:${myTheme.colors.accentLight};
 		color: #fff;
 		&::before {
 		border-left: 10px solid  rgb(174, 115, 230);

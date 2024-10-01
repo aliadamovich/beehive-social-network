@@ -1,4 +1,4 @@
-import {theme} from '../../styles/Theme'
+import {myTheme} from '../../styles/Theme'
 import sprite from './../../assets/sprite/sprite.svg'
 
 type IconPropsType = {
@@ -14,7 +14,7 @@ export const Icon = (props: IconPropsType) => {
 		<svg width={props.width || '24'}
 			height={props.height || '24'}
 			viewBox={props.viewBox || "0 0 24 24"}
-			fill={props.fill || theme.colors.boldFont}>
+			fill={props.fill || myTheme.colors.boldFontColor}>
 			<use xlinkHref={`${sprite}#${props.iconId}`}></use>
 		</svg>
 	)

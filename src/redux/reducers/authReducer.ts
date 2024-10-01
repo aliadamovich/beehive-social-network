@@ -52,27 +52,31 @@ export const initializeAppThunkCreator = (): AppThunk => {
 };
 
 //auth.me
-export const getAuthUserDataThunkCreator = (): AppThunk => {
-
- return (dispatch) => {
-   return authAPI.me()
-	 	.then((resp) => {
-
-		if (resp.data.resultCode === ResultCodesEnum.Success) {
-			const { id, email, login } = resp.data.data; //деструктуризируем полученный с сервера объект
-			 profileAPI.setProfile(id)
-			.then((profileResp) => {
-			//добавила асинхронный запрос профиля для получения фото для хэдера
-			 dispatch(setAuthProfileIdAC(id, email, login, true, profileResp.data.photos)); //добавляем флаг isAuth и фото поьзователя
-			})
-		} else {
-			// handleServerError(dispatch, resp.data)
-		}
-	 })
-	 .catch((err) => {
-
-	 })
- };
+export const getAuthUserDataThunkCreator = (): AppThunk<Promise<void>> => {
+  return (dispatch) => {
+    return authAPI
+      .me()
+      .then((resp) => {
+        if (resp.data.resultCode === ResultCodesEnum.Success) {
+          const { id, email, login } = resp.data.data; //деструктуризируем полученный с сервера объект
+          profileAPI.setProfile(id).then((profileResp) => {
+            //добавила асинхронный запрос профиля для получения фото для хэдера
+            dispatch(
+              setAuthProfileIdAC(
+                id,
+                email,
+                login,
+                true,
+                profileResp.data.photos
+              )
+            ); //добавляем флаг isAuth и фото поьзователя
+          });
+        } else {
+          // handleServerError(dispatch, resp.data)
+        }
+      })
+      .catch((err) => {});
+  };
 };
 
 //thunkcreator для login
@@ -93,10 +97,11 @@ export const LoginTC = (email: string, password: string, rememberMe: boolean): A
 }
 
 //thunkcreator для logout
-export const LogoutThunkCreator = (): AppThunk => {
-	return function (dispatch) {
-		dispatch(setAppStatusAC("loading"));
-		authAPI.logout()
+export const LogoutThunkCreator = (): AppThunk<Promise<void>> => {
+  return function (dispatch) {
+    dispatch(setAppStatusAC("loading"));
+    return authAPI
+      .logout()
       .then((resp) => {
         if (resp.data.resultCode === ResultCodesEnum.Success) {
           dispatch(setAppStatusAC("success"));
@@ -106,8 +111,8 @@ export const LogoutThunkCreator = (): AppThunk => {
         }
       })
       .catch((err) => handleNetworkError(dispatch, err));
-	}
-}
+  };
+};
 
 
 //* Types

@@ -1,7 +1,9 @@
 import {  ResultCodesEnum, SingleDialogItemType } from './../../apiDal/apiDal';
 import { dialogsAPI } from "../../apiDal/apiDal";
 import { ThunkAction } from '@reduxjs/toolkit';
-import { AppStateType } from '../redux-store';
+import { AppStateType, AppThunk } from '../redux-store';
+import { setAppStatusAC } from './appReducer';
+import { handleNetworkError, handleServerError } from '../../utils/errorHandlers';
 
 let initialState = {
   dialogs: {} as DialogsType,
@@ -42,7 +44,7 @@ export const sendMessageAC = (userId: number, message: SingleDialogItemType) => 
 //* Thunk Creators
 
 //get all dialogs 
-export const getAllDialogsTC = (userId: number): ThunkType => {
+export const getAllDialogsTC = (userId: number): AppThunk => {
   return async (dispatch) => {
     const resp = await dialogsAPI.getAllMessagesFromServer(userId);
     if (resp.data.error === null) {
@@ -52,14 +54,19 @@ export const getAllDialogsTC = (userId: number): ThunkType => {
 };
 
 //send message to a friend
-export const sendMessageThunCreator = (userId: number, message: string): ThunkType => {
+export const sendMessageThunCreator = (userId: number, message: string): AppThunk<Promise<void>> => {
   return (dispatch) => {
-   	return dialogsAPI.sendMessageToServer(userId, message)
+		// dispatch(setAppStatusAC('loading'))
+		return dialogsAPI.sendMessageToServer(userId, message)
 		.then((resp) => {
 		if (resp.data.resultCode === ResultCodesEnum.Success) {
+			// dispatch(setAppStatusAC('success'));
 			dispatch(sendMessageAC(userId, resp.data.data.message));
+		} else {
+			handleServerError(dispatch, resp.data)
 		}
-		});
+		})
+		.catch((err) => handleNetworkError(dispatch, err))
     
   };
 };
@@ -75,5 +82,5 @@ export type DialogsType = {
 
 type ActionsType = ReturnType<typeof sendMessageAC> | ReturnType<typeof getAllMessagesAC>;
 
-type ThunkType<ReturnType = Promise<void>> = ThunkAction<ReturnType, AppStateType, unknown, ActionsType>
+// type ThunkType<ReturnType = Promise<void>> = ThunkAction<ReturnType, AppStateType, unknown, ActionsType>
 

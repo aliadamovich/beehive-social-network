@@ -49,6 +49,8 @@ box{
 	align-items: center;
 	cursor: pointer;
 	transition: all 0.3s ease 0s;
+	// color: #383a45;
+	// color: #c5c5c5;
 	&:hover {
 		opacity: 0.8;
 	}
@@ -60,3 +62,6 @@ box{
 
 	
 }
+
+//button loading
+// style= {{backgroundColor: '#bd8bed'}}

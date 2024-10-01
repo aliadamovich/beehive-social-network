@@ -1,6 +1,6 @@
-import React from 'react'
 import { Icon } from '../../common/Icon';
 import styled, { css } from 'styled-components';
+import { myTheme } from '../../../styles/Theme';
 
 export const ProfileTabs = ({ activeTab, setActiveTab }: {activeTab: string; setActiveTab: (tab: string) => void}) => {
 
@@ -9,8 +9,6 @@ export const ProfileTabs = ({ activeTab, setActiveTab }: {activeTab: string; set
 		{ id: 2, tab: 'Profile', icon: 'profile_edit' },
 		{ id: 3, tab: 'Friends', icon: 'friends' },
 		{ id: 4, tab: 'Forums', icon: 'megaphone' },
-		// { id: 5, tab: 'Groups', icon: 'users' },
-		// { id: 6, tab: 'Media', icon: 'gallery' },
 	]
 
 	return (
@@ -43,50 +41,50 @@ const StyledTabItem = styled.li<StyledTabItemProps>`
 	align-items: center;
 	flex-direction: column;
 	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-	transition: all 0.4s ease 0s;
+	background-color: ${myTheme.colors.whiteBackground};
+	transition: all 0.5s ease 0s;
 	font-size: 13px;
 	font-weight: 500;
 	cursor: pointer;
 	overflow: hidden;
+	color: ${myTheme.colors.mainFontColor};
 	svg{
 		stroke: currentColor;
-		transition: all 0.3s ease 0s;
+		transition: all 0.5s ease 0s;
 	}
 
 	span {
 		transform: translateY(0%);
-		transition: all 0.3s ease 0s;
-		/* opacity: 1; */
+		transition: all 0.4s ease 0s;
 	}
+
 	${props => props.active && css<StyledTabItemProps>`
-		background: linear-gradient(to bottom right,rgb(189, 139, 237), rgb(129, 29, 222));
+		background: ${myTheme.colors.gradient};
 		box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-		color: #fff;
+		color: ${myTheme.colors.whiteFontColor};
 
 		span {
-		transform: translateY(-150%);
-		/* opacity: 1; */
+		transform: translateY(-160%);
 		}
 		svg {
-			transform: translateY(-50%);
+			transform: translateY(-40%);
 			scale: 1.2;
-			stroke: #fff;
+			stroke: currentColor;
 		}
 	`}
 	&:hover{
-		background: linear-gradient(to bottom right,rgb(189, 139, 237), rgb(129, 29, 222));
+		background: ${myTheme.colors.gradient};
 		box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-		color: #fff;
+		color: ${myTheme.colors.whiteFontColor};
 
 		span {
-		transform: translateY(-150%);
-		color: #fff;
-		/* opacity: 0; */
-		}
+		transform: translateY(-160%);
+		color: ${myTheme.colors.whiteFontColor};
+	}
 		svg {
-			transform: translateY(-50%);
+			transform: translateY(-40%);
 			scale: 1.2;
-			stroke: #fff;
+			stroke: ${myTheme.colors.whiteFontColor};
 		}
 	}
 `

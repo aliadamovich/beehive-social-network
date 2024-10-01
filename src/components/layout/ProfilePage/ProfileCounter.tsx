@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { myTheme } from '../../../styles/Theme'
 
 export const ProfileCounter = () => {
 	return (
@@ -20,7 +21,7 @@ const StyledCounter = styled.div`
 	display: flex;
 	justify-content: center;
 	gap: 25px;
-	border-bottom: 1px solid rgb(237, 241, 245);
+	border-bottom: 1px solid ${myTheme.colors.borderColor};
 	padding-bottom: 15px;
 `
 
@@ -32,9 +33,10 @@ const Counter = styled.div`
 	font-size: 11px;
 	gap: 5px;
 	font-weight: 500;
-	font-family: 'Inter';
+	color: ${myTheme.colors.mainFontColor};
 		span {
-			color: #8c30e2;
+			color: ${myTheme.colors.accent};
 			font-size: 20px;
+			font-weight: 700;
 		}
 `

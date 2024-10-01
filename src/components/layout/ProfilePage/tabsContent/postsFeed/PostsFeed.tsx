@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { addPostAC } from '../../../../../redux/reducers/profileReducer';
 import { Timeline } from 'antd';
 import styled from 'styled-components';
+import { myTheme } from '../../../../../styles/Theme';
 
 
 
@@ -26,13 +27,19 @@ export const PostsFeed = React.memo(() => {
 	return (
 		<StyledPostSection>
 			<SendMessage 
-			updateText={(e) => { setPost(e) }} 
-			addMessage={sendPostHandler} 
-			messageText={post}/>
+				updateText={(e) => { setPost(e) }} 
+				addMessage={sendPostHandler} 
+				messageText={post}
+				showCount={true}
+				maxLength={100}
+				title='Send Post'
+			/>
 			<StyledPostsContainer>
 				<Timeline >
 					{posts.map((p) => (
-						<Timeline.Item key={p.id} color='transparent' >
+						<Timeline.Item key={p.id} color={`${myTheme.colors.accentLight}`} 
+							style={{padding: '0'}}
+						>
 							<PostItem message={p.body} type={p.type} />
 						</Timeline.Item>
 					))}

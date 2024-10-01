@@ -1,14 +1,17 @@
 import styled from "styled-components";
-import { Button } from "../Button"
-import { IconsRow } from "../iconsrow/IconsRow"
-import { useAppDispatch } from "../../../redux/app/hooks";
-import { sendMessageThunCreator } from "../../../redux/reducers/dialogsReducer";
 import TextArea from "antd/es/input/TextArea";
+import { MainButton } from "../MainButton";
+import { SendOutlined } from '@ant-design/icons';
+import { myTheme } from "../../../styles/Theme";
 
 type SendMessageType = {
 	messageText: string
 	updateText: (message: string) => void
 	addMessage: () => void
+	title: string
+	showCount: boolean
+	maxLength: number
+	loading: boolean
 }
 
 export const SendMessage = (props: SendMessageType) => {
@@ -22,14 +25,15 @@ export const SendMessage = (props: SendMessageType) => {
 					<TextArea
 						onChange={(e) => { props.updateText(e.currentTarget.value) }}
 						value={props.messageText}
-						placeholder='Write your message...'>
+						placeholder='Write your message...'
+						autoSize={{ minRows: 1, maxRows: 6 }}
+						showCount={props.showCount} maxLength={props.maxLength}
+						>
+						
 					</TextArea>
-
-					<Button onClick={() => { props.addMessage() }} >Send</Button>
-
+					<MainButton children={props.title} onClick={() => { props.addMessage() }} icon={<SendOutlined />} loading={props.loading}/>
 				</StyledMessageBody>
 
-				<IconsRow />
 			</StyledContent>
 		</StyledSendMessage>
 	)
@@ -38,8 +42,7 @@ export const SendMessage = (props: SendMessageType) => {
 const StyledSendMessage = styled.div`
 	position: sticky;
 	bottom: 0;
-	border-top: 1px solid rgb(237, 241, 245);
-	background: #fff;
+	border-top: 1px solid ${myTheme.colors.borderColor};
 	width: 100%;
 	padding-top: 20px;
 	padding-bottom: 30px;
@@ -53,10 +56,6 @@ const StyledMessageBody = styled.div`
 	gap: 10px;
 	margin-bottom: 8px;
 	textarea {
-		resize: none;
-		width: 100%;
-		border: 1px solid rgb(129, 29, 222);
 		padding: 10px;
-		border-radius: 8px;
 	}
 `

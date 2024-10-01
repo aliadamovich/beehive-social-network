@@ -1,5 +1,5 @@
 import { createGlobalStyle, DefaultTheme, GlobalStyleComponent } from "styled-components";
-import { theme } from "./Theme";
+import { myTheme } from "./Theme";
 
 
 export const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
@@ -14,13 +14,13 @@ export const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobal
 
 	body {
 		margin: 0;
-		font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen','Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+		font-family: ${myTheme.fonts.main} ;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		font-size: 16px;
+		font-size: 14px;
 		font-weight: 400;
 		line-height: 120%;
-		color: ${theme.colors.mainFont};
+		color: ${myTheme.colors.mainFontColor};
 		min-width: 375px;
 
 		&.lock {
@@ -43,13 +43,11 @@ export const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobal
 	/* border: none; */
 	}
 
-	h1, h2, h4, h5, h6 {
+	h1, h2, h3, h4, h5, h6 {
 	font-size: inherit;
 	font-weight: 400;
 	}
-	h3 {
-	
-	}
+
 
 	*:focus-visible {
     outline: 1px solid #edf1f5;

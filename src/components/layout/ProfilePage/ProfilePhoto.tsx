@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import null_user from './../../../assets/images/user.png';
 import { ProfileType } from '../../../types/types';
 import { ChangeEvent } from 'react';
+import { myTheme } from '../../../styles/Theme';
+import { SectionTitle } from '../../common/SectionTitle';
 
 type ProfilePhotoType = {
 	userProfile: ProfileType | null
@@ -34,23 +36,26 @@ export const ProfilePhoto = (props: ProfilePhotoType) => {
 				}
 			</UserStyledPhoto>
 
-			<ProfileUserName>{props.userProfile?.fullName}</ProfileUserName>
+			<SectionTitle>{props.userProfile?.fullName}</SectionTitle>
 		</>
 	)
 }
 
 
 const UserStyledPhoto = styled.div`
-	height: 100%;
-	width: 100%;
 	padding: 20px;
 	position: relative;
 	img {
-		border-radius: 15px;
+		border-radius: 12px;
 		border: 3px solid white;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+	}
+
+	@media ${myTheme.media[950]} {
+		width: 300px;
+		height: 300px;
 	}
 `
 
@@ -65,8 +70,8 @@ const AddPhotoInput = styled.input`
 		font-size: 1.25em;
 		line-height: 1;
 		font-weight: 500;
-		color: #111010;
-		background-color: #fff;
+		color: ${myTheme.colors.boldFontColor};
+		background-color: ${myTheme.colors.whiteBackground};
 		border-radius: 50%;
 		display: inline-block;
 		position: absolute;
@@ -76,20 +81,8 @@ const AddPhotoInput = styled.input`
 		transition: all 0.3s ease 0s;
 		cursor: pointer;
 		&:hover{
-			background-color: #a34ef3;
-			color: #fff;
+			background-color: ${myTheme.colors.accentLight};
+			color: ${myTheme.colors.whiteBackground};
 		}
-	}
-`
-
-const ProfileUserName = styled.span`
-	font-family: "Quicksand", sans-serif;
-	font-size: 20px;
-	font-weight: 700;
-	color: rgb(79, 81, 91);
-	p{
-		font-weight: 400;
-		font-size: 13px;
-		margin-top: 10px;
 	}
 `

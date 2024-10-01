@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { theme } from "../../../styles/Theme"
+import { myTheme } from "../../../styles/Theme"
 
 const Header = styled.header`
 	position: fixed;
@@ -49,7 +49,7 @@ const UserData = styled.div`
 		width: 20px;
 		height: 20px;
 		transition: all 0.3s ease 0s;
-		stroke: ${theme.colors.boldFont}
+		stroke: ${myTheme.colors.boldFontColor}
 	} */
 `
 const UserName = styled.span`
@@ -63,7 +63,7 @@ const LogOutButton = styled.button`
 	gap: 5px;
 	font-size: 14px;
 	border: none;
-	color: ${theme.colors.boldFont};
+	color: ${myTheme.colors.boldFontColor};
 	transition: all 0.3s ease 0s;
 
 	svg {
@@ -72,9 +72,9 @@ const LogOutButton = styled.button`
 	}
 
 	&:hover{
-		color: ${theme.colors.accent};
+		color: ${myTheme.colors.accent};
 		svg {
-			stroke: ${theme.colors.accent};
+			stroke: ${myTheme.colors.accent};
 		}
 	}
 

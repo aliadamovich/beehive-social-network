@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getStatusThunkCreator, getUserProfileThunkCreator, saveProfileInfoThunkCreator, saveProfilePhotoThunkCreator, updateStatusThunkCreator } from "../../../redux/reducers/profileReducer";
+import { getStatusThunkCreator, getUserProfileThunkCreator, saveProfileInfoTC, saveProfilePhotoThunkCreator, updateStatusThunkCreator } from "../../../redux/reducers/profileReducer";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { withAuthRedirect } from "../../../hoc/WithAuthRedirect";
 import { useSelector } from "react-redux";
@@ -21,6 +21,7 @@ import { ProfileType } from "../../../types/types";
 import { getPhotoGrid } from "../../../redux/selectors/photogrid-selectors";
 import { Activity } from "./Activity/Activity";
 import { PostsFeed } from "./tabsContent/postsFeed/PostsFeed";
+import { myTheme } from "../../../styles/Theme";
 
 
 export const ProfilePage = () => {
@@ -57,9 +58,7 @@ export const ProfilePage = () => {
 		dispatch(updateStatusThunkCreator(status))
 	}
 
-	const saveProfileInfo = (form: ProfileType) => {
-		dispatch(saveProfileInfoThunkCreator(form))
-	}
+
 
 	//доделать логику по открытию фото галереи
 	const openPhotoGallery = () => {}
@@ -69,7 +68,7 @@ export const ProfilePage = () => {
 			case 'Activity':
 				return <PostsFeed />
 			case 'Profile':
-				return <ProfileInfoSection userProfile={userProfile} saveProfileInfo={saveProfileInfo} />
+				return <ProfileInfoSection />
 			case 'Friends':
 				return <FollowedFriends />
 			case 'Groups':
@@ -89,31 +88,35 @@ export const ProfilePage = () => {
 
 			<Container>
 
-				<StyledProfile>
+				{/* <StyledProfile> */}
 
-					<GridProfileUser>
-						<ProfilePhoto userProfile={userProfile} onPhotoChoose={onPhotoChoose} isOwner={!params.userId} />
-						<ProfileStatus status={status} updateStatus={updateStatus} isOwner={!params.userId} />
-					</GridProfileUser>
+					<StyledProfileTop>
+						<GridProfileUser>
+							<ProfilePhoto userProfile={userProfile} onPhotoChoose={onPhotoChoose} isOwner={!params.userId} />
+							<ProfileStatus status={status} updateStatus={updateStatus} isOwner={!params.userId} />
+						</GridProfileUser>
+	
+						<TabsMenu>
+							<ul>
+								<ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+							</ul>
+						</TabsMenu>
+					</StyledProfileTop>
 
-					<TabsMenu>
-						<ul>
-							<ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-						</ul>
-					</TabsMenu>
+					<StyledProfileBottom>
+						<GridProfileGallery>
+							<ProfileCounter />
+							<PhotoGrid photoGrid={photoGrid} openPhoto={openPhotoGallery}/>
+						</GridProfileGallery>
+	
+						<GridTabsContent>{renderTabContent()}</GridTabsContent>
+	
+						<GridProfileActivity>
+							<Activity/>
+						</GridProfileActivity>
+					</StyledProfileBottom>
 
-					<GridProfileGallery>
-						<ProfileCounter />
-						<PhotoGrid photoGrid={photoGrid} openPhoto={openPhotoGallery}/>
-					</GridProfileGallery>
-
-					<GridTabsContent>{renderTabContent()}</GridTabsContent>
-
-					<GridProfileActivity>
-						<Activity/>
-					</GridProfileActivity>
-
-				</StyledProfile>
+				{/* </StyledProfile> */}
 
 			</Container>
 		</ProfileSection>
@@ -139,34 +142,58 @@ const ProfileSection = styled.section`
 `
 
 const StyledProfile = styled.div`
-	position: relative;
-	z-index: 100;
-	padding-bottom: 20px;
-	column-gap: 20px;
-	row-gap: 40px;
+
+`
+
+const StyledProfileTop = styled.div`
+	display: grid;
+	grid-template-columns: 280px auto;
+	padding-top: 20px;
+	margin-bottom: 20px;
+
+
+	@media ${myTheme.media[950]} {
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
+`
+
+const StyledProfileBottom = styled.div`
 	display: grid;
 	grid-template-columns: 280px auto 20%;
-	grid-template-rows: 320px auto;
-	grid-template-areas: 
-	'user tabs tabs'
-	'photos tabsContent activity';
+	margin-top: 20px;
+
+	@media ${myTheme.media[1350]} {
+		grid-template-columns: 280px auto;
+	}
+	@media ${myTheme.media[950]} {
+		grid-template-columns: 1fr;
+	}
 `
 
 const GridProfileUser = styled.div`
-	grid-area: user;
 	text-align: center;
 	position: relative;
+	@media ${myTheme.media[950]} {
+		display: flex;
+		align-items: flex-end;
+	}
 `
 
 const GridProfileGallery = styled.div`
 	justify-items: center;
-	padding-top: 30px;
-	border-top: 1px solid rgb(237, 241, 245);
-	grid-area: photos;
+	padding: 30px 20px 0;
+	border-top: 1px solid ${myTheme.colors.borderColor};
+	>div:nth-child(2) {
+		margin-top: 20px;
+	}
+
+	@media ${myTheme.media[950]} {
+		display: none;
+	}
 `
 
 const TabsMenu = styled.nav`
-	grid-area: tabs;
 	display: flex;
 	flex-direction: column;
 	justify-content: end;
@@ -174,19 +201,27 @@ const TabsMenu = styled.nav`
 		display: flex;
 		gap: 20px;
 	}
+	@media ${myTheme.media[950]} {
+		ul {
+		justify-content: center;
+		}
+		/* padding-top: 40px; */
+	}
 `
 
 const GridTabsContent = styled.div`
 	padding: 20px 20px 0;
-	grid-area: tabsContent;
-	border-right: 1px solid #edf1f5;
-	border-left: 1px solid #edf1f5;
-	border-left: 1px solid #edf1f5;
-	border-top: 1px solid #edf1f5;
+	border: 1px solid ${myTheme.colors.borderColor};
+	border-bottom: none;
+	border-right: none;
 `
 
 const GridProfileActivity = styled.div`
-	grid-area: activity;
 	padding-top: 30px;
-	border-top: 1px solid rgb(237, 241, 245);
+	border-top: 1px solid ${myTheme.colors.borderColor};
+	border-left: 1px solid ${myTheme.colors.borderColor};
+
+	@media ${myTheme.media[1350]} {
+		display: none;
+	}
 `

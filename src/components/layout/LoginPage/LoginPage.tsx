@@ -7,7 +7,7 @@ import video_mp4 from './../../../assets/images/8.mp4'
 import { LoginForm } from './LoginForm'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
-import { theme } from '../../../styles/Theme'
+import { myTheme } from '../../../styles/Theme'
 import { AppStateType } from '../../../redux/redux-store'
 
 export type SubmittedValueType = {
@@ -122,7 +122,7 @@ const FormContainer = styled.div`
 `
 const FormInfo = styled.div`
 	flex: 0 1 50%;
-	background-color: ${theme.colors.accent};
+	background-color: ${myTheme.colors.accent};
 	padding: 0 40px;
 	display: flex;
 	flex-direction: column;

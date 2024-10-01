@@ -1,5 +1,4 @@
 import { Search } from '../../common/Search/Search';
-import { Recent } from '../../common/Recent/Recent';
 import { Container } from '../../common/Container';
 import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';

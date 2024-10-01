@@ -1,7 +1,7 @@
 import { ProfilePage } from "./ProfilePage";
 import React from "react";
 import { connect } from "react-redux";
-import { getStatusThunkCreator, getUserProfileThunkCreator, saveProfileInfoThunkCreator, saveProfilePhotoThunkCreator, updateStatusThunkCreator } from "../../../redux/reducers/profileReducer";
+import { getStatusThunkCreator, getUserProfileThunkCreator, saveProfileInfoTC, saveProfilePhotoThunkCreator, updateStatusThunkCreator } from "../../../redux/reducers/profileReducer";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { compose } from "redux";
 import { withAuthRedirect } from "../../../hoc/WithAuthRedirect";
@@ -70,7 +70,7 @@ function mapDispatchToProps(dispatch) {
 		getStatus: (profile) => dispatch(getStatusThunkCreator(profile)),
 		updateStatus: (st) => dispatch(updateStatusThunkCreator(st)),
 		savePhoto: (photoFile) => dispatch(saveProfilePhotoThunkCreator(photoFile)),
-		saveProfileInfo: (form) => dispatch(saveProfileInfoThunkCreator(form)),
+		saveProfileInfo: (form) => dispatch(saveProfileInfoTC(form)),
 	}
 }
 

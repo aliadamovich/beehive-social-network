@@ -1,10 +1,13 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { theme } from '../../../styles/Theme'
+import { myTheme } from '../../../styles/Theme'
 import { CiEdit } from "react-icons/ci";
 import { MdArrowRightAlt } from "react-icons/md";
 import { Input } from 'antd';
-import { ArrowRightOutlined } from '@ant-design/icons';
+import { EditOutlined  } from '@ant-design/icons';
+import { Button } from 'antd';
+import { MainButton } from '../../common/MainButton';
+
 type ProfileStatusPropsType = {
 	status: string
 	isOwner: boolean
@@ -35,21 +38,22 @@ export const ProfileStatus = (props: ProfileStatusPropsType) => {
 
 	return (
 		<StatusContainer>
-			{ editMode 
-				? <FieldWrapper>
-					{/* <StatusButton onClick={onButtonClickHandler}><MdArrowRightAlt /></StatusButton> */}
-					<Input style={{ color: "#4f515b", width: '350px', height: '35px', outline: 'none'}}
-					// addonAfter={<MdArrowRightAlt />} 
+			{ editMode ?
+				<StyledInput
 					variant='filled' value={status} onChange={onInputChange} 
-					// onBlur={onButtonClickHandler} 
+					onBlur={onButtonClickHandler} 
 					autoFocus={true} 
-					showCount maxLength={30} />
-					</FieldWrapper>
-				: <StatusWrapper>
+					showCount maxLength={30}
+				/>
+					
+				: 
+				<StatusWrapper>
 					{status 
 					?	<>
 						<Status onDoubleClick={changeEditMode}>{status}</Status>
-							{props.isOwner && <CiEdit onClick={changeEditMode} />}
+							{props.isOwner && 
+								<MainButton icon={<EditOutlined />} onClick={onButtonClickHandler} />
+							}
 						</>
 					: <Status>No status...</Status> }
 						
@@ -60,80 +64,32 @@ export const ProfileStatus = (props: ProfileStatusPropsType) => {
 }
 
 const StatusContainer = styled.div`
-	/* color: #FFF; */
 	position: absolute;
-	top: 60%;
-	right: -150%;
+	top: 62%;
+	right: -250px;
+	width: 250px;
 	transform: translateY(-50%);
-	
-	svg {
-		cursor: pointer;
-		transition: all 0.3s ease 0s;
-		width: 20px;
-		height: 20px;
-		&:hover{
-			scale: 1.2;
-		}
-	}
-`
-const FieldWrapper = styled.div`
-	position: relative;
-	display: inline-flex;
-	flex-direction: row-reverse;
-`
-const Field = styled.input`
-	padding: 5px 0 5px 10px;
-	border: none;
-	width: 350px;
-	height: 35px;
-	font-size: 16px;
-	color: currentColor;
-	outline: none;
 
-	background-color: #edf1f5c2;
-	border-radius: 6px;
-	&::placeholder {
-		font-size: 14px;
-		color: ${theme.colors.borderColor};
+	@media ${myTheme.media[950]} {
+		right: 170px;
 	}
 `
 
-const StatusButton = styled.button`
-	padding: 0 10px;
-	height: 35px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 8px;
-	position: relative;
-	right: 40px;
-	z-index: 2;
-	color: currentColor;
-	transition: all 0.3s ease 0s;
-	outline: none;
-	border: none;
-	
-	&:hover{
-		background-color: #ffffff4f;
-		
-		svg {
-			scale: 1.2;
-		}
-	}
+const StyledInput = styled(Input)`
+	color: ${myTheme.colors.boldFontColor};
+ height: 35px;
+outline: none
 `
 
 const StatusWrapper = styled.div`
 	display: flex;
 	gap: 5px;
 	align-items: center;
-	width: 392px;
-
 `
 const Status = styled.div`
-	/* font-weight: 600; */
 	display: inline-block;
-	padding: 6px 10px;
-	font-size: 16px;
-	background-color: #edf1f5b4;
+	padding: 8px 10px;
+	background-color: ${myTheme.colors.backgroundLayout};
 	border-radius: 6px;
+	color: ${myTheme.colors.boldFontColor};
 `

@@ -1,6 +1,9 @@
+import { ResultCodesEnum } from './../../apiDal/apiDal';
 import { profileAPI } from "../../apiDal/apiDal";
 import { PhotosType, PostType, ProfileType } from "../../types/types";
 import { AppStateType, AppThunk } from "../redux-store";
+import { setAppStatusAC } from "./appReducer";
+import { handleNetworkError, handleServerError } from '../../utils/errorHandlers';
 
 
 let initialState = {
@@ -82,8 +85,14 @@ const setPhotoAC = (photos: PhotosType) => ({ type: 'SET-PROFILE-PHOTO', photos}
 //* Thunks
 export const getUserProfileThunkCreator = (profileId: number): AppThunk => {
   return async (dispatch) => {
-    const resp = await profileAPI.setProfile(profileId)
-		 dispatch(setUserProfileAC(resp.data));
+    try {
+			dispatch(setAppStatusAC('loading'))
+			const resp = await profileAPI.setProfile(profileId);
+      dispatch(setUserProfileAC(resp.data));
+			dispatch(setAppStatusAC("success"));
+		} catch (error) {
+			handleNetworkError(dispatch, error)
+		}
   };
 };
 
@@ -114,13 +123,20 @@ export const saveProfilePhotoThunkCreator = (file: any): AppThunk => {
 };
 
 //используем доп getState() чтобы получить доступ к другой части стейта и взять айди польз-ля
-export const saveProfileInfoThunkCreator = (formData: ProfileType): AppThunk => {
+export const saveProfileInfoTC = (formData: ProfileType): AppThunk => {
   return async function (dispatch, getState: () => AppStateType) {
+		dispatch(setAppStatusAC('loading'))
     const userId = getState().auth.userId;
 		if (userId ) {
-			let resp = await profileAPI.setProfileInfo(formData);
-			if (resp.data.resultCode === 0) {
-				dispatch(getUserProfileThunkCreator(userId));
+			try {
+				let resp = await profileAPI.setProfileInfo(formData);
+        if (resp.data.resultCode === ResultCodesEnum.Success) {
+          dispatch(getUserProfileThunkCreator(userId));
+        } else {
+          handleServerError(dispatch, resp.data);
+        }
+			} catch (error) {
+				handleNetworkError(dispatch, error)
 			}
 		}
   };

@@ -1,7 +1,6 @@
 import { createBrowserRouter, createHashRouter, Navigate } from "react-router-dom";
 import { DialogsPage } from "../components/layout/DialogsPage/DialogsPage";
 import { Error404 } from "../components/common/Error404";
-import { ProfilePageContainer } from "../components/layout/ProfilePage/ProfilePageContainer";
 import App from "../App";
 import { UsersPage } from "../components/layout/UsersPage/UsersPage";
 import { Gallery } from "../components/layout/GalleryPage/Gallery";
@@ -9,6 +8,7 @@ import { ChatPage } from "../components/layout/ChatPage/ChatPage";
 import { Dialogs } from "../components/layout/DialogsPage/dialogs/Dialogs";
 import { EmptyDialogs } from "../components/layout/DialogsPage/dialogs/EmptyDialogs";
 import { LoginPage } from "../components/layout/LoginPage/LoginPage";
+import { ProfilePage } from "../components/layout/ProfilePage/ProfilePage";
 
 
 export const PATH = {
@@ -38,7 +38,13 @@ export const router = createHashRouter([
 			},
 			{
 				path: PATH.PROFILE,
-				element: <ProfilePageContainer />
+				element: <ProfilePage />,
+				children: [
+					{
+						path: ':userId',
+						element: <ProfilePage />
+					}
+				]
 			},
 			{
 				path: PATH.DIALOGS,

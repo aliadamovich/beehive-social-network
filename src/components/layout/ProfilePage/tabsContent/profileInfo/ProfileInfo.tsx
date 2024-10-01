@@ -1,6 +1,6 @@
 import { FiEdit } from "react-icons/fi";
 import styled from 'styled-components';
-import { theme } from "../../../../../styles/Theme";
+import { myTheme } from "../../../../../styles/Theme";
 import { ContactsType, ProfileType } from "../../../../../types/types";
 
 type ProfileInfoPropsType = {
@@ -56,17 +56,17 @@ const StyledProfile = styled.div`
 		width: 18px;
 		height: 18px;
 		transition: all 0.3s ease 0s;
-		stroke: ${theme.colors.mainFont};
+		stroke: ${myTheme.colors.mainFontColor};
 		cursor: pointer;
 		&:hover{
-			stroke: ${theme.colors.accent};
+			stroke: ${myTheme.colors.accent};
 		}
 	}
 
 `
  const InfoBlock = styled.div`
 	padding: 5px 10px;
-	border-bottom: 1px solid #edf1f5;
+	border-bottom: 1px solid ${myTheme.colors.borderColor};
 	display: flex;
 	align-items: center;
 	gap: 15px;
@@ -74,20 +74,19 @@ const StyledProfile = styled.div`
 `
 
 export const Description = styled.span`
-	font-size: 14px;
 	font-weight: 600;
-	color: ${theme.colors.boldFont};
-	background-color: #edf1f5;
+	color: ${myTheme.colors.boldFontColor};
+	background-color: ${myTheme.colors.backgroundLayout};
 	border-radius: 6px;
 	padding: 5px 10px;
 	min-width: 150px;
 	text-transform: capitalize;
-	
+	display: flex;
+	align-items: center;
 `
 
 const Value = styled.p`
 	font-weight: 500;
-	font-size: 14px;
 `
 
 const ContactsTitle = styled.h3`

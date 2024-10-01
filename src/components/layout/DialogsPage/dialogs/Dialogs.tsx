@@ -8,10 +8,12 @@ import { DialogsType, getAllDialogsTC, sendMessageThunCreator } from "../../../.
 import { useParams } from "react-router-dom";
 import { AppStateType } from "../../../../redux/redux-store";
 import { EmptyDialogs } from "./EmptyDialogs";
+import { myTheme } from "../../../../styles/Theme";
 
 export const Dialogs = () => {
 
-	const [messageText, setMessageText] = useState('')
+	const [messageText, setMessageText] = useState('');
+	const [loading, setLoading] = useState(false);
 	const dispatch = useAppDispatch();
 	const messages = useSelector<AppStateType, DialogsType>(state => state.dialoPage.dialogs);
 	const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -30,8 +32,12 @@ export const Dialogs = () => {
 
 
 	const sendMessage = () => {
+		setLoading(true)
 		dispatch(sendMessageThunCreator(currentDialogUserId, messageText))
-			.then(() => setMessageText(''))
+			.then(() => {
+				setMessageText('')
+				setLoading(false)
+			})
 	}
 
 	const currentDialog = messages[currentDialogUserId];
@@ -72,6 +78,10 @@ export const Dialogs = () => {
 					messageText={messageText}
 					updateText={setMessageText}
 					addMessage={sendMessage}
+					title="Send"
+					showCount={false}
+					maxLength={3000}
+					loading={loading}
 				/>
 			</StyledMessagesContainer>
 	)
@@ -83,7 +93,7 @@ const StyledMessagesContainer = styled.div`
 	position: relative;
 	flex: 1 1 auto;
 	padding: 40px 40px 0 40px;
-	border-top: 1px solid rgb(237, 241, 245);
+	border-top: 1px solid ${myTheme.colors.borderColor};
 	height: calc(100vh - 120px);
 	overflow: scroll;
 

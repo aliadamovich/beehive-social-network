@@ -2,10 +2,11 @@ import { useSelector } from 'react-redux';
 import { getProfile } from '../../../../../redux/selectors/profile-selectors';
 import { Avatar } from '../../../../common/Avatar';
 import styled from 'styled-components';
+import { myTheme } from '../../../../../styles/Theme';
 
 type PostItemPropsType = {
 	type: string
-	message: string
+	message?: string
 	number?: number
 }
 export const PostItem = (props: PostItemPropsType) => {
@@ -13,22 +14,20 @@ export const PostItem = (props: PostItemPropsType) => {
 	
 	return(
 		<StyledPost>
-			<StyledPostContainer>
-				<StyledPostAvatar>
-					{userProfile?.photos?.small && <Avatar photo={userProfile.photos?.small} />}
-				</StyledPostAvatar>
-				<StyledPostContent>
-					<StyledTop>
-						<StyledTitle>
-							<span>{userProfile?.fullName}</span>
-							{` ${props.type}`}
-						</StyledTitle>
-						<StyledTime>14 hours <span> ago</span></StyledTime>
-					</StyledTop>
-					<StyledPostBody>{props.message}</StyledPostBody>
-					<StyledLikes>{props.number} likes</StyledLikes>
-				</StyledPostContent>
-			</StyledPostContainer>
+			<div>
+				{userProfile?.photos?.small && <Avatar photo={userProfile.photos?.small} />}
+			</div>
+			<StyledPostContent>
+				<div>
+					<StyledTitle>
+						<span>{userProfile?.fullName}</span>
+						{` ${props.type}`}
+					</StyledTitle>
+					<StyledTime>14 hours <span> ago</span></StyledTime>
+				</div>
+				<StyledPostBody>{props.message}</StyledPostBody>
+				<StyledLikes>{props.number} likes</StyledLikes>
+			</StyledPostContent>
 		</StyledPost>
 	)
 }
@@ -37,55 +36,38 @@ export const PostItem = (props: PostItemPropsType) => {
 
 
 const StyledPost = styled.div`
-	align-self: start;
-	transform: translateX(-10%);
-`
-
-const StyledPostContainer = styled.div`
-	display: flex;
-	align-items: start;
 	gap: 10px;
+	display: flex;
+	color: ${myTheme.colors.mainFontColor}
 `
 
-const StyledPostAvatar = styled.div`
-
-`
 
 const StyledPostContent = styled.div`
 	margin-bottom: 20px;
 `
 
-const StyledTop = styled.div`
-	margin-bottom: 20px;
-`
 
 const StyledTitle = styled.p`
-	margin-bottom: 12px;
-	font-size: 14px;
+	margin-bottom: 8px;
 	span {
-			color: rgb(17, 16, 16);
+			color: ${myTheme.colors.boldFontColor};
 			font-weight: 600;
 		}
 `
 
 const StyledTime = styled.p`
 	font-size: 13px;
-	color: rgb(187, 187, 220);
+	color: #bbbbdc;
 `
 
 const StyledPostBody = styled.div`
-// margin-top: 20px;
-		font-size: 18px;
-		color: rgb(65, 67, 69);
-		margin-bottom: 10px;
+	margin: 10px 0;
+	font-size: 16px;
+	color: ${myTheme.colors.mainFontColor};
 `
 
 const StyledLikes = styled.div`
 	display: inline-block;
 	font-size: 13px;
-	color: inherit;
 
-	&:hover {
-		color: #000;
-	}
 `
