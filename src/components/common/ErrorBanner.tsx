@@ -12,6 +12,7 @@ export const ErrorBanner = () => {
 		messageApi.open({
 			type: 'error',
 			content: apiError || 'Some error occurred',
+			duration: 4
 			// style: { position: 'absolute', bottom: 50, left: 50, zIndex: 20000 }
 		});
 	};

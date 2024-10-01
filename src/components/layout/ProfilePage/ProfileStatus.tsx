@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import { theme } from '../../../styles/Theme'
 import { CiEdit } from "react-icons/ci";
 import { MdArrowRightAlt } from "react-icons/md";
-
+import { Input } from 'antd';
+import { ArrowRightOutlined } from '@ant-design/icons';
 type ProfileStatusPropsType = {
 	status: string
 	isOwner: boolean
@@ -14,7 +15,7 @@ export const ProfileStatus = (props: ProfileStatusPropsType) => {
 	// debugger
 	const [editMode, setEditMode] = useState(false)
 	const [status, setStatus] = useState(props.status)
-
+	const { Search } = Input;
 	//исп-ем хук чтобы он подгрузил статус когда в пропсах он придет (указываем зависимость - )
 	useEffect(() => { setStatus(props.status) }, [props.status])
 
@@ -36,8 +37,13 @@ export const ProfileStatus = (props: ProfileStatusPropsType) => {
 		<StatusContainer>
 			{ editMode 
 				? <FieldWrapper>
-					<StatusButton onClick={onButtonClickHandler}><MdArrowRightAlt /></StatusButton>
-					<Field type='text' value={status} onChange={onInputChange} onBlur={onButtonClickHandler} autoFocus={true} maxLength={30}/>
+					{/* <StatusButton onClick={onButtonClickHandler}><MdArrowRightAlt /></StatusButton> */}
+					<Input style={{ color: "#4f515b", width: '350px', height: '35px', outline: 'none'}}
+					// addonAfter={<MdArrowRightAlt />} 
+					variant='filled' value={status} onChange={onInputChange} 
+					// onBlur={onButtonClickHandler} 
+					autoFocus={true} 
+					showCount maxLength={30} />
 					</FieldWrapper>
 				: <StatusWrapper>
 					{status 
@@ -56,7 +62,7 @@ export const ProfileStatus = (props: ProfileStatusPropsType) => {
 const StatusContainer = styled.div`
 	/* color: #FFF; */
 	position: absolute;
-	top: 50%;
+	top: 60%;
 	right: -150%;
 	transform: translateY(-50%);
 	
@@ -124,7 +130,7 @@ const StatusWrapper = styled.div`
 
 `
 const Status = styled.div`
-	font-weight: 600;
+	/* font-weight: 600; */
 	display: inline-block;
 	padding: 6px 10px;
 	font-size: 16px;

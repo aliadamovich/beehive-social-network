@@ -3,6 +3,7 @@ import { Button } from "../Button"
 import { IconsRow } from "../iconsrow/IconsRow"
 import { useAppDispatch } from "../../../redux/app/hooks";
 import { sendMessageThunCreator } from "../../../redux/reducers/dialogsReducer";
+import TextArea from "antd/es/input/TextArea";
 
 type SendMessageType = {
 	messageText: string
@@ -18,13 +19,13 @@ export const SendMessage = (props: SendMessageType) => {
 
 				<StyledMessageBody>
 
-					<textarea
+					<TextArea
 						onChange={(e) => { props.updateText(e.currentTarget.value) }}
 						value={props.messageText}
 						placeholder='Write your message...'>
-					</textarea>
+					</TextArea>
 
-					<Button onClick={() => { props.addMessage() }}>Send</Button>
+					<Button onClick={() => { props.addMessage() }} >Send</Button>
 
 				</StyledMessageBody>
 

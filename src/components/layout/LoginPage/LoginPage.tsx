@@ -17,8 +17,6 @@ export type SubmittedValueType = {
 }
 
 export const LoginPage = () => {
-console.log(222);
-
 	const isAuth = useSelector<AppStateType>(state => state.auth.isAuth);
 
 
@@ -99,7 +97,7 @@ const Login = styled.div`
 		right: 0;
 		bottom: 0;
 		background: rgba(0, 0, 0, 0.638);
-		z-index: 0;
+		z-index: 2;
 	}
 `
 
@@ -110,7 +108,7 @@ const Video = styled.video`
 	width:100%;
 	height:100%;
 	object-fit: cover;
-	z-index: -1;
+	z-index: 1;
 
 `
 

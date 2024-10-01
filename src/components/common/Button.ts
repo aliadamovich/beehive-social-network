@@ -6,11 +6,10 @@ export const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(129, 29, 222);
-  /* background: linear-gradient(to right, rgb(189, 139, 237), rgb(129, 29, 222)); */
+  background: linear-gradient(to right, rgb(189, 139, 237), rgb(129, 29, 222));
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   color: #fff;
-  padding: 2px 28px;
+  padding: 2px 32px;
   height: 40px;
   border-radius: 18px;
   transition: all 0.3s ease 0s;
@@ -24,7 +23,7 @@ export const Button = styled.button`
 
 
   &:disabled {
-    background-color: rgba(210, 176, 242, 0.857);
+		opacity: 0.3;
     cursor: default;
   }
 `;

@@ -56,7 +56,7 @@ const StyledTabItem = styled.li<StyledTabItemProps>`
 	span {
 		transform: translateY(0%);
 		transition: all 0.3s ease 0s;
-		opacity: 1;
+		/* opacity: 1; */
 	}
 	${props => props.active && css<StyledTabItemProps>`
 		background: linear-gradient(to bottom right,rgb(189, 139, 237), rgb(129, 29, 222));
@@ -65,6 +65,7 @@ const StyledTabItem = styled.li<StyledTabItemProps>`
 
 		span {
 		transform: translateY(-150%);
+		/* opacity: 1; */
 		}
 		svg {
 			transform: translateY(-50%);
@@ -79,7 +80,8 @@ const StyledTabItem = styled.li<StyledTabItemProps>`
 
 		span {
 		transform: translateY(-150%);
-		opacity: 0;
+		color: #fff;
+		/* opacity: 0; */
 		}
 		svg {
 			transform: translateY(-50%);

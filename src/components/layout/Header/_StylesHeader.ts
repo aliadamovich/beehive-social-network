@@ -41,7 +41,7 @@ const HeaderSearch = styled.div`
 `;
 
 const UserData = styled.div`
-	display: flex;
+	/* display: flex;
 	align-items: center;
 	gap: 10px;
 
@@ -50,12 +50,12 @@ const UserData = styled.div`
 		height: 20px;
 		transition: all 0.3s ease 0s;
 		stroke: ${theme.colors.boldFont}
-	}
+	} */
 `
 const UserName = styled.span`
-	font-size: 16px;
+	/* font-size: 16px;
 	line-height: 1;
-	font-weight: 600;
+	font-weight: 600; */
 `
 const LogOutButton = styled.button`
 	display: flex;

@@ -5,6 +5,8 @@ import { getPosts } from '../../../../../redux/selectors/profile-selectors';
 import { SendMessage } from '../../../../common/sendMessageField/SendMessage';
 import { useDispatch } from 'react-redux';
 import { addPostAC } from '../../../../../redux/reducers/profileReducer';
+import { Timeline } from 'antd';
+import styled from 'styled-components';
 
 
 
@@ -22,13 +24,29 @@ export const PostsFeed = React.memo(() => {
 	}
 	
 	return (
-		<>
+		<StyledPostSection>
 			<SendMessage 
-				updateText={(e) => { setPost(e) }} 
-				addMessage={sendPostHandler} 
-				messageText={post}/>
-
-			{posts.map(p => <PostItem message={p.body} type={p.type} key={p.id}/>)}
-		</>
+			updateText={(e) => { setPost(e) }} 
+			addMessage={sendPostHandler} 
+			messageText={post}/>
+			<StyledPostsContainer>
+				<Timeline >
+					{posts.map((p) => (
+						<Timeline.Item key={p.id} color='transparent' >
+							<PostItem message={p.body} type={p.type} />
+						</Timeline.Item>
+					))}
+				</Timeline>
+			</StyledPostsContainer>
+		</StyledPostSection>
 	)
 })
+
+const StyledPostSection = styled.div`
+	>div:nth-child(1){
+		border-top: none;
+	}
+`
+const StyledPostsContainer = styled.div`
+	padding: 0 40px;
+`

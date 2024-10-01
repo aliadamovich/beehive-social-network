@@ -5,6 +5,8 @@ import { basicSchema } from './schema'
 import { MdSaveAlt } from "react-icons/md";
 import { Description } from './ProfileInfo';
 import { ContactsType, ProfileType } from '../../../../../types/types';
+import { Checkbox, Input } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
 
 
 type ProfileFormPropsType = {
@@ -31,7 +33,8 @@ export const ProfileForm = (props: ProfileFormPropsType) => {
 
 			<div className={c.infoBlock}>
 				<Description as='label' htmlFor="aboutMe">About Me:</Description>
-				<textarea value={formik.values.aboutMe}
+				<TextArea value={formik.values.aboutMe}
+					showCount maxLength={100} style={{ height: 60, resize: 'none' }}
 					onChange={formik.handleChange}
 					onBlur={formik.handleBlur}
 					id='aboutMe'
@@ -43,11 +46,12 @@ export const ProfileForm = (props: ProfileFormPropsType) => {
 
 		<div className={c.infoBlock}>
 			<Description as='label' htmlFor="fullName">Full name:</Description>
-			<input
+				<Input
 				value={formik.values.fullName}
 				onChange={formik.handleChange}
 				onBlur={formik.handleBlur}
 				type="text" id='fullName' name='fullName'
+				showCount maxLength={20}
 				//добавляем класс с ошибкой в случае если в формик эррорс есть класс нашего инпута и он был тронут 
 				className={formik.errors.fullName && formik.touched.fullName ? `${c.error} ${c.profileInput}` : c.profileInput}
 			/>
@@ -57,7 +61,7 @@ export const ProfileForm = (props: ProfileFormPropsType) => {
 
 		<div className={c.infoBlock}>
 			<Description as='label' htmlFor="lookingForAJob">Lookin for a job: </Description>
-			<input type="checkbox" name="lookingForAJob" id="lookingForAJob"
+			<Checkbox name="lookingForAJob" id="lookingForAJob"
 				onChange={formik.handleChange}
 				onBlur={formik.handleBlur}
 			/>
@@ -65,7 +69,8 @@ export const ProfileForm = (props: ProfileFormPropsType) => {
 
 		<div className={c.infoBlock}>
 			<Description as='label' htmlFor="lookingForAJobDescription">Job Description:</Description>
-			<input
+			<Input
+				maxLength={40}
 				value={formik.values.lookingForAJobDescription}
 				onChange={formik.handleChange}
 				onBlur={formik.handleBlur}
@@ -81,7 +86,7 @@ export const ProfileForm = (props: ProfileFormPropsType) => {
 		{Object.keys(props.userProfile.contacts).map(key => {
 			return <div className={c.infoBlock} key={key}>
 				<Description as='label' htmlFor={`contacts.${key}`}>{key}:</Description>
-				<input
+				<Input
 					name={`contacts.${key}`}
 					value={formik.values.contacts[key as keyof ContactsType]}
 					onChange={formik.handleChange}

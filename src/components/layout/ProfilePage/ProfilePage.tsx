@@ -129,11 +129,12 @@ const ProfileSection = styled.section`
 			content: '';
 			position: absolute;
 			width: 100%;
-			top: 60px;
+			top: 0px;
 			left: 0;
 			right: 0;
-			height: 200px;
-			background: url(${cover}) left 55%/ cover no-repeat;
+			height: 250px;
+			background: url(${cover}) left 65%/ cover no-repeat;
+			border-radius: 8px;
 		}
 `
 
@@ -145,7 +146,7 @@ const StyledProfile = styled.div`
 	row-gap: 40px;
 	display: grid;
 	grid-template-columns: 280px auto 20%;
-	grid-template-rows: 300px auto;
+	grid-template-rows: 320px auto;
 	grid-template-areas: 
 	'user tabs tabs'
 	'photos tabsContent activity';
@@ -176,7 +177,7 @@ const TabsMenu = styled.nav`
 `
 
 const GridTabsContent = styled.div`
-	padding: 30px 20px 0;
+	padding: 20px 20px 0;
 	grid-area: tabsContent;
 	border-right: 1px solid #edf1f5;
 	border-left: 1px solid #edf1f5;

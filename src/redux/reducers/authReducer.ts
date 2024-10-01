@@ -88,22 +88,24 @@ export const LoginTC = (email: string, password: string, rememberMe: boolean): A
         handleServerError(dispatch, resp.data);
       }
 		})
-		.catch((err) => {
-			console.log(err)
-			handleNetworkError(dispatch, err);
-		})
+		.catch((err) => handleNetworkError(dispatch, err))
 	}
 }
 
 //thunkcreator для logout
 export const LogoutThunkCreator = (): AppThunk => {
 	return function (dispatch) {
+		dispatch(setAppStatusAC("loading"));
 		authAPI.logout()
-			.then(resp => {
-				if (resp.data.resultCode === 0) {
-					dispatch(setAuthProfileIdAC(null, null, null, false, null));
-				}
-			})
+      .then((resp) => {
+        if (resp.data.resultCode === ResultCodesEnum.Success) {
+          dispatch(setAppStatusAC("success"));
+          dispatch(setAuthProfileIdAC(null, null, null, false, null));
+        } else {
+          handleServerError(dispatch, resp.data);
+        }
+      })
+      .catch((err) => handleNetworkError(dispatch, err));
 	}
 }
 

@@ -38,7 +38,7 @@ export const PostItem = (props: PostItemPropsType) => {
 
 const StyledPost = styled.div`
 	align-self: start;
-	padding: 0 40px;
+	transform: translateX(-10%);
 `
 
 const StyledPostContainer = styled.div`
@@ -48,16 +48,6 @@ const StyledPostContainer = styled.div`
 `
 
 const StyledPostAvatar = styled.div`
-	position: relative;
-	&::after {
-			content: '';
-			position: absolute;
-			width: 1px;
-			height: 200%;
-			top: 110%;
-			left: 50%;
-			background: rgb(237, 241, 245);
-		}
 
 `
 

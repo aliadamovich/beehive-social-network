@@ -23,6 +23,7 @@ export const Header = () => {
 		dispatch(LogoutThunkCreator())
 	}
 	return (
+	
 		<S.Header>
 			{
 				isAuth ?
