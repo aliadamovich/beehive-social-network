@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import { usersAPI } from "../../apiDal/apiDal";
 import { UserType } from "../../types/types";
 import { AppStateType, AppThunk } from "../redux-store";
+import { setAppStatusAC } from "./appReducer";
 
 
 let initialState = {
@@ -80,8 +81,10 @@ export const toggleFollowingProgressAC = (isFetching: boolean, userId: number) =
 export const getUsersThunkCreator = ( currentPage: number, usersOnPage: number,isFriend = false): AppThunk => {
   return async (dispatch) => {
     dispatch(toggleIsFetchingAC(true));
+		dispatch(setAppStatusAC('loading'))
     const resp = await usersAPI.getUsers(currentPage, usersOnPage, isFriend);
     dispatch(toggleIsFetchingAC(false));
+		dispatch(setAppStatusAC("success"));
     dispatch(setUsersAC(resp.items));
     dispatch(getUsersQuantityAC(resp.totalCount));
   };

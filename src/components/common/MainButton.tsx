@@ -6,10 +6,11 @@ import { myTheme } from '../../styles/Theme';
 import styled from 'styled-components';
 
 type MainButtonPropsType = ButtonProps & {
-	icon: React.ReactNode
+	icon?: React.ReactNode
+	loading : boolean
 }
 
-export const MainButton = ({ children, icon, type,  ...props }: MainButtonPropsType ) => {
+export const MainButton = ({ children, icon, type, loading, ...props }: MainButtonPropsType ) => {
 	const appStatus = useSelector<AppStateType>(state => state.app.status);
 
 
@@ -17,7 +18,7 @@ export const MainButton = ({ children, icon, type,  ...props }: MainButtonPropsT
 		<StyledButton
 			type="primary"
 			icon={icon}
-			loading={appStatus === 'loading'}
+			loading={loading}
 			name='Logout'
 			{...props}
 		>{children}

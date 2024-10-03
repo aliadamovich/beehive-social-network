@@ -1,6 +1,6 @@
 export const myTheme = {
   colors: {
-    accent: " #8c30e2",
+    accent: "#8c30e2",
     accentLight: "#ae73e6",
     borderColor: "#edf1f5",
 		gradient: 'linear-gradient(to bottom right,rgb(189, 139, 237), rgb(129, 29, 222))',

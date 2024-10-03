@@ -2,12 +2,14 @@ import { NavLink, useParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Avatar } from '../../../common/Avatar';
 import { PATH } from '../../../../routes/routes';
+import { Card, List, Skeleton } from 'antd';
 
 type SideDialogItemPropsType = {
 	name: string
 	id: number
 	photo: string | null
 }
+
 
 export const SideDialogItem = (props: SideDialogItemPropsType) => {
 
@@ -17,18 +19,25 @@ export const SideDialogItem = (props: SideDialogItemPropsType) => {
 	return (
 		<StyledNavLink to={path}>
 			<StyledDialog active={Number(id) === props.id}>
-				<Avatar photo={props.photo} width='50px' height='50px' />
-				<StyledName>
-					{props.name}
-					<span>@{props.name}</span>
-				</StyledName>
+				<Skeleton loading={true} active avatar
+					title={{ style: { marginTop: 4 } }} paragraph={{ rows: 1, style: { marginTop: 12 } }}>
+
+					<Avatar photo={props.photo} width='50px' height='50px' />
+					<StyledName>
+						{props.name}
+						<span>@{props.name}</span>
+					</StyledName>
+
+				</Skeleton >
 			</StyledDialog>
+
 		</StyledNavLink>
 	)
 }
 
 const StyledNavLink = styled(NavLink)`
 	padding: 0 5px;
+	max-width: 250px;
 `
 
 const StyledDialog = styled.div<{active: boolean}>`

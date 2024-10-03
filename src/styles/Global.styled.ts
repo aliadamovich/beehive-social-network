@@ -11,7 +11,10 @@ export const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobal
 		box-sizing: border-box;
 	}
 
+	html {
+height: 100%;
 
+}
 	body {
 		margin: 0;
 		font-family: ${myTheme.fonts.main} ;
@@ -22,7 +25,7 @@ export const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobal
 		line-height: 120%;
 		color: ${myTheme.colors.mainFontColor};
 		min-width: 375px;
-
+		height: 100%;
 		&.lock {
 			overflow: hidden;
 		}

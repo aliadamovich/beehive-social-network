@@ -5,9 +5,10 @@ import { initializeAppThunkCreator } from './redux/reducers/authReducer';
 import { Loader } from './components/common/Loader/Loader';
 import { AppDispatch, AppStateType } from './redux/redux-store';
 import { ConfigProvider, Layout, theme } from 'antd';
-import { SiderBlock } from './components/layout/Navbar/Sider';
+import { SiderBar } from './components/layout/Navbar/Sider';
 import { HeaderBlock } from './components/layout/Header/HeaderBlock';
 import { myTheme } from "./styles/Theme";
+import { ErrorBanner } from './components/common/ErrorBanner';
 
 
 function App() {
@@ -37,13 +38,15 @@ function App() {
 				},
 		}}
 	>
-			<Layout>
+			<Layout hasSider
+			style={{minHeight: '100%'}}
+			>
 				{isAuth ?
 					<>
-						<SiderBlock collapsed={collapsed} />
-						<Layout>
+						<SiderBar collapsed={collapsed} />
+						<Layout style={{ marginInlineStart: collapsed ? 80 : 200, transition: 'all 0.2s ease' }}>
 							<HeaderBlock collapsed={collapsed} setCollapsed={setCollapsed} />
-							<Content style={{ margin: '24px 16px', minHeight: 280, background: colorBgContainer, borderRadius: borderRadiusLG }} >
+							<Content style={{ margin: '24px 16px', overflow: 'initial', background: colorBgContainer, borderRadius: borderRadiusLG }} >
 								<Outlet />
 							</Content>
 							<Footer style={{ textAlign: 'center', padding: '0px 24px 5px' }}>
@@ -58,6 +61,7 @@ function App() {
 						</Content>
 					</Layout>
 				}
+				<ErrorBanner />
 			</Layout>
         </ConfigProvider>
 		

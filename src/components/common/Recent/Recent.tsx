@@ -36,7 +36,7 @@ export const Recent = () => {
 			<StyledNavigation>
 				<ul>
 					{linksData.map(l => {
-						return <li key={l.id}><a href={l.href}>{l.name}</a></li>
+						return <li key={l.id}><a>{l.name}</a></li>
 					})}
 				</ul>
 			</StyledNavigation>

@@ -31,7 +31,12 @@ export const SendMessage = (props: SendMessageType) => {
 						>
 						
 					</TextArea>
-					<MainButton children={props.title} onClick={() => { props.addMessage() }} icon={<SendOutlined />} loading={props.loading}/>
+					<MainButton 
+						children={props.title} 
+						onClick={() => { props.addMessage() }} 
+						icon={<SendOutlined />}
+						loading={props.loading}
+					/>
 				</StyledMessageBody>
 
 			</StyledContent>

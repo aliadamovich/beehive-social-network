@@ -45,7 +45,6 @@ export const Dialogs = () => {
 	const DialogsArray = () => {
 		if (!currentDialog) return
 		if (currentDialog.length === 0) {
-			// return <div>Start your first dialog...</div>
 			return <EmptyDialogs text={"start your first dialog..."}/>
 		} else {
 			return currentDialog.map(d => <SingleDialog
@@ -58,14 +57,6 @@ export const Dialogs = () => {
 		}
 	}
 	
-	
-	// const messagesArray = currentDialog?.map(d => <SingleDialog
-	// 	text={d.body}
-	// 	key={d.id}
-	// 	userName={d.senderName}
-	// 	photo={null}
-	// 	fromMe={d.senderId !== currentDialogUserId}
-	// />)
 
 	return (
 			<StyledMessagesContainer>

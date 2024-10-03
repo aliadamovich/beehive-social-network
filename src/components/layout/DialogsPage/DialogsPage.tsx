@@ -2,7 +2,6 @@ import { Search } from '../../common/Search/Search';
 import { Container } from '../../common/Container';
 import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
-import { Dialogs } from './dialogs/Dialogs';
 import { SideDialogs } from './side-dialogs/SideDialogs';
 
 export const DialogsPage = () => {
