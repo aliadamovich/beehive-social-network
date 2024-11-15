@@ -31,14 +31,16 @@ export const StyledGridItem = styled.div`
 	& > img {
 		width: 100%;
 		height: 100%;
+		object-fit: cover;
+		aspect-ratio: 4 / 5;
 		transition: all 0.3s ease 0s;
 	}
 
 	&:hover {
-		transition: all 0.3s ease 0s;
+		/* transition: all 0.3s ease 0s;
 
 		img {
 			scale: 1.1;
-		}
+		} */
 	}
 `

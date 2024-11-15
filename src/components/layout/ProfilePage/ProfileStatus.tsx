@@ -19,11 +19,11 @@ export const ProfileStatus = (props: ProfileStatusPropsType) => {
 	const [editMode, setEditMode] = useState(false)
 	const [status, setStatus] = useState(props.status)
 	const { Search } = Input;
+
 	//исп-ем хук чтобы он подгрузил статус когда в пропсах он придет (указываем зависимость - )
 	useEffect(() => { setStatus(props.status) }, [props.status])
 
 	const changeEditMode = () => {
-		
 		if(props.isOwner) setEditMode(!editMode)
 	}
 	
@@ -52,7 +52,7 @@ export const ProfileStatus = (props: ProfileStatusPropsType) => {
 					?	<>
 						<Status onDoubleClick={changeEditMode}>{status}</Status>
 							{props.isOwner && 
-								<MainButton icon={<EditOutlined />} onClick={onButtonClickHandler} />
+								<MainButton icon={<EditOutlined />} onClick={onButtonClickHandler} loading={false}/>
 							}
 						</>
 					: <Status>No status...</Status> }
@@ -85,6 +85,13 @@ const StatusWrapper = styled.div`
 	display: flex;
 	gap: 5px;
 	align-items: center;
+
+	button {
+		background-color: ${myTheme.colors.backgroundLayout};
+		svg{
+			color: ${myTheme.colors.mainFontColor};
+		}
+	}
 `
 const Status = styled.div`
 	display: inline-block;

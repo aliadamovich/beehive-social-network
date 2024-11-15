@@ -11,7 +11,7 @@ import { Loader } from '../../../../common/Loader/Loader'
 
 
 
-export const FollowedFriends = () => {
+export const FollowedFriends = ({isOwner} : {isOwner: boolean}) => {
 
 	const users = useSelector(obtainUsers)
 	const totalUsers = useSelector(getTotalUsers)
@@ -24,12 +24,16 @@ export const FollowedFriends = () => {
 	const toggleFollowUsers = (userId: number) => { dispatch(followUsersThunkCreator(userId)) }
 	const [activePage, setActivePage] = useState(1)
 
-	useEffect(() => { dispatch(getUsersThunkCreator(currentPage, usersOnPage, true)) }, 
-		[currentPage, usersOnPage, dispatch])
+	useEffect(() => { 
+		if (!isOwner) return;
+		dispatch(getUsersThunkCreator(currentPage, usersOnPage, true)) 
+	}, [currentPage, usersOnPage, dispatch]);
 
 	const changeCurrentPage = (pageNumber: number) => {
 		dispatch(getUsersThunkCreator(pageNumber, usersOnPage, true))
 	}
+
+	if (!isOwner) return <div>No friends yet...</div>
 
 	return (
 

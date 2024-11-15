@@ -1,6 +1,9 @@
 import styled, { css } from 'styled-components';
 import { Avatar } from '../../../common/Avatar';
 import { myTheme } from '../../../../styles/Theme';
+import { Skeleton } from 'antd';
+import { useSelector } from 'react-redux';
+import { AppStateType } from '../../../../redux/redux-store';
 
 type SingleDialogPropsType = {
 	text: string
@@ -10,27 +13,39 @@ type SingleDialogPropsType = {
 }
 
 export const SingleDialog = (props: SingleDialogPropsType) => {
-
+	const appStatus = useSelector<AppStateType>(state => state.app.status);
+	
 	return(
-		<StyledMessage fromMe={props.fromMe}>
+		<StyledMessage fromMe={!props.fromMe}>
+
+			<StyledSkeleton loading={appStatus === 'loading'} active 
+				fromMe={props.fromMe}
+				paragraph={{ rows: 2, style: { marginTop: 12} }}
+				avatar={{ style: { width: '50px', height: '50px' } }}
+				title={{ style: { marginTop: 4, } }} 
+				style={{ }}
+				>
+
 			<Avatar photo={props.photo} width={'50px'} height={'50px'} />
 			<StyledTextBox fromMe={props.fromMe}>
 				<StyledName>{props.userName}</StyledName>
 				<p>{props.text}</p>
 			</StyledTextBox>
+
+			</StyledSkeleton>
 		</StyledMessage>
 	)
 }
 
 const StyledMessage = styled.div<{ fromMe: boolean }>`
-	display: flex;
+	 display: flex;
 	flex-direction: row;
 	align-items: center;
 	gap: 25px;
 	padding: 8px 0;
-	>:first-child{
+	/* >:first-child{
 		flex: 0 0 50px;
-	}
+	} */
 	${props => props.fromMe && css<{ fromMe: boolean }>`
 		flex-direction: row-reverse;
 	`}
@@ -75,3 +90,22 @@ const StyledName = styled.span`
 	margin-bottom: 5px;
 	display: inline-block;
 `
+
+
+const StyledSkeleton = styled(Skeleton) <{ fromMe: boolean }>`
+	display: flex;
+	gap: 25px;
+	align-items: center;
+	flex-direction: ${ ({fromMe}) => (fromMe ? 'row-reverse' : "row")};
+
+	.ant-skeleton-header {
+		padding: 0;
+	}
+	.ant-skeleton-content {
+		display: flex;
+		flex-direction: column;
+	}
+	.ant-skeleton-title {
+		align-self: ${ ({ fromMe }) => (fromMe ? 'flex-end' : "flex-start")};
+	}
+`;

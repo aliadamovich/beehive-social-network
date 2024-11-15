@@ -12,19 +12,19 @@ let initialState = {
 			"userId": 1,
 			"id": 1,
 			"type": "replied",
-			"body": "А кому сейчас легко?"
+			"body": "Congrats with your new job, dear!"
 		},
 		{
 			"userId": 1,
 			"id": 2,
 			"type": "posted a new activity comment",
-			"body": "Хозяйка не дает кушоц...",
+			"body": "Life is too short to be sorry..."
 		},
 		{
 			"userId": 1,
 			"id": 3,
 			"type": "posted a new comment",
-			"body": "Обожрался шерсти...Блевал",
+			"body": "Well... this is my first post here",
 		},
 		{
 			"userId": 1,
@@ -83,30 +83,58 @@ const setStatusAC = (status: string) => ({ type: 'SET-STATUS', status} as const)
 const setPhotoAC = (photos: PhotosType) => ({ type: 'SET-PROFILE-PHOTO', photos} as const)
 
 //* Thunks
-export const getUserProfileThunkCreator = (profileId: number): AppThunk => {
+export const getUserProfileThunkCreator = (profileId: number): AppThunk<Promise<void>> => {
   return async (dispatch) => {
-    try {
-			dispatch(setAppStatusAC('loading'))
-			const resp = await profileAPI.setProfile(profileId);
-      dispatch(setUserProfileAC(resp.data));
-			dispatch(setAppStatusAC("success"));
-		} catch (error) {
-			handleNetworkError(dispatch, error)
-		}
+		dispatch(setAppStatusAC("loading"));
+		profileAPI.setProfile(profileId)
+			.then((resp) => {
+				dispatch(setUserProfileAC(resp.data));
+				return resp.data.userId
+			})
+			.then((userId) => {
+				dispatch(getStatusThunkCreator(userId))
+				dispatch(setAppStatusAC("success"))
+			})
+         
+
+
+		
+		  //  try {
+      //    dispatch(setAppStatusAC("loading"));
+      //    const resp = await profileAPI.setProfile(profileId);
+      //    dispatch(setUserProfileAC(resp.data));
+      //    dispatch(setAppStatusAC("success"));
+      //  } catch (error) {
+      //    handleNetworkError(dispatch, error as { message: string });
+      //  }
   };
 };
 
-export const getStatusThunkCreator = (profileId: number): AppThunk => {
+export const getStatusThunkCreator = (profileId: number): AppThunk<Promise<void>> => {
   return async (dispatch) => {
-    const resp = await profileAPI.getStatus(profileId);
-    dispatch(setStatusAC(resp.data));
+ 
+  //  dispatch(setAppStatusAC("loading"));
+   return profileAPI.getStatus(profileId).then((resp)=> {
+   dispatch(setStatusAC(resp.data));
+  //  dispatch(setAppStatusAC("success"));
+	 })
+
+ 
+    // try {
+    //   dispatch(setAppStatusAC("loading"));
+    //   const resp = await profileAPI.getStatus(profileId);
+    //   dispatch(setStatusAC(resp.data));
+    //   dispatch(setAppStatusAC("success"));
+    // } catch (error) {
+    //   handleNetworkError(dispatch, error as { message: string });
+    // }
   };
 };
 
 export const updateStatusThunkCreator = (status: string): AppThunk => {
 	return async (dispatch) => {
 		const resp = await profileAPI.updateStatus(status)
-		if (resp.data.resultCode === 0) {
+		if (resp.data.resultCode === ResultCodesEnum.Success) {
 			dispatch(setStatusAC(status))
 		}
 	}
@@ -115,10 +143,18 @@ export const updateStatusThunkCreator = (status: string): AppThunk => {
 
 export const saveProfilePhotoThunkCreator = (file: any): AppThunk => {
   return async (dispatch) => {
-    const resp = await profileAPI.setProfilePhoto(file);
-    if (resp.data.resultCode === 0) {
-      dispatch(setPhotoAC(resp.data.data.photos));
-    }
+		try {
+			dispatch(setAppStatusAC("loading"));
+			const resp = await profileAPI.setProfilePhoto(file);
+      if (resp.data.resultCode === ResultCodesEnum.Success) {
+        dispatch(setPhotoAC(resp.data.data.photos));
+				dispatch(setAppStatusAC("success"));
+      } else {
+				handleServerError(dispatch, resp.data)
+			}
+		} catch (error) {
+			handleNetworkError(dispatch, error as {message: string})
+		}
   };
 };
 
@@ -136,7 +172,7 @@ export const saveProfileInfoTC = (formData: ProfileType): AppThunk => {
           handleServerError(dispatch, resp.data);
         }
 			} catch (error) {
-				handleNetworkError(dispatch, error)
+				handleNetworkError(dispatch, error as { message: string });
 			}
 		}
   };

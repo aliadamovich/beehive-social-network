@@ -10,11 +10,11 @@ export const getTotalUsers = (state: AppStateType) => {
 }
 
 export const getUsersOnPage = (state: AppStateType) => {
-	return state.usersPage.usersOnPage;
+	return state.usersPage.searchParams.count;
 }
 
 export const getCurrentPage = (state: AppStateType) => {
-	return state.usersPage.currentPage;
+	return state.usersPage.searchParams.page;
 }
 
 export const getIsFetching = (state: AppStateType) => {
@@ -28,3 +28,7 @@ export const getFollowingInProgress = (state: AppStateType) => {
 // export const getUsersSuperSelector = createSelector(obtainUsers, (users) => {
 // 	return users.filter(u => true)
 // })
+
+export const getSearchParams = (state: AppStateType) => {
+	return state.usersPage.searchParams
+}

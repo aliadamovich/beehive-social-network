@@ -20,6 +20,7 @@ export const Dialogs = () => {
 	const {id} = useParams();
 	const currentDialogUserId = Number(id);
 
+
 	useEffect(() => {
 		dispatch(getAllDialogsTC(currentDialogUserId))
 	}, [id])
@@ -79,19 +80,18 @@ export const Dialogs = () => {
 }
 
 const StyledMessagesContainer = styled.div`
+	overflow: auto;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	position: relative;
 	flex: 1 1 auto;
-	padding: 40px 40px 0 40px;
 	border-top: 1px solid ${myTheme.colors.borderColor};
-	height: calc(100vh - 120px);
-	overflow: scroll;
+	
 
 	>*:not(:last-child) {
 		margin-bottom: 10px;
 	}
-
 	&::-webkit-scrollbar {
 		display: none;
 }
@@ -99,4 +99,7 @@ const StyledMessagesContainer = styled.div`
 
 const StyledMessages = styled.div`
 	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
 `

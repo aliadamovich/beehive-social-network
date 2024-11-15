@@ -4,7 +4,6 @@ export const myTheme = {
     accentLight: "#ae73e6",
     borderColor: "#edf1f5",
 		gradient: 'linear-gradient(to bottom right,rgb(189, 139, 237), rgb(129, 29, 222))',
-
     mainFontColor: "#4f515b",
     boldFontColor: "#111010",
 		whiteFontColor: '#fff',

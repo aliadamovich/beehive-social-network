@@ -7,17 +7,19 @@ import { Avatar } from '../../common/Avatar';
 import styled from 'styled-components';
 import { myTheme } from '../../../styles/Theme';
 import { MainButton } from '../../common/MainButton';
+import { AppStateType } from '../../../redux/redux-store';
+import { useSelector } from 'react-redux';
 
 
 type UserPropsType = {
 	u: UserType
 	toggleFollowUsers: (userId: number) => void
 	followingInProgress: number[]
-	appStatus: AppStatusType
 }
 
-export const User = ({ u, toggleFollowUsers, followingInProgress, appStatus }: UserPropsType) => {
-
+export const User = ({ u, toggleFollowUsers, followingInProgress }: UserPropsType) => {
+	const appStatus = useSelector<AppStateType, AppStatusType>(state => state.app.status);
+	
 	return (
 		<>
 			<Card loading={appStatus === 'loading'} style={{overflow: 'hidden'}}
@@ -85,34 +87,3 @@ const StyledStatus = styled.div`
 
 `
 
-
-
-
-
-
-
-
-
-//original card
-// export const User = ({ u, toggleFollowUsers, followingInProgress }: UserPropsType) => {
-// 	return (
-// 		<div className={`${c.users__card} ${c.card}`} >
-// 			<NavLink to={'/profile/' + u.id} className={c.card__image}>
-// 				<img src={u.photos.small !== null ? u.photos.small : userPhoto} alt="" />
-// 			</NavLink>
-// 			<div className={c.card__name}>{u.name}</div>
-// 			<div className={c.card__location}>
-// 				<span className={c.card__city}>{'u.location.city'}, </span>
-// 				<span className={c.card__country}>{'u.location.country'}</span>
-// 			</div>
-// 			<div className={c.card__status}>{u.status}</div>
-// 			<Button
-// 				disabled={followingInProgress.some(el => el === u.id)
-// 				}
-// 				onClick={() => { toggleFollowUsers(u.id) }}
-// 				className={u.followed ? c.followedBtn : c.unfollowedBtn}>
-// 				{u.followed ? 'Unfollow' : 'Follow'}
-// 			</Button>
-// 		</div>
-// 	)
-// }

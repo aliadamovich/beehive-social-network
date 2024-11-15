@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getStatusThunkCreator, getUserProfileThunkCreator, saveProfileInfoTC, saveProfilePhotoThunkCreator, updateStatusThunkCreator } from "../../../redux/reducers/profileReducer";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { getStatusThunkCreator, getUserProfileThunkCreator, saveProfilePhotoThunkCreator, updateStatusThunkCreator } from "../../../redux/reducers/profileReducer";
+import { useParams, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { withAuthRedirect } from "../../../hoc/WithAuthRedirect";
 import { useSelector } from "react-redux";
 import { getAuthorizedLoginId } from "../../../redux/selectors/auth-selectors";
@@ -15,13 +15,17 @@ import { PhotoGrid } from '../GalleryPage/PhotoGrid';
 import { ProfileCounter } from "./ProfileCounter";
 import { FollowedFriends } from "./tabsContent/followedFriends/FollowedFriends";
 import { ProfileInfoSection } from "./tabsContent/profileInfo/ProfileInfoSection";
-import { AppDispatch } from "../../../redux/redux-store";
+import { AppDispatch, AppStateType } from "../../../redux/redux-store";
 import { getProfile, getStatus } from "../../../redux/selectors/profile-selectors";
-import { ProfileType } from "../../../types/types";
 import { getPhotoGrid } from "../../../redux/selectors/photogrid-selectors";
 import { Activity } from "./Activity/Activity";
 import { PostsFeed } from "./tabsContent/postsFeed/PostsFeed";
 import { myTheme } from "../../../styles/Theme";
+import { PATH } from "../../../routes/routes";
+import { ModalPhotoSlider } from "../GalleryPage/modalPhotoSlider/ModalPhotoSlider";
+import logo from './../../../assets/images/logo_login.svg'
+import { Loader } from "../../common/Loader/Loader";
+import { ProfileSkeleton } from "./ProfilePageSkeleton";
 
 
 export const ProfilePage = () => {
@@ -35,16 +39,18 @@ export const ProfilePage = () => {
 	const userProfile = useSelector(getProfile);
 	const status = useSelector(getStatus);
 	const authorizedLoginId = useSelector(getAuthorizedLoginId);
-	const photoGrid = useSelector(getPhotoGrid);
+	const appStatus = useSelector<AppStateType>(state => state.app.status);
+
+	let profileId = params.userId ? +params.userId : authorizedLoginId !== null ? authorizedLoginId : 0;
+	const isOwner = !params.userId;
 
 	//вынесли общую логику в отдельный метод чтобы не дублировать код
 	const refreshProfile = () => {
 		// данное выражение проверяет, если в параметрах роута ничего нет то профиьID равен авторизованному, 
 		//а если есть, профиль ID равен ему (тк authorizedLoginId мб null пришлось внести доп проверку, чтобы тс не ругался)
-		let profileId = params.userId ? +params.userId : authorizedLoginId !== null ? authorizedLoginId : 0;
-
 		dispatch(getUserProfileThunkCreator(profileId));
-		dispatch(getStatusThunkCreator(profileId));
+		// await dispatch(getStatusThunkCreator(profileId));
+		// setloading(false)
 	}
 
 	//фиксит багу при переходе со страницы другого польз-ля на меня (не обновлялись данные - потому что компонента не перерисовывалась)
@@ -59,66 +65,72 @@ export const ProfilePage = () => {
 	}
 
 
-
-	//доделать логику по открытию фото галереи
-	const openPhotoGallery = () => {}
-
 	const renderTabContent = () => {
 		switch (activeTab) {
 			case 'Activity':
-				return <PostsFeed />
+				return <PostsFeed isOwner={isOwner} />
 			case 'Profile':
 				return <ProfileInfoSection />
 			case 'Friends':
-				return <FollowedFriends />
-			case 'Groups':
-				return <div>Here will be Groups</div>
+				return <FollowedFriends isOwner={isOwner} />
 			case 'Forums':
 				return <div>Here will be Forums</div>
-			case 'Media':
-				return <div>Here will be Media</div>
 			default:
-				return <PostsFeed/>
+				return <PostsFeed isOwner={!isOwner} />
 		}
 	}
 
+	//если мы не авторизованы то с пути /profile отправляем на страницу логина
+	if (profileId === 0) {
+		return <Navigate to={PATH.LOGIN} />
+	}
 
+	if (appStatus === "loading") {
+		return <ProfileSkeleton/>
+	}
+	
 	return (
 		<ProfileSection>
 
+
+			<StyledProfileBackground />
 			<Container>
 
-				{/* <StyledProfile> */}
+				<StyledProfileTop>
+					<GridProfileUser>
+						<ProfilePhoto userProfile={userProfile} onPhotoChoose={onPhotoChoose} isOwner={isOwner} />
+						<ProfileStatus status={status} updateStatus={updateStatus} isOwner={isOwner} />
+					</GridProfileUser>
 
-					<StyledProfileTop>
-						<GridProfileUser>
-							<ProfilePhoto userProfile={userProfile} onPhotoChoose={onPhotoChoose} isOwner={!params.userId} />
-							<ProfileStatus status={status} updateStatus={updateStatus} isOwner={!params.userId} />
-						</GridProfileUser>
-	
-						<TabsMenu>
-							<ul>
-								<ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-							</ul>
-						</TabsMenu>
-					</StyledProfileTop>
+					<TabsMenu>
+						<ul>
+							<ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+						</ul>
+					</TabsMenu>
+				</StyledProfileTop>
 
-					<StyledProfileBottom>
-						<GridProfileGallery>
-							<ProfileCounter />
-							<PhotoGrid photoGrid={photoGrid} openPhoto={openPhotoGallery}/>
-						</GridProfileGallery>
-	
-						<GridTabsContent>{renderTabContent()}</GridTabsContent>
-	
-						<GridProfileActivity>
-							<Activity/>
-						</GridProfileActivity>
-					</StyledProfileBottom>
+				<StyledProfileBottom>
 
-				{/* </StyledProfile> */}
+					<GridProfileGallery>
+						{isOwner ?
+							<>
+								<ProfileCounter />
+								<ModalPhotoSlider />
+							</>
+							: <div>No photos yet...</div>
+						}
+					</GridProfileGallery>
+
+					<GridTabsContent>{renderTabContent()}</GridTabsContent>
+
+					<GridProfileActivity>
+						{isOwner ? <Activity /> : <div>No activity yet...</div>}
+					</GridProfileActivity>
+				</StyledProfileBottom>
+
 
 			</Container>
+
 		</ProfileSection>
 	)
 }
@@ -127,6 +139,12 @@ export const ProfilePageContainer = withAuthRedirect(ProfilePage);
 
 
 const ProfileSection = styled.section`
+	
+`
+
+const StyledProfileBackground = styled.div`
+	width: 100%;
+	height: 100%;
 	position: relative;
 		&::before{
 			content: '';
@@ -136,16 +154,16 @@ const ProfileSection = styled.section`
 			left: 0;
 			right: 0;
 			height: 250px;
-			background: url(${cover}) left 65%/ cover no-repeat;
+			/* background: url(${cover}) left 65%/ cover no-repeat; */
+			background: 
+				url(${logo}) no-repeat 95% 5%,
+				linear-gradient(to bottom right, #8c30e2, #ae73e6 20%, #dfc4f9);
 			border-radius: 8px;
 		}
-`
-
-const StyledProfile = styled.div`
 
 `
 
-const StyledProfileTop = styled.div`
+export const StyledProfileTop = styled.div`
 	display: grid;
 	grid-template-columns: 280px auto;
 	padding-top: 20px;
@@ -158,7 +176,7 @@ const StyledProfileTop = styled.div`
 	}
 `
 
-const StyledProfileBottom = styled.div`
+export const StyledProfileBottom = styled.div`
 	display: grid;
 	grid-template-columns: 280px auto 20%;
 	margin-top: 20px;
@@ -171,7 +189,7 @@ const StyledProfileBottom = styled.div`
 	}
 `
 
-const GridProfileUser = styled.div`
+export const GridProfileUser = styled.div`
 	text-align: center;
 	position: relative;
 	@media ${myTheme.media[950]} {
@@ -193,10 +211,12 @@ const GridProfileGallery = styled.div`
 	}
 `
 
-const TabsMenu = styled.nav`
+export const TabsMenu = styled.nav`
 	display: flex;
 	flex-direction: column;
 	justify-content: end;
+	position: relative;
+	z-index: 1;
 	ul {
 		display: flex;
 		gap: 20px;

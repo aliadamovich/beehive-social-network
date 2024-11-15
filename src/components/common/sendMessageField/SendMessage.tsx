@@ -51,6 +51,7 @@ const StyledSendMessage = styled.div`
 	width: 100%;
 	padding-top: 20px;
 	padding-bottom: 30px;
+	background-color: ${myTheme.colors.whiteBackground};
 `
 const StyledContent = styled.div`
 	padding: 0 20px;

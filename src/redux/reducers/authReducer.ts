@@ -2,15 +2,17 @@ import { authAPI, profileAPI, ResultCodesEnum } from "../../apiDal/apiDal";
 import { PhotosType } from "../../types/types";
 import { handleNetworkError, handleServerError } from "../../utils/errorHandlers";
 import { AppThunk } from "../redux-store";
-import { setAppErrorAC, setAppStatusAC } from "./appReducer";
+import { setAppStatusAC } from "./appReducer";
+
 
 let initialState = {
 	initialized: false,
+	isAuth: false,
+
 	userId: null as number | null, 
 	login: null as string | null, 
-	email: null as string | null, 
-	isAuth: false,
-	photos: null as PhotosType | null
+	email: null as string | null,
+	photos: null as PhotosType | null,
 }
 
 export const authReducer = (state = initialState, action: ActionsType): InitialStateType => {
@@ -40,46 +42,33 @@ const setAuthProfileIdAC = (userId: number | null, email: string | null, login: 
   } as const);
 
 
+
 	//* Thunks
-//инициализация приложения
-export const initializeAppThunkCreator = (): AppThunk => {
-  return (dispatch) => {
-   return dispatch(getAuthUserDataThunkCreator())
-    .then(() => {
-      dispatch(setInitializedSuccessAC());
-    });
-  };
-};
-
 //auth.me
-export const getAuthUserDataThunkCreator = (): AppThunk<Promise<void>> => {
-  return (dispatch) => {
-    return authAPI
-      .me()
-      .then((resp) => {
-        if (resp.data.resultCode === ResultCodesEnum.Success) {
-          const { id, email, login } = resp.data.data; //деструктуризируем полученный с сервера объект
-          profileAPI.setProfile(id).then((profileResp) => {
-            //добавила асинхронный запрос профиля для получения фото для хэдера
-            dispatch(
-              setAuthProfileIdAC(
-                id,
-                email,
-                login,
-                true,
-                profileResp.data.photos
-              )
-            ); //добавляем флаг isAuth и фото поьзователя
-          });
-        } else {
-          // handleServerError(dispatch, resp.data)
-        }
-      })
-      .catch((err) => {});
-  };
+export const getMeTC = (): AppThunk<Promise<void>> => {
+return async(dispatch) => {
+  try {
+		// dispatch(setAppStatusAC("loading"));
+  	const resp = await authAPI.me();
+  	if (resp.data.resultCode === ResultCodesEnum.Success) {
+  		const { id, email, login } = resp.data.data; //деструктуризируем полученный с сервера объект
+  		const profileResp = await profileAPI.setProfile(id) //загружаем данные профайла с сервера по полученному id
+  			//добавила асинхронный запрос профиля для получения фото для хэдера
+  		dispatch(setAuthProfileIdAC( id, email, login, true, profileResp.data.photos )); //добавляем флаг isAuth и фото поьзователя
+		} else {
+  		handleServerError(dispatch, resp.data)
+  	}
+  } catch (error) {
+  		handleNetworkError(dispatch, error as { message: string });
+  }
+  	finally {
+  		dispatch(setInitializedSuccessAC())
+			// dispatch(setAppStatusAC("success"));
+  	}; //перенеса инициализацию сюда
+  }
 };
 
-//thunkcreator для login
+//TC для login
 export const LoginTC = (email: string, password: string, rememberMe: boolean): AppThunk => {
 	return function (dispatch) {
 		dispatch(setAppStatusAC('loading'))
@@ -87,7 +76,7 @@ export const LoginTC = (email: string, password: string, rememberMe: boolean): A
 		.then(resp => {
 			if (resp.data.resultCode === ResultCodesEnum.Success) {
         dispatch(setAppStatusAC("success"));
-        dispatch(getAuthUserDataThunkCreator());
+        dispatch(getMeTC());
       } else {
         handleServerError(dispatch, resp.data);
       }
@@ -100,8 +89,7 @@ export const LoginTC = (email: string, password: string, rememberMe: boolean): A
 export const LogoutThunkCreator = (): AppThunk<Promise<void>> => {
   return function (dispatch) {
     dispatch(setAppStatusAC("loading"));
-    return authAPI
-      .logout()
+    return authAPI.logout()
       .then((resp) => {
         if (resp.data.resultCode === ResultCodesEnum.Success) {
           dispatch(setAppStatusAC("success"));

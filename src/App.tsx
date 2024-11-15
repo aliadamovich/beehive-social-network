@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { initializeAppThunkCreator } from './redux/reducers/authReducer';
+import { getMeTC } from './redux/reducers/authReducer';
 import { Loader } from './components/common/Loader/Loader';
 import { AppDispatch, AppStateType } from './redux/redux-store';
 import { ConfigProvider, Layout, theme } from 'antd';
@@ -14,15 +14,13 @@ import { ErrorBanner } from './components/common/ErrorBanner';
 function App() {
 	const dispatch = useDispatch<AppDispatch>()
 	const initialized = useSelector<AppStateType>(state => state.auth.initialized);
-	const isAuth = useSelector<AppStateType>(state => state.auth.isAuth);
+	const appStatus = useSelector<AppStateType>(state => state.app.status);
 	const [collapsed, setCollapsed] = useState(false);
 
 	const { Content, Footer } = Layout;
 	const {token: { colorBgContainer, borderRadiusLG },} = theme.useToken();
 
-	useEffect(() => {
-		dispatch(initializeAppThunkCreator());
-	}, [dispatch]);
+	useEffect(() => {dispatch(getMeTC()) }, [dispatch]);
 
 	if (!initialized) {
 		return <Loader />;
@@ -30,42 +28,73 @@ function App() {
 
 	return (
 
-
-		 <ConfigProvider
+		<ConfigProvider
 			theme={{
 				token: {
-						fontFamily: `${myTheme.fonts.main}`,
+					fontFamily: `${myTheme.fonts.main}`,
+					colorText: `${myTheme.colors.mainFontColor}`
 				},
-		}}
-	>
-			<Layout hasSider
-			style={{minHeight: '100%'}}
-			>
-				{isAuth ?
-					<>
-						<SiderBar collapsed={collapsed} />
-						<Layout style={{ marginInlineStart: collapsed ? 80 : 200, transition: 'all 0.2s ease' }}>
-							<HeaderBlock collapsed={collapsed} setCollapsed={setCollapsed} />
-							<Content style={{ margin: '24px 16px', overflow: 'initial', background: colorBgContainer, borderRadius: borderRadiusLG }} >
-								<Outlet />
-							</Content>
-							<Footer style={{ textAlign: 'center', padding: '0px 24px 5px' }}>
-								Beehive ©{new Date().getFullYear()} Created by Alesya Adamovich
-							</Footer>
-						</Layout>
-					</>
-					:
-					<Layout>
+			}}>
+
+			<Layout hasSider style={{ minHeight: '100%' }} >
+				<SiderBar collapsed={collapsed} />
+				<Layout style={{ marginInlineStart: collapsed ? 80 : 200, transition: 'all 0.2s ease' }}>
+					<HeaderBlock collapsed={collapsed} setCollapsed={setCollapsed} />
+					<Content style={{ margin: '24px 16px', overflow: 'initial', background: colorBgContainer, borderRadius: borderRadiusLG }} >
+						<Outlet />
+					</Content>
+					<Footer style={{ textAlign: 'center', padding: '0px 24px', height: '22px' }}>
+						Beehive ©{new Date().getFullYear()} Created by Alesya Adamovich
+					</Footer>
+				</Layout>
+				{/* <Layout>
 						<Content>
 							<Outlet />
 						</Content>
-					</Layout>
-				}
+					</Layout> */}
 				<ErrorBanner />
+				<div >{appStatus === "loading" && <Loader />}</div>
 			</Layout>
-        </ConfigProvider>
-		
+			
+		</ConfigProvider>
 
+
+//компонент до рефаторинга
+	// 	 <ConfigProvider
+	// 		theme={{
+	// 			token: {
+	// 					fontFamily: `${myTheme.fonts.main}`,
+	// 					colorText: `${myTheme.colors.mainFontColor}`
+	// 			},
+	// 	}}
+	// >
+	// 		<Layout hasSider
+	// 		style={{minHeight: '100%'}}
+	// 		>
+	// 			{isAuth ?
+	// 				<>
+	// 					<SiderBar collapsed={collapsed} />
+	// 					<Layout style={{ marginInlineStart: collapsed ? 80 : 200, transition: 'all 0.2s ease' }}>
+	// 						<HeaderBlock collapsed={collapsed} setCollapsed={setCollapsed} />
+	// 						<Content style={{ margin: '24px 16px', overflow: 'initial', background: colorBgContainer, borderRadius: borderRadiusLG }} >
+	// 							<Outlet />
+	// 						</Content>
+	// 						<Footer style={{ textAlign: 'center', padding: '0px 24px', height: '22px' }}>
+	// 							Beehive ©{new Date().getFullYear()} Created by Alesya Adamovich
+	// 						</Footer>
+	// 					</Layout>
+	// 				</>
+	// 				:
+	// 				<Layout>
+	// 					<Content>
+	// 						<Outlet />
+	// 					</Content>
+	// 				</Layout>
+	// 			}
+	// 			<ErrorBanner />
+	// 		</Layout>
+  //       </ConfigProvider>
+		
 	);
 };
 

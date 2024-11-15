@@ -28,3 +28,10 @@ code {
 	height: 100%;
 	
 }
+
+:root {
+	--header-height: 64px;
+	--content-margin: 48px;
+	--footer-height: 22px;
+	--search-height: 60px;
+}

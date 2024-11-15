@@ -3,12 +3,14 @@ import { MenuFoldOutlined, MenuUnfoldOutlined, PoweroffOutlined } from '@ant-des
 import { useDispatch, useSelector } from 'react-redux';
 import { LogoutThunkCreator } from '../../../redux/reducers/authReducer';
 import { getLogin, getAuthUserPhotos } from '../../../redux/selectors/header-selectors';
-import { AppDispatch } from '../../../redux/redux-store';
+import { AppDispatch, AppStateType } from '../../../redux/redux-store';
 import { Avatar } from '../../common/Avatar';
 import { FlexWrapper } from '../../common/FlexWrapper';
 import { MainButton } from '../../common/MainButton';
 import { IoLogOutOutline } from 'react-icons/io5';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { PATH } from '../../../routes/routes';
 
 type HeaderPropsType ={
 	collapsed: boolean
@@ -23,6 +25,7 @@ export const HeaderBlock = ({ collapsed, setCollapsed}: HeaderPropsType) => {
 	const photos = useSelector(getAuthUserPhotos)
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch<AppDispatch>()
+	const isAuth = useSelector<AppStateType>(state => state.auth.isAuth);
 
 	const onLogoutHandler = () => {
 		setLoading(true)
@@ -50,7 +53,15 @@ export const HeaderBlock = ({ collapsed, setCollapsed}: HeaderPropsType) => {
 					<span>{login}</span>
 					{photos?.small && <Avatar photo={photos.small} />}
 				</FlexWrapper>
-					<MainButton onClick={onLogoutHandler} icon={<PoweroffOutlined />} children={'Log out'} loading={loading}/>
+
+				{isAuth ?
+					<MainButton onClick={onLogoutHandler} icon={<PoweroffOutlined />} children={'Log out'} loading={loading} />
+					:
+					<Link to={PATH.LOGIN}>
+						<Button variant="link">Login</Button>
+					</Link>
+				}
+				
 			</div>
 		</>
 		</Header>

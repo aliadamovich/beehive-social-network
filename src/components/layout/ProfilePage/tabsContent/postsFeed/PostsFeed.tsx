@@ -11,7 +11,7 @@ import { myTheme } from '../../../../../styles/Theme';
 
 
 
-export const PostsFeed = React.memo(() => {
+export const PostsFeed = React.memo(({isOwner}: {isOwner: boolean}) => {
 	const [post, setPost] = useState('');
 	const posts = useSelector(getPosts);
 	const dispatch = useDispatch()
@@ -21,30 +21,34 @@ export const PostsFeed = React.memo(() => {
 			dispatch(addPostAC(post))
 			setPost('')
 		}
-		
 	}
+
+	const items = posts.map((p) => ({
+		key: p.id,
+		color: `${myTheme.colors.accentLight}`,
+		style: { padding: '0' }, 
+		children: <PostItem message={p.body} type={p.type} />,
+	}));
 	
 	return (
 		<StyledPostSection>
-			<SendMessage 
-				updateText={(e) => { setPost(e) }} 
-				addMessage={sendPostHandler} 
-				messageText={post}
-				showCount={true}
-				maxLength={100}
-				title='Send Post'
-			/>
-			<StyledPostsContainer>
-				<Timeline >
-					{posts.map((p) => (
-						<Timeline.Item key={p.id} color={`${myTheme.colors.accentLight}`} 
-							style={{padding: '0'}}
-						>
-							<PostItem message={p.body} type={p.type} />
-						</Timeline.Item>
-					))}
-				</Timeline>
-			</StyledPostsContainer>
+			{isOwner ?
+			<>
+				<SendMessage 
+					updateText={(e) => { setPost(e) }} 
+					addMessage={sendPostHandler} 
+					messageText={post}
+					showCount={true}
+					maxLength={100}
+					title='Send Post'
+					loading={false}
+				/>
+				<StyledPostsContainer>
+					<Timeline items={items} />
+				</StyledPostsContainer>
+			</>
+			: <div>No posts yet...</div>
+			}
 		</StyledPostSection>
 	)
 })

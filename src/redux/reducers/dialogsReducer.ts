@@ -46,21 +46,27 @@ export const sendMessageAC = (userId: number, message: SingleDialogItemType) => 
 //get all dialogs 
 export const getAllDialogsTC = (userId: number): AppThunk => {
   return async (dispatch) => {
-    const resp = await dialogsAPI.getAllMessagesFromServer(userId);
-    if (resp.data.error === null) {
-      dispatch(getAllMessagesAC(userId, resp.data.items));
-    }
+		try {
+			// dispatch(setAppStatusAC("loading"));
+      const resp = await dialogsAPI.getAllMessagesFromServer(userId);
+      if (resp.data.error === null) {
+        dispatch(getAllMessagesAC(userId, resp.data.items));
+        // dispatch(setAppStatusAC("success"));
+      } else {
+        // handleServerError(dispatch, resp.data);
+      }
+		} catch (error) {
+			handleNetworkError(dispatch, error as {message: string});
+		}
   };
 };
 
 //send message to a friend
 export const sendMessageThunCreator = (userId: number, message: string): AppThunk<Promise<void>> => {
   return (dispatch) => {
-		// dispatch(setAppStatusAC('loading'))
 		return dialogsAPI.sendMessageToServer(userId, message)
 		.then((resp) => {
 		if (resp.data.resultCode === ResultCodesEnum.Success) {
-			// dispatch(setAppStatusAC('success'));
 			dispatch(sendMessageAC(userId, resp.data.data.message));
 		} else {
 			handleServerError(dispatch, resp.data)

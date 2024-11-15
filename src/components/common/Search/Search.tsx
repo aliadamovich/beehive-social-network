@@ -1,10 +1,31 @@
 import styled from 'styled-components';
 import { Icon } from '../Icon';
+import { Field } from 'formik';
+import { Input } from 'antd';
+import { ChangeEvent, useState } from 'react';
 
-export const Search = () => {
+type Props = {
+	debounceChange?: (value: string) => void
+	searchInputChangeHandler: (value: string) => void
+	value: string
+}
+
+export const Search = ({ debounceChange, searchInputChangeHandler, value }: Props) => {
+	const [timerId, setTimerId] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+	const onChangeTextCallback = (e: ChangeEvent<HTMLInputElement>) => {
+		searchInputChangeHandler(e.currentTarget.value)
+		if (debounceChange) {
+			clearTimeout(timerId)
+			const newTimer = setTimeout(() => {
+				debounceChange(e.currentTarget.value);
+			}, 2000)
+			setTimerId(newTimer)
+		}
+	}
 	return(
 		<StyledSearch>
-			<input type="text" name="" id="" placeholder='Search' />
+			<Input type="text" value={value} placeholder='Search' onChange={onChangeTextCallback} />
 			<StyledIcon>
 				<Icon iconId='search' viewBox="0 0 129 129" fill='#FFF' width='15' height='15' />
 			</StyledIcon>

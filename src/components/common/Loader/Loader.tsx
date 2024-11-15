@@ -17,7 +17,7 @@ const StyledLoader = styled.div`
 	align-items: center;
 	justify-content: center;
 	background: #ffffff8e;
-	z-index: 200;
+	z-index: 2000000;
 	img{
 		width: 60px;
 		height: 60px;

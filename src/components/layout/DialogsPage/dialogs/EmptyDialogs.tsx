@@ -18,12 +18,12 @@ const EmptyContainer = styled.div`
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	
+	height: 100%;
 	gap: 20px;
 	svg {
 		width: 120px;
 		height: 120px;
-		color: ${myTheme.colors.accent};
+		color: ${myTheme.colors.accentLight};
 	}
 	span {
 		font-weight: 600;

@@ -1,5 +1,7 @@
 .slider {
 	width: 100%;
+	height: 100%;
+	
 }
 
 .slide {
@@ -7,10 +9,11 @@
 	padding: 10px;
 	img {
 		width: 100%;
+		height: 100%;
 		max-width: 800px;
 		min-height: 600px;
 		object-fit: cover;
-		aspect-ratio: 3 / 2;
+		aspect-ratio: 4 / 5;
 		display: inline-block;
 		border-radius: 4px;
 	}

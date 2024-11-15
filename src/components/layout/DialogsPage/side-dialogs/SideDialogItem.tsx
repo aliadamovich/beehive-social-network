@@ -1,8 +1,11 @@
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useParams, useSearchParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Avatar } from '../../../common/Avatar';
 import { PATH } from '../../../../routes/routes';
-import { Card, List, Skeleton } from 'antd';
+import { Skeleton } from 'antd';
+import { myTheme } from '../../../../styles/Theme';
+import { useSelector } from 'react-redux';
+import { AppStateType } from '../../../../redux/redux-store';
 
 type SideDialogItemPropsType = {
 	name: string
@@ -12,14 +15,15 @@ type SideDialogItemPropsType = {
 
 
 export const SideDialogItem = (props: SideDialogItemPropsType) => {
-
+	
+	const appStatus = useSelector<AppStateType>(state => state.app.status);
 	let path = `${PATH.DIALOGS}/${props.id}`;
 	const {id} = useParams();
 
 	return (
 		<StyledNavLink to={path}>
 			<StyledDialog active={Number(id) === props.id}>
-				<Skeleton loading={true} active avatar
+				<Skeleton loading={appStatus === 'loading'} active avatar={{ style: {width: '50px', height: '50px'} }}
 					title={{ style: { marginTop: 4 } }} paragraph={{ rows: 1, style: { marginTop: 12 } }}>
 
 					<Avatar photo={props.photo} width='50px' height='50px' />
@@ -48,20 +52,19 @@ const StyledDialog = styled.div<{active: boolean}>`
 	padding: 5px;
 	border-radius: 8px;
 	&:hover{
-		background-color: rgba(219, 190, 246, 0.238);
-
+		background-color: #ae73e688;
 	}
 
 	${props => props.active && css<{ active: boolean }>`
-		background-color: rgba(219, 190, 246, 0.238);
+		background-color: #ae73e688;
 	`}
 `
 
 const StyledName = styled.div`
-	font-family: "Quicksand", sans-serif;
+	font-family: ${myTheme.fonts.secondary};
 	font-size: 17px;
 	font-weight: 700;
-	color: rgb(79, 81, 91);
+	
 	span {
 		display: block;
 		font-size: 13px;

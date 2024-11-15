@@ -12,9 +12,9 @@ export const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobal
 	}
 
 	html {
-height: 100%;
-
+	height: 100%;
 }
+
 	body {
 		margin: 0;
 		font-family: ${myTheme.fonts.main} ;
@@ -32,9 +32,11 @@ height: 100%;
 	}
 	
 	a {
+		color: currentColor;
 		text-decoration: none;
 		&:hover{
 			text-decoration: none;
+			color: currentColor;
 		}
 	}
 	

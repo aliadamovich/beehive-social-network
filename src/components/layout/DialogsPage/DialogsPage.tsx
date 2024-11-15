@@ -9,7 +9,7 @@ export const DialogsPage = () => {
 	return (
 		<>
 			<StyledDialogPage>
-				<Container>
+				{/* <Container> */}
 	
 						<Search />
 						
@@ -18,7 +18,7 @@ export const DialogsPage = () => {
 							<Outlet />
 						</StyledDialogPageBody>
 
-				</Container>
+				{/* </Container> */}
 			</StyledDialogPage>
 
 		</>
@@ -31,11 +31,16 @@ export const DialogsPage = () => {
 const StyledDialogPage = styled.section`
 	width: 100%;
 	overflow: hidden;
+	max-width: 1110px;
+	margin: 0px auto;
+	height: calc(100vh - var(--header-height) - var(--content-margin) - var(--footer-height) );
 `
 
 const StyledDialogPageBody = styled.div`
 	display: flex;
 	gap: 15px;
+	height: calc(100% - 60px);
+	overflow: auto;
 `
 
 

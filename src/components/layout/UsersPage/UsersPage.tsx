@@ -5,11 +5,12 @@ import { Users } from './Users';
 
 
 export const UsersPage = () => {
+
 	return(
 		<StyledUsers>
 			<Container>
 				<UsersWrapper>
-					<Search />
+					
 					<Users />
 				</UsersWrapper>
 			</Container>

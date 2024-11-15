@@ -1,7 +1,8 @@
 import { UserType } from './../types/types';
 import axios from "axios";
 import { ProfileType } from "../types/types";
-import { string } from 'yup';
+import { number, string } from 'yup';
+import { RequestParams } from '../redux/reducers/usersReducer';
 
 //с помощью встроенного метода create создается объект с базовыми насройками
 const axiosInstance = axios.create({
@@ -12,23 +13,41 @@ const axiosInstance = axios.create({
 
 
 //*usersAPI
+// export const usersAPI = {
+// 	async getUsers (currentPage: number, usersOnPage: number, isFriend?: boolean ) {
+// 		const friendQuery = isFriend ? `&friend=${isFriend}` : '';
+// 		const resp = await axiosInstance.get<UsersResponseType>(`users?page=${currentPage}&count=${usersOnPage}${friendQuery}`);
+// 		return resp.data;
+// 	},
+// 	async checkFollow(userId: number) {
+// 		const resp = await axiosInstance.get<boolean>(`follow/${userId}`);
+// 		return resp.data;
+// 	},
+// 	async follow(userId: number) {
+// 		const resp = await axiosInstance.post<ResponseType>( `follow/${userId}`);
+// 		return resp.data;
+// 	},
+// 	async unfollow(userId: number) {
+// 		const resp = await axiosInstance.delete<ResponseType>(`follow/${userId}`);
+// 		return resp.data;
+// 	},
+// }
 export const usersAPI = {
-	async getUsers (currentPage: number, usersOnPage: number, isFriend?: boolean ) {
-		const friendQuery = isFriend ? `&friend=${isFriend}` : '';
-		const resp = await axiosInstance.get<UsersResponseType>(`users?page=${currentPage}&count=${usersOnPage}${friendQuery}`);
-		return resp.data;
+	async getUsers(params: RequestParams) {
+		return axiosInstance.get<UsersResponseType>("users", { params })
 	},
+
 	async checkFollow(userId: number) {
-		const resp = await axiosInstance.get<boolean>(`follow/${userId}`);
-		return resp.data;
+		const resp = await axiosInstance.get<boolean>(`follow/${userId}`)
+		return resp.data
 	},
 	async follow(userId: number) {
-		const resp = await axiosInstance.post<ResponseType>( `follow/${userId}`);
-		return resp.data;
+		const resp = await axiosInstance.post<ResponseType>(`follow/${userId}`)
+		return resp.data
 	},
 	async unfollow(userId: number) {
-		const resp = await axiosInstance.delete<ResponseType>(`follow/${userId}`);
-		return resp.data;
+		const resp = await axiosInstance.delete<ResponseType>(`follow/${userId}`)
+		return resp.data
 	},
 }
 
@@ -64,7 +83,7 @@ export const profileAPI = {
 //*authAPI
 export const authAPI = {
 	me() {
-		return axiosInstance.get<ResponseType<{ id: number; email: string; login: string } | {}>>("auth/me");
+		return axiosInstance.get<ResponseType<{ id: number; email: string; login: string } >>("auth/me");
 	},
 	login(email: string, password: string, rememberMe: boolean) {
 		return axiosInstance.post<ResponseType<{ userId: number } | {}>>("auth/login", {
@@ -95,8 +114,9 @@ export const dialogsAPI = {
 };
 
 
-
 //* Types 
+
+
 type UsersResponseType = {
   items: Array<UserType>;
   totalCount: number;
@@ -108,24 +128,6 @@ export type ResponseType<D = {}> = {
   resultCode: number;
   messages: Array<string>;
 };
-
-//тип диаогов под вопросом 
-// export type DialogMessageFromServerType = {
-//     id: string
-//     body: string
-//     translatedBody: null
-//     addedAt: string
-//     senderId: number
-//     senderName: string
-//     recipientId: number
-//     recipientName: string
-//     viewed: boolean
-//     deletedBySender: boolean
-//     deletedByRecipient: boolean
-//     isSpam: boolean
-//     distributionId: null
-// };
-
 
 export type SingleDialogItemType = {
   id: string
