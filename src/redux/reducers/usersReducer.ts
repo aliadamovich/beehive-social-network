@@ -124,7 +124,7 @@ export const getUsersThunkCreator = (params: getUsersParams): AppThunk<Promise<a
 
 		dispatch(toggleIsFetchingAC(true))
 		dispatch(setAppStatusAC("loading"))
-		dispatch(setSearchParamsAC(params))
+		// dispatch(setSearchParamsAC(params))
 		const resp = await usersAPI.getUsers(queryParams)
 		dispatch(toggleIsFetchingAC(false))
 		dispatch(setAppStatusAC("success"))

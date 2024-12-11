@@ -1,18 +1,19 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { User } from './User';
 import { useSelector } from 'react-redux';
-import { getFollowingInProgress, getIsFetching, getTotalUsers, getUsersOnPage, obtainUsers, getCurrentPage, getSearchParams } from '../../../redux/selectors/users-selectors';
+import { getFollowingInProgress, getTotalUsers, getUsersOnPage, obtainUsers, getCurrentPage } from '../../../redux/selectors/users-selectors';
 import { followUsersThunkCreator, getUsersThunkCreator } from '../../../redux/reducers/usersReducer';
 import { Pagination } from '../../common/pagination/Pagination';
 import { useAppDispatch } from '../../../redux/app/hooks';
-import { AppStateType } from '../../../redux/redux-store';
 import { Recent } from '../../common/Recent/Recent';
-import { AppStatusType } from '../../../redux/reducers/appReducer';
 import styled from 'styled-components';
 import { GridWrapper } from '../../common/GridWrapper';
 import { myTheme } from '../../../styles/Theme';
 import { useSearchParams } from 'react-router-dom';
 import { Search } from '../../common/Search/Search';
+import { UsersSkeleton } from './UsersSkeleton';
+import { AppStateType } from '../../../redux/redux-store';
+import { AppStatusType } from '../../../redux/reducers/appReducer';
 
 
 export const Users = () => {
@@ -25,6 +26,7 @@ export const Users = () => {
 	const [find, setFind] = useState('');
 	const dispatch = useAppDispatch()
 	const [searchParams, setSearchParams] = useSearchParams()
+	const appStatus = useSelector<AppStateType, AppStatusType>(state => state.app.status);
 	const params = Object.fromEntries(searchParams)
 	// const initialParams = useSelector(getSearchParams)
 
@@ -34,8 +36,12 @@ export const Users = () => {
 		count: usersOnPage.toString(),
 		page: currentPage.toString(),
 	})
-		setFind(params.find || '')
-		dispatch(getUsersThunkCreator({}))
+		setFind(params.term || '')
+		dispatch(getUsersThunkCreator({...params}))
+
+		// return () => {
+		// 	setSearchParams({})
+		// }
 	}, [])
 
 	const toggleFollowUsers = async (userId: number) => {
@@ -43,7 +49,7 @@ export const Users = () => {
 	}
 
 	const changeCurrentPage = (currentPage: number) => {
-		dispatch(getUsersThunkCreator({page: currentPage}))
+		dispatch(getUsersThunkCreator({...params, page: currentPage}))
 			.then(() => {
 				setSearchParams({ ...params, page: currentPage.toString() })
 		})
@@ -51,43 +57,47 @@ export const Users = () => {
 	}
 
 	const debounceChangeHandler = (value: string) => {
-		dispatch(getUsersThunkCreator({term: value}))
+		return dispatch(getUsersThunkCreator({term: value}))
 	}
 
 	const searchInputChangeHandler = (searchValue: string) => {
 		setFind(searchValue)
-		setSearchParams({ ...params, find: searchValue })
+		setSearchParams({ ...params, term: searchValue })
 	}
+
+	// if(appStatus === 'loading') return <UsersSkeleton />
 
 	return (
 		<>
-			<Search 
+			<Search
 				debounceChange={debounceChangeHandler}
 				searchInputChangeHandler={searchInputChangeHandler}
 				value={find}
 			/>
-			<StyledUsersContainer>
-				<StyledUsersContent>
-					<Pagination
-						usersOnPage={usersOnPage}
-						changeCurrentPage={changeCurrentPage}
-						totalUsers={totalUsers}
-						activePage={activePage}
-						setActivePage={setActivePage}
-					/>
-					<GridWrapper gap='15px' gtc='repeat(auto-fit, minmax(250px, 1fr))'>
-						{
-							users.map(u => 
-							<User u={u}
-								toggleFollowUsers={toggleFollowUsers}
-								key={u.id}
-								followingInProgress={followingInProgress}
-							/>
-						)}
-					</GridWrapper>
-				</StyledUsersContent>
-				<Recent />
-			</StyledUsersContainer>
+			{appStatus === 'loading' ? <UsersSkeleton /> :
+				<StyledUsersContainer>
+					<StyledUsersContent>
+						<Pagination
+							usersOnPage={usersOnPage}
+							changeCurrentPage={changeCurrentPage}
+							totalUsers={totalUsers}
+							activePage={activePage}
+							setActivePage={setActivePage}
+						/>
+						<GridWrapper gap='15px' gtc='repeat(auto-fit, minmax(250px, 1fr))'>
+							{
+								users.map(u =>
+									<User u={u}
+										toggleFollowUsers={toggleFollowUsers}
+										key={u.id}
+										followingInProgress={followingInProgress}
+									/>
+								)}
+						</GridWrapper>
+					</StyledUsersContent>
+					<Recent />
+				</StyledUsersContainer>
+			}
 		</>
 	)
 }
@@ -99,7 +109,7 @@ const StyledUsersContainer = styled.div`
 	border-top: 1px solid ${myTheme.colors.borderColor};
 	display: flex;
 	gap: 40px;
-
+	
 	>div:nth-child(2) {
 		flex: 1 1 auto;
 	}

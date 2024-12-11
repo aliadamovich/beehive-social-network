@@ -10,7 +10,6 @@ export const UsersPage = () => {
 		<StyledUsers>
 			<Container>
 				<UsersWrapper>
-					
 					<Users />
 				</UsersWrapper>
 			</Container>

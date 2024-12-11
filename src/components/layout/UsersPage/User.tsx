@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import userPhoto from './../../../assets/images/user.png';
 import { UserType } from '../../../types/types';
-import {  Card, Divider } from 'antd';
+import { Card, Divider } from 'antd';
 import { AppStatusType } from '../../../redux/reducers/appReducer';
 import { Avatar } from '../../common/Avatar';
 import styled from 'styled-components';
@@ -18,13 +18,10 @@ type UserPropsType = {
 }
 
 export const User = ({ u, toggleFollowUsers, followingInProgress }: UserPropsType) => {
-	const appStatus = useSelector<AppStateType, AppStatusType>(state => state.app.status);
 	
 	return (
 		<>
-			<Card loading={appStatus === 'loading'} style={{overflow: 'hidden'}}
-
-			>
+			<StyledUserCard >
 				<StyledUserTop>
 
 					<Link to={'/profile/' + u.id}>
@@ -46,11 +43,16 @@ export const User = ({ u, toggleFollowUsers, followingInProgress }: UserPropsTyp
 					onClick={() => { toggleFollowUsers(u.id) }} 
 					loading={followingInProgress.some(el => el === u.id) }
 				/>
-			</Card>
+			</StyledUserCard>
 		</>
 	)
 }
-
+const StyledUserCard = styled.div`
+	border: 1px solid #f0f0f0;
+	border-radius: 8px;
+	padding: 20px;
+	overflow: hidden;
+`
 
 const StyledUserTop = styled.div`
 	display: flex;
@@ -69,7 +71,7 @@ const StyledUserName = styled.h4`
 	font-family: ${myTheme.fonts.secondary};
 	color: ${myTheme.colors.boldFontColor};
 	font-weight: 700;
-	font-size: 19px;
+	font-size: 15px;
 `
 
 const StyledStatus = styled.div`
