@@ -80,14 +80,13 @@ export const Dialogs = () => {
 }
 
 const StyledMessagesContainer = styled.div`
-	overflow: auto;
+	overflow-y: auto;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 	position: relative;
 	flex: 1 1 auto;
-	border-top: 1px solid ${myTheme.colors.borderColor};
-	
+	padding: 0 5px;
 
 	>*:not(:last-child) {
 		margin-bottom: 10px;
@@ -95,6 +94,10 @@ const StyledMessagesContainer = styled.div`
 	&::-webkit-scrollbar {
 		display: none;
 }
+
+@media ${myTheme.media[768]} {
+		flex: 0 0 100%;
+	}
 `
 
 const StyledMessages = styled.div`

@@ -26,7 +26,7 @@ export const PostItem = (props: PostItemPropsType) => {
 					<StyledTime>14 hours <span> ago</span></StyledTime>
 				</div>
 				<StyledPostBody>{props.message}</StyledPostBody>
-				<StyledLikes>{props.number} likes</StyledLikes>
+				<StyledLikes>0 likes</StyledLikes>
 			</StyledPostContent>
 		</StyledPost>
 	)
@@ -68,6 +68,6 @@ const StyledPostBody = styled.div`
 
 const StyledLikes = styled.div`
 	display: inline-block;
-	font-size: 13px;
+	font-size: 12px;
 
 `

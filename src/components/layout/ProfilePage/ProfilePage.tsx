@@ -154,11 +154,22 @@ const StyledProfileBackground = styled.div`
 			left: 0;
 			right: 0;
 			height: 250px;
-			/* background: url(${cover}) left 65%/ cover no-repeat; */
 			background: 
 				url(${logo}) no-repeat 95% 5%,
 				linear-gradient(to bottom right, #8c30e2, #ae73e6 20%, #dfc4f9);
 			border-radius: 8px;
+		}
+
+		@media ${myTheme.media[768]} {
+			&::before{
+			background-size: 120px auto, cover;
+			}
+		}
+		@media ${myTheme.media[576]} {
+			&::before{
+			background:
+				linear-gradient(to bottom right, #8c30e2, #ae73e6 20%, #dfc4f9);
+			}
 		}
 
 `
@@ -168,11 +179,15 @@ export const StyledProfileTop = styled.div`
 	grid-template-columns: 280px auto;
 	padding-top: 20px;
 	margin-bottom: 20px;
-
+	position: relative;
 
 	@media ${myTheme.media[950]} {
 		grid-template-columns: 1fr;
 		gap: 20px;
+	}
+
+	@media ${myTheme.media[576]} {
+		
 	}
 `
 
@@ -195,7 +210,20 @@ export const GridProfileUser = styled.div`
 	@media ${myTheme.media[950]} {
 		display: flex;
 		align-items: flex-end;
+		flex-wrap: wrap;
+		padding: 0 10px;
 	}
+
+	@media ${myTheme.media[768]} {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	@media ${myTheme.media[576]} {
+	align-items: center;
+	padding: 0;
+	gap: 10px;
+}
 `
 
 const GridProfileGallery = styled.div`
@@ -225,7 +253,12 @@ export const TabsMenu = styled.nav`
 		ul {
 		justify-content: center;
 		}
-		/* padding-top: 40px; */
+	}
+
+		@media ${myTheme.media[576]} {
+		ul {
+			gap: 10px;
+		}
 	}
 `
 
@@ -234,6 +267,10 @@ const GridTabsContent = styled.div`
 	border: 1px solid ${myTheme.colors.borderColor};
 	border-bottom: none;
 	border-right: none;
+
+		@media ${myTheme.media[576]} {
+			padding: 20px 0;
+		}
 `
 
 const GridProfileActivity = styled.div`

@@ -58,6 +58,12 @@ export const UserStyledPhoto = styled.div`
 		width: 300px;
 		height: 300px;
 	}
+
+	@media ${myTheme.media[576]} {
+		width: 240px;
+		height: 240px;
+		padding: 0;
+	}
 `
 
 const AddPhotoInput = styled.input`
@@ -84,6 +90,13 @@ const AddPhotoInput = styled.input`
 		&:hover{
 			background-color: ${myTheme.colors.accentLight};
 			color: ${myTheme.colors.whiteBackground};
+		}
+	}
+
+	@media ${myTheme.media[576]} {
+		& + label {
+			bottom: -3%;
+			right: -3%;
 		}
 	}
 `

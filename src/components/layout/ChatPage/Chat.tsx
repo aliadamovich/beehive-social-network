@@ -6,11 +6,6 @@ import { useSelector } from 'react-redux'
 import { AppStateType } from '../../../redux/redux-store'
 
 
-// type ChatPropsType ={
-// 	messages: ChatMessageType[]
-// 	ws: WebSocket
-// }
-
 export type ChatMessageType = {
 	userId: number
 	userName: string
@@ -23,23 +18,51 @@ export const Chat = () => {
 	const [messages, setMessages] = useState<ChatMessageType[]>([])
 	const [myMessageText, setMyMessageText] = useState('');
 	const myUserId = useSelector<AppStateType>(state => state.auth.userId)
-
+	const [readyStatus, setReadyStatus] = useState<'pending' | 'ready'>('pending');
 	const wsRef = useRef<WebSocket | null>(null)
 	const messagesEndRef = useRef<HTMLDivElement | null>(null);
+	const [waitingToReconnect, setWaitingToReconnect] = useState(null);
 
-	//подписываемся на событие, отслеживаем его, сетаем, но тк при перерисовке каждый раз в useEffect
-	//будет попадать старый стейт, внутри usestate прописываем коллбэк - это нужно чтобы
-	//при перерисовке реакт обращался не к первому значению messages а к предыдущему значению
 	useEffect(() => {
-		wsRef.current = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx')
-		const ws = wsRef.current;
+		let ws: WebSocket;
+		let reconnectTimeout: NodeJS.Timeout;
+		const createChannel = () => {
 
-		const messageHandler = (e: MessageEvent) => {
+			if (wsRef.current) {
+				wsRef.current.removeEventListener('close', closeHandler);
+				wsRef.current.removeEventListener('message', messageHandler);
+				wsRef.current.removeEventListener('open', openHandler);
+				wsRef.current.close();
+			}
+			ws = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx')
+			wsRef.current = ws;
+			setReadyStatus('ready')
+			ws.addEventListener('open', openHandler)
+			ws.addEventListener('message', messageHandler)
+			ws.addEventListener('close', closeHandler)
+		}
+
+
+		function messageHandler(e: MessageEvent) {
 			setMessages((prevMessages) => [...prevMessages, ...JSON.parse(e.data)])
 		}
-		ws.addEventListener('message', messageHandler)
+		function openHandler() {
+			console.log('ws connected');
+			setReadyStatus('ready')
+		}
+		function closeHandler() {
+			console.log('ws channel closed');
+			setReadyStatus('pending')
+			reconnectTimeout = setTimeout(createChannel, 3000);
+		}
+
+		createChannel();
+		
 		return () => {
+			clearTimeout(reconnectTimeout);
+			ws.removeEventListener('open', openHandler)
 			ws.removeEventListener('message', messageHandler)
+			ws.removeEventListener('close', closeHandler)
 			ws.close()
 		}
 	}, [])
@@ -64,23 +87,25 @@ export const Chat = () => {
 		key={i} 
 		userName={m.userName}
 		photo={m.photo}
-		/>)
+	/>)
 
 
 	return (
 
 		<StyledChat>
-				<StyledChatMessages>
-					
-					{messagesArray}
-					<div ref={messagesEndRef}></div>
-				</StyledChatMessages>
-				<SendMessage
-					messageText={myMessageText}
-					updateText={updateText}
-					addMessage={addMessage}
-				/>
+			<StyledChatMessages>
 
+				{messagesArray}
+				<div ref={messagesEndRef}></div>
+			</StyledChatMessages>
+			<SendMessage
+				loading={false}
+				title='Send Message'
+				messageText={myMessageText}
+				updateText={updateText}
+				addMessage={addMessage}
+				disabled={readyStatus === 'pending'}
+			/>
 		</StyledChat>
 
 	)

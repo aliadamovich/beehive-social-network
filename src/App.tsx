@@ -15,10 +15,10 @@ function App() {
 	const dispatch = useDispatch<AppDispatch>()
 	const initialized = useSelector<AppStateType>(state => state.auth.initialized);
 	const appStatus = useSelector<AppStateType>(state => state.app.status);
-	const [collapsed, setCollapsed] = useState(false);
+	const [collapsed, setCollapsed] = useState(true);
 
 	const { Content, Footer } = Layout;
-	const {token: { colorBgContainer, borderRadiusLG },} = theme.useToken();
+	const {token: { colorBgContainer, borderRadiusLG }} = theme.useToken();
 
 	useEffect(() => {dispatch(getMeTC()) }, [dispatch]);
 
@@ -37,13 +37,13 @@ function App() {
 			}}>
 
 			<Layout hasSider style={{ minHeight: '100%' }} >
-				<SiderBar collapsed={collapsed} />
+				<SiderBar collapsed={collapsed} setCollapsed={setCollapsed}/>
 				<Layout style={{ marginInlineStart: collapsed ? 80 : 200, transition: 'all 0.2s ease' }}>
 					<HeaderBlock collapsed={collapsed} setCollapsed={setCollapsed} />
 					<Content style={{ margin: '24px 16px', overflow: 'initial', background: colorBgContainer, borderRadius: borderRadiusLG }} >
 						<Outlet />
 					</Content>
-					<Footer style={{ textAlign: 'center', padding: '0px 24px', height: '22px' }}>
+					<Footer style={{ textAlign: 'center', padding: '0px 24px', height: '35px' }}>
 						Beehive ©{new Date().getFullYear()} Created by Alesya Adamovich
 					</Footer>
 				</Layout>

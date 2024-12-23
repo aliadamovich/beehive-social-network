@@ -10,7 +10,7 @@ type MainButtonPropsType = ButtonProps & {
 	loading : boolean
 }
 
-export const MainButton = ({ children, icon, type, loading, ...props }: MainButtonPropsType ) => {
+export const MainButton = ({ children, icon, type, loading, disabled, ...props }: MainButtonPropsType ) => {
 	const appStatus = useSelector<AppStateType>(state => state.app.status);
 
 
@@ -20,6 +20,7 @@ export const MainButton = ({ children, icon, type, loading, ...props }: MainButt
 			icon={icon}
 			loading={loading}
 			name='Logout'
+			disabled={disabled}
 			{...props}
 		>{children}
 		</StyledButton>

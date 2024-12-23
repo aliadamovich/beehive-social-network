@@ -32,6 +32,6 @@ code {
 :root {
 	--header-height: 64px;
 	--content-margin: 48px;
-	--footer-height: 22px;
+	--footer-height: 35px;
 	--search-height: 60px;
 }

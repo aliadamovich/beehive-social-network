@@ -11,6 +11,9 @@ import { IoLogOutOutline } from 'react-icons/io5';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PATH } from '../../../routes/routes';
+import styled from 'styled-components';
+import { myTheme } from '../../../styles/Theme';
+import { Header } from 'antd/es/layout/layout';
 
 type HeaderPropsType ={
 	collapsed: boolean
@@ -38,17 +41,12 @@ export const HeaderBlock = ({ collapsed, setCollapsed}: HeaderPropsType) => {
 		
 		<Header style={{ padding: 0, background: colorBgContainer, display: 'flex', justifyContent: 'space-between' }}>
 		<>
-			<Button
+				<SiderButton
 				type="text"
 				icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
 				onClick={() => setCollapsed(!collapsed)}
-				style={{
-					fontSize: '16px',
-					width: 64,
-					height: 64,
-				}}
 			/>
-			<div style={{ display: 'flex', gap: '40px', marginRight: '24px', alignItems: 'center' }}>
+			<HeaderContainer >
 				<FlexWrapper gap='10px' align='center'>
 					<span>{login}</span>
 					{photos?.small && <Avatar photo={photos.small} />}
@@ -62,9 +60,42 @@ export const HeaderBlock = ({ collapsed, setCollapsed}: HeaderPropsType) => {
 					</Link>
 				}
 				
-			</div>
+			</HeaderContainer>
 		</>
 		</Header>
 	)
 }
 
+const StyledHeader = styled(Header)<{bg: string}>`
+	padding: 0;
+	background: ${props => props.bg};
+	display: 'flex';
+	justify-content: 'space-between';
+
+`
+
+const SiderButton = styled(Button)`
+	font-size: 16px;
+	width: 64px;
+	height: 64px;
+
+	@media ${myTheme.media[768]} {
+		display: none;
+	}
+`
+
+const HeaderContainer = styled.div`
+	display: flex;
+	gap: 40px;
+	margin-right: 24px;
+	align-items: center;
+
+@media ${myTheme.media[768]} {
+		flex: 1 1 auto;
+		justify-content: end;
+	}
+
+	@media ${myTheme.media[576]} {
+		gap: 20px;
+	}
+`

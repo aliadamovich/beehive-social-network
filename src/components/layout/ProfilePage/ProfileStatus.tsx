@@ -67,18 +67,26 @@ const StatusContainer = styled.div`
 	position: absolute;
 	top: 62%;
 	right: -250px;
-	width: 250px;
+	/* width: 250px; */
 	transform: translateY(-50%);
+	z-index: 10000;
 
 	@media ${myTheme.media[950]} {
-		right: 170px;
+		right: 0;
+		left: 300px;
+	}
+
+	@media ${myTheme.media[768]} {
+		position: static;
+		transform: translateY(0%);
+		padding: 0 20px;
 	}
 `
 
 const StyledInput = styled(Input)`
 	color: ${myTheme.colors.boldFontColor};
- height: 35px;
-outline: none
+	height: 35px;
+	outline: none
 `
 
 const StatusWrapper = styled.div`

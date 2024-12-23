@@ -9,9 +9,10 @@ type SendMessageType = {
 	updateText: (message: string) => void
 	addMessage: () => void
 	title: string
-	showCount: boolean
-	maxLength: number
+	showCount?: boolean
+	maxLength?: number
 	loading: boolean
+	disabled?: boolean
 }
 
 export const SendMessage = (props: SendMessageType) => {
@@ -36,6 +37,7 @@ export const SendMessage = (props: SendMessageType) => {
 						onClick={() => { props.addMessage() }} 
 						icon={<SendOutlined />}
 						loading={props.loading}
+						disabled={props.disabled}
 					/>
 				</StyledMessageBody>
 
@@ -64,4 +66,9 @@ const StyledMessageBody = styled.div`
 	textarea {
 		padding: 10px;
 	}
+
+	@media ${myTheme.media[768]} {
+			flex-direction: column;
+			align-items: start;
+		}
 `

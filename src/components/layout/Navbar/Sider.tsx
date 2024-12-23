@@ -6,8 +6,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { myTheme } from '../../../styles/Theme';
 import styled from 'styled-components';
 
+type Props = {
+	collapsed: boolean
+	setCollapsed: (collapsed: boolean) => void
+}
 
-export const SiderBar = ({collapsed}: {collapsed: boolean}) => {
+
+export const SiderBar = ({ collapsed, setCollapsed }: Props ) => {
 	const { Sider } = Layout;
 	const location = useLocation();
 
@@ -54,10 +59,10 @@ export const SiderBar = ({collapsed}: {collapsed: boolean}) => {
 		<Sider
 			theme="dark"
 			trigger={null} collapsible collapsed={collapsed}
-			breakpoint="lg"
+			breakpoint="md"
 			style={siderStyle}
-			onBreakpoint={(broken) => {console.log(broken)}}
-			onCollapse={(collapsed, type) => {console.log(collapsed, type)}}
+			onBreakpoint={(broken) => setCollapsed(broken)}
+			// onCollapse={(collapsed, type) => {console.log(collapsed, type)}}
 		>
 			<div className="demo-logo-vertical" />
 

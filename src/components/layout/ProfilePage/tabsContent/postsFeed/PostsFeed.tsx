@@ -60,4 +60,8 @@ const StyledPostSection = styled.div`
 `
 const StyledPostsContainer = styled.div`
 	padding: 0 40px;
+
+		@media ${myTheme.media[576]} {
+			padding: 0 10px;
+		}
 `

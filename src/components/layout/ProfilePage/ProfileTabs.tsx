@@ -87,4 +87,10 @@ const StyledTabItem = styled.li<StyledTabItemProps>`
 			stroke: ${myTheme.colors.whiteFontColor};
 		}
 	}
+
+	@media ${myTheme.media[576]} {
+		width: 50px;
+		height: 50px;
+		font-size: 11px;
+	}
 `

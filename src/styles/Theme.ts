@@ -22,7 +22,7 @@ export const myTheme = {
     1350: "screen and (max-width: 1350px)",
     1120: "screen and (max-width: 1120px)",
     950: "screen and (max-width: 950px)",
-    768: "screen and (max-width: 768px)",
+    768: "screen and (max-width: 767px)",
     576: "screen and (max-width: 576px)",
   },
 };

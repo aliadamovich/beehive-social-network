@@ -16,9 +16,9 @@ export const SingleDialog = (props: SingleDialogPropsType) => {
 	const appStatus = useSelector<AppStateType>(state => state.app.status);
 	
 	return(
-		<StyledMessage fromMe={!props.fromMe}>
+		<StyledMessage fromMe={props.fromMe}>
 
-			<StyledSkeleton loading={appStatus === 'loading'} active 
+			{/* <StyledSkeleton loading={appStatus === 'loading'} active 
 				fromMe={props.fromMe}
 				paragraph={{ rows: 2, style: { marginTop: 12} }}
 				avatar={{ style: { width: '50px', height: '50px' } }}
@@ -32,7 +32,17 @@ export const SingleDialog = (props: SingleDialogPropsType) => {
 				<p>{props.text}</p>
 			</StyledTextBox>
 
-			</StyledSkeleton>
+			</StyledSkeleton> */}
+
+			{/* <StyledDialogBox fromMe={props.fromMe} > */}
+
+				<Avatar photo={props.photo} width={'50px'} height={'50px'} />
+				<StyledTextBox fromMe={props.fromMe}>
+					<StyledName>{props.userName}</StyledName>
+					<p>{props.text}</p>
+				</StyledTextBox>
+
+			{/* </StyledDialogBox> */}
 		</StyledMessage>
 	)
 }
@@ -40,12 +50,12 @@ export const SingleDialog = (props: SingleDialogPropsType) => {
 const StyledMessage = styled.div<{ fromMe: boolean }>`
 	 display: flex;
 	flex-direction: row;
-	align-items: center;
-	gap: 25px;
+	align-items: end;
+	gap: 20px;
 	padding: 8px 0;
-	/* >:first-child{
+	>:first-child{
 		flex: 0 0 50px;
-	} */
+	}
 	${props => props.fromMe && css<{ fromMe: boolean }>`
 		flex-direction: row-reverse;
 	`}
@@ -92,20 +102,28 @@ const StyledName = styled.span`
 `
 
 
-const StyledSkeleton = styled(Skeleton) <{ fromMe: boolean }>`
-	display: flex;
-	gap: 25px;
-	align-items: center;
-	flex-direction: ${ ({fromMe}) => (fromMe ? 'row-reverse' : "row")};
+// const StyledSkeleton = styled(Skeleton) <{ fromMe: boolean }>`
+// 	display: flex;
+// 	gap: 25px;
+// 	align-items: center;
+// 	flex-direction: ${ ({fromMe}) => (fromMe ? 'row-reverse' : "row")};
 
-	.ant-skeleton-header {
-		padding: 0;
-	}
-	.ant-skeleton-content {
-		display: flex;
-		flex-direction: column;
-	}
-	.ant-skeleton-title {
-		align-self: ${ ({ fromMe }) => (fromMe ? 'flex-end' : "flex-start")};
-	}
-`;
+// 	.ant-skeleton-header {
+// 		padding: 0;
+// 	}
+// 	.ant-skeleton-content {
+// 		display: flex;
+// 		flex-direction: column;
+// 	}
+// 	.ant-skeleton-title {
+// 		align-self: ${ ({ fromMe }) => (fromMe ? 'flex-end' : "flex-start")};
+// 	}
+// `;
+
+// const StyledDialogBox = styled.div<{ fromMe: boolean }>`
+// 	display: flex;
+// 	gap: 25px;
+// 	align-items: center;
+// 	flex-direction: ${ ({ fromMe }) => (fromMe ? 'row-reverse' : "row")};
+// 	justify-content: end;
+// `

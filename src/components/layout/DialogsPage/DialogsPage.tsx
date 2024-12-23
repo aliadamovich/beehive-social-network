@@ -3,29 +3,24 @@ import { Container } from '../../common/Container';
 import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
 import { SideDialogs } from './side-dialogs/SideDialogs';
+import { myTheme } from '../../../styles/Theme';
 
 export const DialogsPage = () => {
 
 	return (
 		<>
 			<StyledDialogPage>
-				{/* <Container> */}
-	
-						<Search />
-						
-						<StyledDialogPageBody>
-							<SideDialogs />
-							<Outlet />
-						</StyledDialogPageBody>
 
-				{/* </Container> */}
+				<StyledDialogPageBody>
+					<SideDialogs />
+					<Outlet />
+				</StyledDialogPageBody>
+
 			</StyledDialogPage>
 
 		</>
 	)
 }
-
-
 
 
 const StyledDialogPage = styled.section`
@@ -39,8 +34,10 @@ const StyledDialogPage = styled.section`
 const StyledDialogPageBody = styled.div`
 	display: flex;
 	gap: 15px;
-	height: calc(100% - 60px);
-	overflow: auto;
+	height: 100%;
+	overflow-y: auto;
+
+	@media ${myTheme.media[768]} {}
 `
 
 

@@ -11,7 +11,7 @@ export const SideDialogs = () => {
 
 	const users = useSelector(obtainUsers);
 	const dispatch = useAppDispatch();
-	useEffect(() => { dispatch(getUsersThunkCreator(1, 20, true)) }, [])
+	useEffect(() => { dispatch(getUsersThunkCreator({count: 20, page: 1, friend: true})) }, [])
 
 	const dialogsArray = users.map(u => {
 		return < SideDialogItem
@@ -35,8 +35,11 @@ export const SideDialogs = () => {
 const StyledDialogItems = styled.div`
 	flex: 0 0 25%;
 	border-right: 1px solid ${myTheme.colors.borderColor};
-	border-top: 1px solid ${myTheme.colors.borderColor};
 	padding: 2px 0;
+
+	@media ${myTheme.media[768]} {
+		flex: 0 0 100%;
+	}
 `
 
 const StyledDialogsBox = styled.div`

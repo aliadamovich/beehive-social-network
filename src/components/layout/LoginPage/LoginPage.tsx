@@ -119,6 +119,11 @@ const FormContainer = styled.div`
 	position: relative;
 	z-index: 3;
 	justify-content: center;
+
+	@media ${myTheme.media[768]} {
+		max-width: 365px;
+		padding: 0 10px;
+	}
 `
 const FormInfo = styled.div`
 	flex: 0 1 50%;
@@ -129,6 +134,10 @@ const FormInfo = styled.div`
 	justify-content: center;
 	>*:not(:last-child) {
 		margin-bottom: 20px;
+	}
+
+	@media ${myTheme.media[768]} {
+		display: none;
 	}
 `
 
@@ -179,6 +188,10 @@ const LoginContainer = styled.div`
 	padding: 80px 40px;
 	>*:not(:last-child) {
 		margin-bottom: 20px;
+	}
+
+	@media ${myTheme.media[768]} {
+		flex: 1 1 100%;
 	}
 `
 const Logo = styled.img`
