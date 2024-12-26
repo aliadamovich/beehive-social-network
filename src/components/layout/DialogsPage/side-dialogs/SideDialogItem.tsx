@@ -42,6 +42,9 @@ export const SideDialogItem = (props: SideDialogItemPropsType) => {
 const StyledNavLink = styled(NavLink)`
 	padding: 0 5px;
 	max-width: 250px;
+	@media ${myTheme.media[768]} {
+		max-width: 100%;
+	}
 `
 
 const StyledDialog = styled.div<{active: boolean}>`

@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { useAppDispatch } from "../../../../redux/app/hooks";
 import { useSelector } from "react-redux";
 import { SingleDialog } from "./SingleDialog";
 import { SendMessage } from "../../../common/sendMessageField/SendMessage";
 import { DialogsType, getAllDialogsTC, sendMessageThunCreator } from "../../../../redux/reducers/dialogsReducer";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { AppStateType } from "../../../../redux/redux-store";
 import { EmptyDialogs } from "./EmptyDialogs";
 import { myTheme } from "../../../../styles/Theme";
+import { MainButton } from "../../../common/MainButton";
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { PATH } from "../../../../routes/routes";
 
 export const Dialogs = () => {
 
@@ -20,6 +23,7 @@ export const Dialogs = () => {
 	const {id} = useParams();
 	const currentDialogUserId = Number(id);
 
+		const [isOpen, setIsOpen] = useState(true);
 
 	useEffect(() => {
 		dispatch(getAllDialogsTC(currentDialogUserId))
@@ -41,6 +45,10 @@ export const Dialogs = () => {
 			})
 	}
 
+	const onBackButtonClick = () => {
+		// setIsOpen(false)
+	}
+
 	const currentDialog = messages[currentDialogUserId];
 
 	const DialogsArray = () => {
@@ -57,36 +65,41 @@ export const Dialogs = () => {
 			/>)
 		}
 	}
-	
+
 
 	return (
-			<StyledMessagesContainer>
-				<StyledMessages>
-					{DialogsArray()}
-					<div ref={messagesEndRef}></div>
-				</StyledMessages>
-	
-				<SendMessage
-					messageText={messageText}
-					updateText={setMessageText}
-					addMessage={sendMessage}
-					title="Send"
-					showCount={false}
-					maxLength={3000}
-					loading={loading}
-				/>
-			</StyledMessagesContainer>
+			<>
+				<StyledMessagesContainer isOpen={!isOpen}>
+					<StyledMessages>
+						{DialogsArray()}
+						<div ref={messagesEndRef}></div>
+					</StyledMessages>
+		
+					<SendMessage
+						messageText={messageText}
+						updateText={setMessageText}
+						addMessage={sendMessage}
+						title="Send"
+						showCount={false}
+						maxLength={3000}
+						loading={loading}
+					/>
+				</StyledMessagesContainer>
+				<StyledButtonContainer to={PATH.DIALOGS}>
+					<MainButton type="primary" loading={false} icon={<ArrowLeftOutlined />} onClick={onBackButtonClick}/>
+				</StyledButtonContainer>
+			</>
 	)
 }
 
-const StyledMessagesContainer = styled.div`
+const StyledMessagesContainer = styled.div<{isOpen: boolean}>`
 	overflow-y: auto;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	position: relative;
+	/* position: relative; */
 	flex: 1 1 auto;
-	padding: 0 5px;
+	padding: 0 10px;
 
 	>*:not(:last-child) {
 		margin-bottom: 10px;
@@ -94,6 +107,10 @@ const StyledMessagesContainer = styled.div`
 	&::-webkit-scrollbar {
 		display: none;
 }
+
+${props => props.isOpen && css<{isOpen: boolean}>`
+	/* transform: translateX(-200%); */
+`}
 
 @media ${myTheme.media[768]} {
 		flex: 0 0 100%;
@@ -105,4 +122,11 @@ const StyledMessages = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
+`
+
+
+const StyledButtonContainer = styled(NavLink)`
+	position: absolute;
+	top: 5%;
+	left: 5%;
 `

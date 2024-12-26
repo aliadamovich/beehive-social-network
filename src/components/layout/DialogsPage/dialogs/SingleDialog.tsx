@@ -16,7 +16,7 @@ export const SingleDialog = (props: SingleDialogPropsType) => {
 	const appStatus = useSelector<AppStateType>(state => state.app.status);
 	
 	return(
-		<StyledMessage fromMe={props.fromMe}>
+		<StyledMessage fromMe={!props.fromMe}>
 
 			{/* <StyledSkeleton loading={appStatus === 'loading'} active 
 				fromMe={props.fromMe}
@@ -37,7 +37,7 @@ export const SingleDialog = (props: SingleDialogPropsType) => {
 			{/* <StyledDialogBox fromMe={props.fromMe} > */}
 
 				<Avatar photo={props.photo} width={'50px'} height={'50px'} />
-				<StyledTextBox fromMe={props.fromMe}>
+				<StyledTextBox fromMe={!props.fromMe}>
 					<StyledName>{props.userName}</StyledName>
 					<p>{props.text}</p>
 				</StyledTextBox>
@@ -85,7 +85,7 @@ const StyledTextBox = styled.div<{fromMe: boolean}>`
 		background:${myTheme.colors.accentLight};
 		color: #fff;
 		&::before {
-		border-left: 10px solid  rgb(174, 115, 230);
+		border-left: 10px solid rgb(174, 115, 230);
 			left: none;
 			right: -5px;
 			left: unset;

@@ -2,10 +2,11 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { obtainUsers } from '../../../../redux/selectors/users-selectors'
 import { SideDialogItem } from './SideDialogItem'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useAppDispatch } from '../../../../redux/app/hooks'
 import { getUsersThunkCreator } from '../../../../redux/reducers/usersReducer'
 import { myTheme } from '../../../../styles/Theme'
+
 
 export const SideDialogs = () => {
 

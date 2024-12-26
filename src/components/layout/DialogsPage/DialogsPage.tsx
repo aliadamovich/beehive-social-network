@@ -36,7 +36,7 @@ const StyledDialogPageBody = styled.div`
 	gap: 15px;
 	height: 100%;
 	overflow-y: auto;
-
+	overflow-x: hidden;
 	@media ${myTheme.media[768]} {}
 `
 
