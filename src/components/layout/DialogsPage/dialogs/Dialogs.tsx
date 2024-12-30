@@ -1,20 +1,22 @@
 import { useEffect, useRef, useState } from "react"
-import styled, { css } from "styled-components"
+import styled from "styled-components"
 import { useAppDispatch } from "../../../../redux/app/hooks";
 import { useSelector } from "react-redux";
 import { SingleDialog } from "./SingleDialog";
 import { SendMessage } from "../../../common/sendMessageField/SendMessage";
 import { DialogsType, getAllDialogsTC, sendMessageThunCreator } from "../../../../redux/reducers/dialogsReducer";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useOutletContext, useParams } from "react-router-dom";
 import { AppStateType } from "../../../../redux/redux-store";
 import { EmptyDialogs } from "./EmptyDialogs";
 import { myTheme } from "../../../../styles/Theme";
 import { MainButton } from "../../../common/MainButton";
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { PATH } from "../../../../routes/routes";
+import { AppStatusType } from "../../../../redux/reducers/appReducer";
+import { MainDialogSkeleton } from "../MainDialogSkeleton";
 
 export const Dialogs = () => {
-
+	const { handleBackClick } = useOutletContext<any>();
 	const [messageText, setMessageText] = useState('');
 	const [loading, setLoading] = useState(false);
 	const dispatch = useAppDispatch();
@@ -22,8 +24,7 @@ export const Dialogs = () => {
 	const messagesEndRef = useRef<HTMLDivElement | null>(null);
 	const {id} = useParams();
 	const currentDialogUserId = Number(id);
-
-		const [isOpen, setIsOpen] = useState(true);
+	const appStatus = useSelector<AppStateType, AppStatusType>(state => state.app.status);
 
 	useEffect(() => {
 		dispatch(getAllDialogsTC(currentDialogUserId))
@@ -45,9 +46,6 @@ export const Dialogs = () => {
 			})
 	}
 
-	const onBackButtonClick = () => {
-		// setIsOpen(false)
-	}
 
 	const currentDialog = messages[currentDialogUserId];
 
@@ -66,67 +64,55 @@ export const Dialogs = () => {
 		}
 	}
 
+	if (appStatus === 'loading') return <MainDialogSkeleton />
 
 	return (
-			<>
-				<StyledMessagesContainer isOpen={!isOpen}>
-					<StyledMessages>
-						{DialogsArray()}
-						<div ref={messagesEndRef}></div>
-					</StyledMessages>
-		
-					<SendMessage
-						messageText={messageText}
-						updateText={setMessageText}
-						addMessage={sendMessage}
-						title="Send"
-						showCount={false}
-						maxLength={3000}
-						loading={loading}
-					/>
-				</StyledMessagesContainer>
-				<StyledButtonContainer to={PATH.DIALOGS}>
-					<MainButton type="primary" loading={false} icon={<ArrowLeftOutlined />} onClick={onBackButtonClick}/>
-				</StyledButtonContainer>
-			</>
+		<>
+			<StyledButtonContainer to={PATH.DIALOGS}>
+				<MainButton type="primary" loading={false} icon={<ArrowLeftOutlined />}
+					onClick={handleBackClick} />
+			</StyledButtonContainer>
+			<StyledMessages>
+				{DialogsArray()}
+				<div ref={messagesEndRef}></div>
+			</StyledMessages>
+
+			<SendMessage
+				messageText={messageText}
+				updateText={setMessageText}
+				addMessage={sendMessage}
+				title="Send"
+				showCount={false}
+				maxLength={3000}
+				loading={loading}
+			/>
+
+		</>
 	)
 }
 
-const StyledMessagesContainer = styled.div<{isOpen: boolean}>`
-	overflow-y: auto;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	/* position: relative; */
-	flex: 1 1 auto;
-	padding: 0 10px;
-
-	>*:not(:last-child) {
-		margin-bottom: 10px;
-	}
-	&::-webkit-scrollbar {
-		display: none;
-}
-
-${props => props.isOpen && css<{isOpen: boolean}>`
-	/* transform: translateX(-200%); */
-`}
-
-@media ${myTheme.media[768]} {
-		flex: 0 0 100%;
-	}
-`
 
 const StyledMessages = styled.div`
 	flex: 1 1 auto;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
+	padding: 0 10px;
 `
 
 
 const StyledButtonContainer = styled(NavLink)`
-	position: absolute;
-	top: 5%;
-	left: 5%;
+	display: none;
+
+	@media ${myTheme.media[950]} {
+		position: sticky;
+		width: 100%;
+		z-index: 1000;
+		top: 0%;
+		left: 0%;
+		background-color: #fff;
+		border-radius: 8px;
+		display: block;
+		padding: 10px;
+	}
 `

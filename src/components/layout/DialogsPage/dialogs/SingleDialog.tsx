@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Avatar } from '../../../common/Avatar';
 import { myTheme } from '../../../../styles/Theme';
-import { Skeleton } from 'antd';
 import { useSelector } from 'react-redux';
 import { AppStateType } from '../../../../redux/redux-store';
 
@@ -16,39 +15,18 @@ export const SingleDialog = (props: SingleDialogPropsType) => {
 	const appStatus = useSelector<AppStateType>(state => state.app.status);
 	
 	return(
-		<StyledMessage fromMe={!props.fromMe}>
-
-			{/* <StyledSkeleton loading={appStatus === 'loading'} active 
-				fromMe={props.fromMe}
-				paragraph={{ rows: 2, style: { marginTop: 12} }}
-				avatar={{ style: { width: '50px', height: '50px' } }}
-				title={{ style: { marginTop: 4, } }} 
-				style={{ }}
-				>
-
+		<StyledMessage fromMe={props.fromMe}>
 			<Avatar photo={props.photo} width={'50px'} height={'50px'} />
 			<StyledTextBox fromMe={props.fromMe}>
 				<StyledName>{props.userName}</StyledName>
 				<p>{props.text}</p>
 			</StyledTextBox>
-
-			</StyledSkeleton> */}
-
-			{/* <StyledDialogBox fromMe={props.fromMe} > */}
-
-				<Avatar photo={props.photo} width={'50px'} height={'50px'} />
-				<StyledTextBox fromMe={!props.fromMe}>
-					<StyledName>{props.userName}</StyledName>
-					<p>{props.text}</p>
-				</StyledTextBox>
-
-			{/* </StyledDialogBox> */}
 		</StyledMessage>
 	)
 }
 
 const StyledMessage = styled.div<{ fromMe: boolean }>`
-	 display: flex;
+	display: flex;
 	flex-direction: row;
 	align-items: end;
 	gap: 20px;
@@ -59,6 +37,14 @@ const StyledMessage = styled.div<{ fromMe: boolean }>`
 	${props => props.fromMe && css<{ fromMe: boolean }>`
 		flex-direction: row-reverse;
 	`}
+	@media ${myTheme.media[576]} {
+		gap: 10px;
+		>:first-child{
+		width: 40px;
+		height: 40px;
+		flex: 0 0 40px;
+	}
+	}
 `
 
 const StyledTextBox = styled.div<{fromMe: boolean}>`
@@ -91,6 +77,11 @@ const StyledTextBox = styled.div<{fromMe: boolean}>`
 			left: unset;
 		}
 	`}
+
+	@media ${myTheme.media[576]} {
+		font-size: 14px;
+		padding: 5px;
+	}
 `
 
 const StyledName = styled.span`
@@ -100,30 +91,3 @@ const StyledName = styled.span`
 	margin-bottom: 5px;
 	display: inline-block;
 `
-
-
-// const StyledSkeleton = styled(Skeleton) <{ fromMe: boolean }>`
-// 	display: flex;
-// 	gap: 25px;
-// 	align-items: center;
-// 	flex-direction: ${ ({fromMe}) => (fromMe ? 'row-reverse' : "row")};
-
-// 	.ant-skeleton-header {
-// 		padding: 0;
-// 	}
-// 	.ant-skeleton-content {
-// 		display: flex;
-// 		flex-direction: column;
-// 	}
-// 	.ant-skeleton-title {
-// 		align-self: ${ ({ fromMe }) => (fromMe ? 'flex-end' : "flex-start")};
-// 	}
-// `;
-
-// const StyledDialogBox = styled.div<{ fromMe: boolean }>`
-// 	display: flex;
-// 	gap: 25px;
-// 	align-items: center;
-// 	flex-direction: ${ ({ fromMe }) => (fromMe ? 'row-reverse' : "row")};
-// 	justify-content: end;
-// `

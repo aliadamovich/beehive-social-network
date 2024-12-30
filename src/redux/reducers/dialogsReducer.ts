@@ -47,11 +47,11 @@ export const sendMessageAC = (userId: number, message: SingleDialogItemType) => 
 export const getAllDialogsTC = (userId: number): AppThunk => {
   return async (dispatch) => {
 		try {
-			// dispatch(setAppStatusAC("loading"));
+			dispatch(setAppStatusAC("loading"));
       const resp = await dialogsAPI.getAllMessagesFromServer(userId);
       if (resp.data.error === null) {
         dispatch(getAllMessagesAC(userId, resp.data.items));
-        // dispatch(setAppStatusAC("success"));
+        dispatch(setAppStatusAC("success"));
       } else {
         // handleServerError(dispatch, resp.data);
       }

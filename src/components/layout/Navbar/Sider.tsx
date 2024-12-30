@@ -59,7 +59,7 @@ export const SiderBar = ({ collapsed, setCollapsed }: Props ) => {
 		<Sider
 			theme="dark"
 			trigger={null} collapsible collapsed={collapsed}
-			breakpoint="md"
+			breakpoint="lg"
 			style={siderStyle}
 			onBreakpoint={(broken) => setCollapsed(broken)}
 			// onCollapse={(collapsed, type) => {console.log(collapsed, type)}}

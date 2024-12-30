@@ -11,6 +11,7 @@ type SideDialogItemPropsType = {
 	name: string
 	id: number
 	photo: string | null
+	onDialogClick: () => void
 }
 
 
@@ -21,7 +22,7 @@ export const SideDialogItem = (props: SideDialogItemPropsType) => {
 	const {id} = useParams();
 
 	return (
-		<StyledNavLink to={path}>
+		<StyledNavLink to={path} onClick={props.onDialogClick}>
 			<StyledDialog active={Number(id) === props.id}>
 				<Skeleton loading={appStatus === 'loading'} active avatar={{ style: {width: '50px', height: '50px'} }}
 					title={{ style: { marginTop: 4 } }} paragraph={{ rows: 1, style: { marginTop: 12 } }}>
@@ -42,7 +43,7 @@ export const SideDialogItem = (props: SideDialogItemPropsType) => {
 const StyledNavLink = styled(NavLink)`
 	padding: 0 5px;
 	max-width: 250px;
-	@media ${myTheme.media[768]} {
+	@media ${myTheme.media[950]} {
 		max-width: 100%;
 	}
 `

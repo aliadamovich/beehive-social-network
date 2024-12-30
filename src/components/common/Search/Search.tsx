@@ -50,7 +50,7 @@ export const Search = ({ debounceChange, searchInputChangeHandler, value }: Prop
 
 
 const StyledSearch = styled.div`
-	padding: 13px 0;
+	padding: 13px 10px;
 	display: flex;
 	align-items: center;
 	gap: 10px;
