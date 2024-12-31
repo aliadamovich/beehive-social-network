@@ -3,9 +3,6 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { SideDialogs } from './side-dialogs/SideDialogs';
 import { myTheme } from '../../../styles/Theme';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { AppStateType } from '../../../redux/redux-store';
-import { AppStatusType } from '../../../redux/reducers/appReducer';
 
 export const DialogsPage = () => {
 	const [isSideDialogsVisible, setIsSideDialogsVisible] = useState(true);
@@ -21,8 +18,6 @@ export const DialogsPage = () => {
 
 	const handleDialogClick = () => setIsSideDialogsVisible(false);
 	const handleBackClick = () => setIsSideDialogsVisible(true);
-
-	// if (appStatus === 'loading') return <DialogsPageSkeleton />
 
 	return (
 		<>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { getPhotoGrid } from '../../../../redux/selectors/photogrid-selectors';
 import { PhotoGrid } from '../PhotoGrid';
@@ -11,11 +11,17 @@ import { GrLinkNext } from "react-icons/gr";
 import { Navigation, Pagination } from 'swiper/modules';
 import s from './Swiper.module.scss';
 
-export const ModalPhotoSlider = () => {
+export const ModalPhotoSlider = ({preview}: {preview?: boolean}) => {
 
 	const [activePhotoIndex, setActivePhotoIndex] = useState(1);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const photoGrid = useSelector(getPhotoGrid);
+
+	useEffect(() => {
+		isModalOpen && (document.body.style.overflow = 'hidden')
+		!isModalOpen && (document.body.style.overflow = 'unset')
+	}, [isModalOpen])
+
 
 	const openPhoto = (photoIndex: number) => {
 		setActivePhotoIndex(photoIndex);
@@ -24,7 +30,7 @@ export const ModalPhotoSlider = () => {
 	
 	return (
 		<>
-			<PhotoGrid photoGrid={photoGrid} openPhoto={openPhoto} />
+			<PhotoGrid photoGrid={photoGrid} openPhoto={openPhoto} preview={preview}/>
 			{isModalOpen &&
 				<StyledModalWindow onClick={() => { setIsModalOpen(false) }}>
 
@@ -55,7 +61,7 @@ export const ModalPhotoSlider = () => {
 }
 
 const StyledModalWindow = styled.div`
-	position: absolute;
+	position: fixed;
 	width: 100%;
 	height: 100%;
 	top: 0;
@@ -71,21 +77,26 @@ const StyledModalWindow = styled.div`
 const ModalContent = styled.div`
 	width: 90%;
 	height: 90%;
-	
 	max-width: 1000px;
 	padding: 10px;
 	background-color: ${myTheme.colors.whiteBackground};
 	border-radius: 4px;
+	position: relative;
+	display: flex;
+
+	@media ${myTheme.media[768]} {
+		height: 60%;
+	}
 `
 
 
 const StyledClose = styled.button`
 	position: absolute;
-	top: 5%;
-	right: 5%;
+	top: 2%;
+	right: 2%;
 	border: none;
 	border-radius: 50%;
-	background-color: #ffffff82;
+	background-color: ${myTheme.colors.whiteBackground};
 	padding: 5px;
 	display: flex;
 	justify-content: center;
@@ -95,7 +106,7 @@ const StyledClose = styled.button`
 	svg{
 		width: 25px;
 		height: 25px;
-		color: currentColor;
+		color: ${myTheme.colors.mainFontColor};
 	}
 	&:hover{
 		background-color: #ffffffb0;
@@ -122,6 +133,7 @@ const StyledSwiperButton = styled.div`
 	svg {
 		width: 18px;
 		height: 18px;
+		color: ${myTheme.colors.mainFontColor};
 	}
 
   &:hover {

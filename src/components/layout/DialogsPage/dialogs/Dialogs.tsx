@@ -13,7 +13,7 @@ import { MainButton } from "../../../common/MainButton";
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { PATH } from "../../../../routes/routes";
 import { AppStatusType } from "../../../../redux/reducers/appReducer";
-import { MainDialogSkeleton } from "../MainDialogSkeleton";
+import { MainDialogSkeleton } from "../dialogSkeletons/MainDialogSkeleton";
 
 export const Dialogs = () => {
 	const { handleBackClick } = useOutletContext<any>();

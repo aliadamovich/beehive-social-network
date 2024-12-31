@@ -6,6 +6,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { ModalPhotoSlider } from './modalPhotoSlider/ModalPhotoSlider';
+import { myTheme } from '../../../styles/Theme';
 
 
 export const Gallery = () => {
@@ -14,7 +15,6 @@ export const Gallery = () => {
 
 		<StyledGallerySection>
 			<Container>
-				<Search />
 				<StyledGalleryContent>
 					<StyledPhotosContainer>
 						<ModalPhotoSlider />
@@ -34,16 +34,23 @@ const StyledGallerySection = styled.section`
 const StyledGalleryContent = styled.div`
 	display: flex;
 	gap: 60px;
-
+	padding: 40px 10px 10px;
 	>div:nth-child(2) {
 		flex: 0 1 auto;
+	}
+	@media ${myTheme.media[1120]} {
+		>div:nth-child(2) {
+		display: none;
+	}
 	}
 `
 
 const StyledPhotosContainer = styled.div`
-	padding: 40px 10px 10px;
-	border-top: 1px solid rgb(237, 241, 245);
-	flex: 0 1 60%;
+	flex: 0 1 65%;
+
+	@media ${myTheme.media[1120]} {
+	flex: 1 1 auto;
+}
 `
 
 

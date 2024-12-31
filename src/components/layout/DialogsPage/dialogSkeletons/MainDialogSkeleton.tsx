@@ -1,12 +1,25 @@
 import styled, { css } from 'styled-components';
-import { myTheme } from '../../../styles/Theme';
+import { myTheme } from '../../../../styles/Theme';
 import { Skeleton } from 'antd';
 
 export const MainDialogSkeleton = () => {
 
 	return (
 		<>
-			{[...Array(9)].map((_, index) => <SingleDialogSkeleton fromMe={index % 2 === 0}/>)}
+			<StyledMessages>
+				{[...Array(9)].map((_, index) => <SingleDialogSkeleton fromMe={true}/>)}
+				
+			</StyledMessages>
+			<StyledSendMessage>
+					<StyledContent>
+	
+						<StyledMessageBody>
+							<Skeleton.Input active size='large' />
+							<Skeleton.Button active/>
+						</StyledMessageBody>
+	
+					</StyledContent>
+				</StyledSendMessage>
 		</>
 	)
 }
@@ -20,6 +33,13 @@ export const SingleDialogSkeleton = ({fromMe}: {fromMe: boolean}) => {
 		</StyledMessage>
 	)
 }
+const StyledMessages = styled.div`
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	padding: 0 10px;
+`
 
 const StyledMessage = styled.div<{ fromMe: boolean }>`
 	display: flex;
@@ -34,7 +54,7 @@ const StyledMessage = styled.div<{ fromMe: boolean }>`
 		flex-direction: row-reverse;
 	`}
 	@media ${myTheme.media[576]} {
-		gap: 10px;
+		gap: 8px;
 		>:first-child{
 		width: 40px;
 		height: 40px;
@@ -49,7 +69,7 @@ const StyledTextBox = styled.div<{ fromMe: boolean }>`
 	background: rgb(239, 239, 239);
 	padding: 10px;
 	border-radius: 8px;
-	min-width: 250px;
+	min-width: 200px;
 	min-height: 60px;
 	&::before {
 		content: "";
@@ -76,3 +96,38 @@ const StyledTextBox = styled.div<{ fromMe: boolean }>`
 	}
 `
 
+
+const StyledSendMessage = styled.div`
+	position: sticky;
+	bottom: 0;
+	border-top: 1px solid ${myTheme.colors.borderColor};
+	width: 100%;
+	padding-top: 20px;
+	padding-bottom: 30px;
+	background-color: ${myTheme.colors.whiteBackground};
+`
+const StyledContent = styled.div`
+	padding: 0 20px;
+`
+const StyledMessageBody = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 8px;
+	
+	>div:first-child{
+		flex: 0 0 80%;
+		  span {
+			display: block;
+			width: 100% !important;
+		 }
+	}
+
+	@media ${myTheme.media[768]} {
+			flex-direction: column;
+			align-items: start;
+		}
+		>div:first-child{
+		width: 100%;
+	}
+`

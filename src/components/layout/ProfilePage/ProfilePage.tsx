@@ -115,7 +115,7 @@ export const ProfilePage = () => {
 						{isOwner ?
 							<>
 								<ProfileCounter />
-								<ModalPhotoSlider />
+								<ModalPhotoSlider preview/>
 							</>
 							: <div>No photos yet...</div>
 						}

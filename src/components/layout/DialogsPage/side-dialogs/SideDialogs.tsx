@@ -9,7 +9,7 @@ import { myTheme } from '../../../../styles/Theme'
 import { AppStatusType } from '../../../../redux/reducers/appReducer'
 import { AppStateType } from '../../../../redux/redux-store'
 import { Skeleton } from 'antd'
-import { SideDialogsSkeleton } from './SideDialogsSkeleton'
+import { SideDialogsSkeleton } from '../dialogSkeletons/SideDialogsSkeleton'
 
 
 type Props = {
