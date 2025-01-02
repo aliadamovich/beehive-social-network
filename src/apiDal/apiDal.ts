@@ -111,6 +111,9 @@ export const dialogsAPI = {
     );
   },
 
+	async deleteMessageFromServer(messageId: string) {
+		return axiosInstance.delete(`dialogs/messages/${messageId}`)
+	}
 };
 
 

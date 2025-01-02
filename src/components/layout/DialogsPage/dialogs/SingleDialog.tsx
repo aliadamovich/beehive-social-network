@@ -3,17 +3,30 @@ import { Avatar } from '../../../common/Avatar';
 import { myTheme } from '../../../../styles/Theme';
 import { useSelector } from 'react-redux';
 import { AppStateType } from '../../../../redux/redux-store';
+import { CloseOutlined, HeartOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import { ModalWindow } from '../../../common/modal/ModalWindow';
+import { useAppDispatch } from '../../../../redux/app/hooks';
+import { deleteMessageTC } from '../../../../redux/reducers/dialogsReducer';
 
 type SingleDialogPropsType = {
 	text: string
+	messageId: string
 	userName: string
 	photo: string | null
 	fromMe: boolean
+	dialogUserId: number
 }
 
 export const SingleDialog = (props: SingleDialogPropsType) => {
-	const appStatus = useSelector<AppStateType>(state => state.app.status);
-	
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const dispatch = useAppDispatch();
+
+	const confirmDeleteHandler = () => {
+		dispatch(deleteMessageTC(props.messageId, props.dialogUserId))
+	}
+	const likeButtonClickHandler = () => {}
+
 	return(
 		<StyledMessage fromMe={props.fromMe}>
 			<Avatar photo={props.photo} width={'50px'} height={'50px'} />
@@ -21,13 +34,22 @@ export const SingleDialog = (props: SingleDialogPropsType) => {
 				<StyledName>{props.userName}</StyledName>
 				<p>{props.text}</p>
 			</StyledTextBox>
+			<StyledIconButtons>
+				<IconButton onClick={() => { setIsModalOpen(true) }}>
+					<CloseOutlined />
+				</IconButton>
+	
+				<IconButton onClick={likeButtonClickHandler}>
+					<HeartOutlined />
+				</IconButton>
+			</StyledIconButtons>
+			{isModalOpen && <ModalWindow title='Delete this message?' isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} confirmHandler={confirmDeleteHandler}/>}
 		</StyledMessage>
 	)
 }
 
 const StyledMessage = styled.div<{ fromMe: boolean }>`
 	display: flex;
-	flex-direction: row;
 	align-items: end;
 	gap: 20px;
 	padding: 8px 0;
@@ -37,6 +59,12 @@ const StyledMessage = styled.div<{ fromMe: boolean }>`
 	${props => props.fromMe && css<{ fromMe: boolean }>`
 		flex-direction: row-reverse;
 	`}
+	&:hover{
+		button {
+			opacity: 1;
+			visibility: visible;
+		}
+	}
 	@media ${myTheme.media[576]} {
 		gap: 10px;
 		>:first-child{
@@ -90,4 +118,22 @@ const StyledName = styled.span`
 	color: inherit;
 	margin-bottom: 5px;
 	display: inline-block;
+`
+const StyledIconButtons = styled.div`
+	align-self: center;
+	display: flex;
+	gap: 5px;
+	align-items: center;
+`
+const IconButton = styled.button`
+	border: none;
+
+	transition: all 0.3s ease 0s;
+	opacity: 0;
+	visibility: hidden;
+	&:hover{
+		svg{
+			color: ${myTheme.colors.accent}
+		}
+	}
 `

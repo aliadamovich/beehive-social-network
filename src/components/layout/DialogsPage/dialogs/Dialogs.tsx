@@ -56,6 +56,8 @@ export const Dialogs = () => {
 		} else {
 			return currentDialog.map(d => <SingleDialog
 				text={d.body}
+				messageId={d.id}
+				dialogUserId={currentDialogUserId}
 				key={d.id}
 				userName={d.senderName}
 				photo={null}

@@ -7,7 +7,7 @@ export const MainDialogSkeleton = () => {
 	return (
 		<>
 			<StyledMessages>
-				{[...Array(9)].map((_, index) => <SingleDialogSkeleton fromMe={true}/>)}
+				{[...Array(9)].map((_, index) => <SingleDialogSkeleton key={index} fromMe={true}/>)}
 				
 			</StyledMessages>
 			<StyledSendMessage>
