@@ -8,7 +8,7 @@ import { LoginForm } from './LoginForm'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { myTheme } from '../../../styles/Theme'
-import { AppStateType } from '../../../redux/redux-store'
+import { selectIsAuth } from '../../../redux/reducers/authSlice'
 
 export type SubmittedValueType = {
 	email: string
@@ -17,7 +17,7 @@ export type SubmittedValueType = {
 }
 
 export const LoginPage = () => {
-	const isAuth = useSelector<AppStateType>(state => state.auth.isAuth);
+	const isAuth = useSelector(selectIsAuth);
 
 
 	useEffect(() => {

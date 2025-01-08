@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { getMeTC } from './redux/reducers/authReducer';
 import { Loader } from './components/common/Loader/Loader';
 import { AppDispatch, AppStateType } from './redux/redux-store';
 import { ConfigProvider, Layout, theme } from 'antd';
@@ -9,11 +8,13 @@ import { SiderBar } from './components/layout/Navbar/Sider';
 import { HeaderBlock } from './components/layout/Header/HeaderBlock';
 import { myTheme } from "./styles/Theme";
 import { ErrorBanner } from './components/common/ErrorBanner';
+import { getMeTC, selectIsInitialized } from './redux/reducers/authSlice';
 
 
 function App() {
 	const dispatch = useDispatch<AppDispatch>()
-	const initialized = useSelector<AppStateType>(state => state.auth.initialized);
+	// const isInitialized = useSelector<AppStateType>(state => state.auth.initialized);
+	const isInitialized = useSelector(selectIsInitialized);
 	const appStatus = useSelector<AppStateType>(state => state.app.status);
 	const [collapsed, setCollapsed] = useState(true);
 
@@ -22,7 +23,7 @@ function App() {
 
 	useEffect(() => {dispatch(getMeTC()) }, [dispatch]);
 
-	if (!initialized) {
+	if (!isInitialized) {
 		return <Loader />;
 	}
 

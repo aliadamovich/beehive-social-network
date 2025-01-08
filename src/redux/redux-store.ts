@@ -1,25 +1,27 @@
 import { combineReducers, UnknownAction } from "redux";
 import { configureStore, ThunkAction } from '@reduxjs/toolkit';
-import { profileReducer } from "./reducers/profileReducer";
-import { dialogReducer } from "./reducers/dialogsReducer";
 import { usersReducer } from "./reducers/usersReducer";
-import { authReducer } from "./reducers/authReducer";
 import { photoGridReducer } from "./reducers/photoGridReducer";
-import { appReducer } from "./reducers/appReducer";
+import { _appReducer } from "./reducers/appReducer";
+import { _authReducer } from "./reducers/authReducer";
+import { _dialogReducer } from "./reducers/dialogsReducer";
+import { _profileReducer } from "./reducers/profileReducer";
 
 export const rootReducer = combineReducers({
-	profilePage: profileReducer,
-	dialoPage: dialogReducer,
+	profile: _profileReducer,
+	dialogs: _dialogReducer,
 	usersPage: usersReducer,
-	auth: authReducer,
+	auth: _authReducer,
 	grid: photoGridReducer,
-	app: appReducer
+	app: _appReducer,
 })
 
-export const store = configureStore({ reducer: rootReducer })
+export const _store = configureStore({
+	reducer: rootReducer
+})
 
-export type AppStateType = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type AppStateType = ReturnType<typeof _store.getState>;
+export type AppDispatch = typeof _store.dispatch;
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppStateType, unknown, UnknownAction>
 
 

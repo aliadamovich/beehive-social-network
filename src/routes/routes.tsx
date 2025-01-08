@@ -9,9 +9,8 @@ import { Dialogs } from "../components/layout/DialogsPage/dialogs/Dialogs";
 import { EmptyDialogs } from "../components/layout/DialogsPage/dialogs/EmptyDialogs";
 import { LoginPage } from "../components/layout/LoginPage/LoginPage";
 import { ProfilePage } from "../components/layout/ProfilePage/ProfilePage";
-import useSelection from "antd/es/table/hooks/useSelection";
 import { useSelector } from "react-redux";
-import { AppStateType } from "../redux/redux-store";
+import { selectIsAuth } from "../redux/reducers/authSlice";
 
 
 export const PATH = {
@@ -76,7 +75,7 @@ const privateRoutes: RouteObject[] = [
 
 //* создаем hoc для оборачивания всех приватных компонент
 export const PrivateRoute = () => {
-	const isAuth = useSelector<AppStateType>(state => state.auth.isAuth);
+	const isAuth = useSelector(selectIsAuth);
 
 	return isAuth ? <Outlet /> : <Navigate to={PATH.LOGIN} />
 }

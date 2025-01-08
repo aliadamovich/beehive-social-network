@@ -1,11 +1,7 @@
-import { string } from 'yup';
-import { Dispatch } from "redux";
 import { usersAPI } from "../../apiDal/apiDal";
 import { UserType } from "../../types/types";
-import { AppStateType, AppThunk } from "../redux-store";
-import { setAppStatusAC } from "./appReducer";
-import { UsersPage } from '../../components/layout/UsersPage/UsersPage';
-import { log } from 'console';
+import { AppThunk } from "../redux-store";
+import { setAppStatus } from "./appSlice";
 
 
 let initialState = {
@@ -102,7 +98,7 @@ export const setSearchParamsAC = (params: getUsersParams) => ({
 // 		dispatch(setAppStatusAC('loading'))
 //     const resp = await usersAPI.getUsers(currentPage, usersOnPage, isFriend);
 //     dispatch(toggleIsFetchingAC(false));
-// 		dispatch(setAppStatusAC("success"));
+// 		dispatch(setAppStatus({status: 'success'}));
 //     dispatch(setUsersAC(resp.items));
 //     dispatch(getUsersQuantityAC(resp.totalCount));
 //   };
@@ -123,11 +119,11 @@ export const getUsersThunkCreator = (params: getUsersParams): AppThunk<Promise<a
 		const queryParams: RequestParams = {...searchParams, ...params};
 
 		dispatch(toggleIsFetchingAC(true))
-		dispatch(setAppStatusAC("loading"))
+		dispatch(setAppStatus({status: 'loading'}))
 		// dispatch(setSearchParamsAC(params))
 		const resp = await usersAPI.getUsers(queryParams)
 		dispatch(toggleIsFetchingAC(false))
-		dispatch(setAppStatusAC("success"))
+		dispatch(setAppStatus({status: 'success'}))
 		dispatch(setUsersAC(resp.data.items))
 		dispatch(getUsersQuantityAC(resp.data.totalCount))
 		// return resp.data

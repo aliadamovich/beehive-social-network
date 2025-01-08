@@ -1,15 +1,14 @@
 import {  ResultCodesEnum, SingleDialogItemType } from './../../apiDal/apiDal';
 import { dialogsAPI } from "../../apiDal/apiDal";
-import { ThunkAction } from '@reduxjs/toolkit';
-import { AppStateType, AppThunk } from '../redux-store';
-import { setAppStatusAC } from './appReducer';
+import { AppThunk } from '../redux-store';
 import { handleNetworkError, handleServerError } from '../../utils/errorHandlers';
+import { setAppStatus } from './appSlice';
 
 let initialState = {
   dialogs: {} as DialogsType,
 };
 
-export const dialogReducer = (state = initialState, action: ActionsType): InitialStateType => {
+export const _dialogReducer = (state = initialState, action: ActionsType): InitialStateType => {
 
 	switch (action.type) {
 		case "GET-ALL-MESSAGES-WITH-USER":
@@ -53,15 +52,15 @@ export const deleteMessageAC = (messageId: string, userId: number) => ({ type: "
 //* Thunk Creators
 
 //get all dialogs 
-export const getAllDialogsTC = (userId: number): AppThunk => {
+export const _getAllDialogsTC = (userId: number): AppThunk => {
   return async (dispatch) => {
 		try {
-			dispatch(setAppStatusAC("loading"));
+			dispatch(setAppStatus({status: "loading"}));
       const resp = await dialogsAPI.getAllMessagesFromServer(userId);
       if (resp.data.error === null) {
         dispatch(getAllMessagesAC(userId, resp.data.items));
 				console.log(resp.data)
-        dispatch(setAppStatusAC("success"));
+        dispatch(setAppStatus({status: "success"}));
       } else {
         // handleServerError(dispatch, resp.data);
       }
@@ -72,7 +71,7 @@ export const getAllDialogsTC = (userId: number): AppThunk => {
 };
 
 //send message to a friend
-export const sendMessageThunCreator = (userId: number, message: string): AppThunk<Promise<void>> => {
+export const _sendMessageThunCreator = (userId: number, message: string): AppThunk<Promise<void>> => {
   return (dispatch) => {
 		return dialogsAPI.sendMessageToServer(userId, message)
 		.then((resp) => {
@@ -86,7 +85,7 @@ export const sendMessageThunCreator = (userId: number, message: string): AppThun
   };
 };
 
-export const deleteMessageTC = (messageId: string, dialogUserId: number): AppThunk<Promise<void>> => {
+export const _deleteMessageTC = (messageId: string, dialogUserId: number): AppThunk<Promise<void>> => {
 	return (dispatch) => {
 		return dialogsAPI.deleteMessageFromServer(messageId)
 			.then((resp) => {

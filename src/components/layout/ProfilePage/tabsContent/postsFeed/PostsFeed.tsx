@@ -1,24 +1,23 @@
 import { PostItem } from './PostItem';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getPosts } from '../../../../../redux/selectors/profile-selectors';
 import { SendMessage } from '../../../../common/sendMessageField/SendMessage';
 import { useDispatch } from 'react-redux';
-import { addPostAC } from '../../../../../redux/reducers/profileReducer';
 import { Timeline } from 'antd';
 import styled from 'styled-components';
 import { myTheme } from '../../../../../styles/Theme';
+import { addPost, selectPosts } from '../../../../../redux/reducers/profileSlice';
 
 
 
 export const PostsFeed = React.memo(({isOwner}: {isOwner: boolean}) => {
 	const [post, setPost] = useState('');
-	const posts = useSelector(getPosts);
+	const posts = useSelector(selectPosts);
 	const dispatch = useDispatch()
 
 	const sendPostHandler = () => {
 		if(post.trim() !== '') {
-			dispatch(addPostAC(post))
+			dispatch(addPost({post}))
 			setPost('')
 		}
 	}
@@ -35,8 +34,8 @@ export const PostsFeed = React.memo(({isOwner}: {isOwner: boolean}) => {
 			{isOwner ?
 			<>
 				<SendMessage 
-					updateText={(e) => { setPost(e) }} 
-					addMessage={sendPostHandler} 
+					updateText={(e) => { setPost(e) }}
+					addMessage={sendPostHandler}
 					messageText={post}
 					showCount={true}
 					maxLength={100}

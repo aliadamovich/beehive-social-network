@@ -7,7 +7,7 @@ import { CloseOutlined, HeartOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { ModalWindow } from '../../../common/modal/ModalWindow';
 import { useAppDispatch } from '../../../../redux/app/hooks';
-import { deleteMessageTC } from '../../../../redux/reducers/dialogsReducer';
+import { deleteMessageTC } from '../../../../redux/reducers/dialogsSlice';
 
 type SingleDialogPropsType = {
 	text: string

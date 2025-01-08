@@ -1,9 +1,9 @@
-import img1  from './../../assets/images/gallery/oo-verthing-rlMVmhBSP8k-unsplash.jpg'
-import img2  from './../../assets/images/gallery/david-miller-0n12AlG-umA-unsplash.jpg'
-import img3  from './../../assets/images/gallery/filip-rankovic-grobgaard-mY2SFFAotDQ-unsplash.jpg'
-import img4  from './../../assets/images/gallery/kiarash-mansouri-TlNfasYsvXc-unsplash.jpg'
-import img5  from './../../assets/images/gallery/alex-moliski-lGsSjuLEo5k-unsplash.jpg'
-import img7  from './../../assets/images/gallery/fabrizio-coco-LvLdV3L_iA8-unsplash.jpg'
+import img1 from './../../assets/images/gallery/oo-verthing-rlMVmhBSP8k-unsplash.jpg'
+import img2 from './../../assets/images/gallery/david-miller-0n12AlG-umA-unsplash.jpg'
+import img3 from './../../assets/images/gallery/filip-rankovic-grobgaard-mY2SFFAotDQ-unsplash.jpg'
+import img4 from './../../assets/images/gallery/kiarash-mansouri-TlNfasYsvXc-unsplash.jpg'
+import img5 from './../../assets/images/gallery/alex-moliski-lGsSjuLEo5k-unsplash.jpg'
+import img7 from './../../assets/images/gallery/fabrizio-coco-LvLdV3L_iA8-unsplash.jpg'
 
 export type PhotoGridType = {
 	id: number
@@ -25,11 +25,5 @@ let initialState = {
 type InitialStateType = typeof initialState
 
 export const photoGridReducer = (state = initialState, action: any): InitialStateType => {
-	switch (action.type) {
-		case 'LOAD-PHOTO-GRID':
-			return {...state}
-	
-		default:
-			return state
-	}
+	return state
 }

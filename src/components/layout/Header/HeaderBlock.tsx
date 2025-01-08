@@ -1,19 +1,17 @@
 import { Button, Layout, theme } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined, PoweroffOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { LogoutThunkCreator } from '../../../redux/reducers/authReducer';
-import { getLogin, getAuthUserPhotos } from '../../../redux/selectors/header-selectors';
 import { AppDispatch, AppStateType } from '../../../redux/redux-store';
 import { Avatar } from '../../common/Avatar';
 import { FlexWrapper } from '../../common/FlexWrapper';
 import { MainButton } from '../../common/MainButton';
-import { IoLogOutOutline } from 'react-icons/io5';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PATH } from '../../../routes/routes';
 import styled from 'styled-components';
 import { myTheme } from '../../../styles/Theme';
 import { Header } from 'antd/es/layout/layout';
+import { LogoutThunkCreator, selectIsAuth, selectProfileData } from '../../../redux/reducers/authSlice';
 
 type HeaderPropsType ={
 	collapsed: boolean
@@ -24,11 +22,10 @@ type HeaderPropsType ={
 export const HeaderBlock = ({ collapsed, setCollapsed}: HeaderPropsType) => {
 	const { Header } = Layout;
 	const { token: { colorBgContainer }, } = theme.useToken();
-	const login = useSelector(getLogin);
-	const photos = useSelector(getAuthUserPhotos)
+	const {login, photos} = useSelector(selectProfileData);
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch<AppDispatch>()
-	const isAuth = useSelector<AppStateType>(state => state.auth.isAuth);
+	const isAuth = useSelector(selectIsAuth);
 
 	const onLogoutHandler = () => {
 		setLoading(true)

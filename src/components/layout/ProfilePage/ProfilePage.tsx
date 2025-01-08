@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getStatusThunkCreator, getUserProfileThunkCreator, saveProfilePhotoThunkCreator, updateStatusThunkCreator } from "../../../redux/reducers/profileReducer";
 import { useParams, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { withAuthRedirect } from "../../../hoc/WithAuthRedirect";
 import { useSelector } from "react-redux";
-import { getAuthorizedLoginId } from "../../../redux/selectors/auth-selectors";
 import styled from "styled-components";
 import cover from './../../../assets/images/main_cover.png';
 import { ProfilePhoto } from "./ProfilePhoto";
@@ -16,8 +14,6 @@ import { ProfileCounter } from "./ProfileCounter";
 import { FollowedFriends } from "./tabsContent/followedFriends/FollowedFriends";
 import { ProfileInfoSection } from "./tabsContent/profileInfo/ProfileInfoSection";
 import { AppDispatch, AppStateType } from "../../../redux/redux-store";
-import { getProfile, getStatus } from "../../../redux/selectors/profile-selectors";
-import { getPhotoGrid } from "../../../redux/selectors/photogrid-selectors";
 import { Activity } from "./Activity/Activity";
 import { PostsFeed } from "./tabsContent/postsFeed/PostsFeed";
 import { myTheme } from "../../../styles/Theme";
@@ -26,6 +22,9 @@ import { ModalPhotoSlider } from "../GalleryPage/modalPhotoSlider/ModalPhotoSlid
 import logo from './../../../assets/images/logo_login.svg'
 import { Loader } from "../../common/Loader/Loader";
 import { ProfileSkeleton } from "./ProfilePageSkeleton";
+import { selectAuthorizedLoginId } from "../../../redux/reducers/authSlice";
+import { getUserProfileThunkCreator, selectProfileInfo, selectUserStatus, updateProfilePhotoThunkCreator, updateStatusThunkCreator } from "../../../redux/reducers/profileSlice";
+import { selectStatus } from "../../../redux/reducers/appSlice";
 
 
 export const ProfilePage = () => {
@@ -36,12 +35,12 @@ export const ProfilePage = () => {
 	const params = useParams();
 	const dispatch = useDispatch<AppDispatch>();
 
-	const userProfile = useSelector(getProfile);
-	const status = useSelector(getStatus);
-	const authorizedLoginId = useSelector(getAuthorizedLoginId);
-	const appStatus = useSelector<AppStateType>(state => state.app.status);
+	const userProfile = useSelector(selectProfileInfo);
+	const status = useSelector(selectUserStatus);
+	const authorizedLoginId = useSelector(selectAuthorizedLoginId);
+	const appStatus = useSelector(selectStatus);
 
-	let profileId = params.userId ? +params.userId : authorizedLoginId !== null ? authorizedLoginId : 0;
+	let profileId = params.userId ? Number(params.userId) : authorizedLoginId !== null ? authorizedLoginId : 0;
 	const isOwner = !params.userId;
 
 	//вынесли общую логику в отдельный метод чтобы не дублировать код
@@ -57,7 +56,7 @@ export const ProfilePage = () => {
 	useEffect(()=> {refreshProfile()}, [params.userId])
 
 	const onPhotoChoose = (file: File) => {
-		dispatch(saveProfilePhotoThunkCreator(file))
+		dispatch(updateProfilePhotoThunkCreator(file))
 	}
 
 	const updateStatus = (status: string) => {

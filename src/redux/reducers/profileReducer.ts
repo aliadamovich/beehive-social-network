@@ -1,51 +1,47 @@
-import { ResultCodesEnum } from './../../apiDal/apiDal';
+import { ResultCodesEnum } from '../../apiDal/apiDal';
 import { profileAPI } from "../../apiDal/apiDal";
-import { PhotosType, PostType, ProfileType } from "../../types/types";
+import { PhotosType, ProfileType } from "../../types/types";
 import { AppStateType, AppThunk } from "../redux-store";
-import { setAppStatusAC } from "./appReducer";
 import { handleNetworkError, handleServerError } from '../../utils/errorHandlers';
+import { setAppStatus } from './appSlice';
+import { v1 } from 'uuid';
 
 
 let initialState = {
 	posts: [
 		{
-			"userId": 1,
-			"id": 1,
-			"type": "replied",
-			"body": "Congrats with your new job, dear!"
+			id: v1(),
+			type: "replied",
+			body: "Congrats with your new job, dear!",
 		},
 		{
-			"userId": 1,
-			"id": 2,
-			"type": "posted a new activity comment",
-			"body": "Life is too short to be sorry..."
+			id: v1(),
+			type: "posted a new activity comment",
+			body: "Life is too short to be sorry...",
 		},
 		{
-			"userId": 1,
-			"id": 3,
-			"type": "posted a new comment",
-			"body": "Well... this is my first post here",
+			id: v1(),
+			type: "posted a new comment",
+			body: "Well... this is my first post here",
 		},
 		{
-			"userId": 1,
-			"id": 4,
-			"type": "posted a new comment",
-			"body": "ea molestias quasi exercitationem repellat qui ipsa sit aut",
+			id: v1(),
+			type: "posted a new comment",
+			body: "ea molestias quasi exercitationem repellat qui ipsa sit aut",
 		},
 	] as Array<PostType>,
-	newPostText: '' as string,
+	newPostText: "" as string,
 	userProfile: null as ProfileType | null,
-	status: '' 
+	status: "",
 }
 
 
-export const profileReducer = (state = initialState, action: ActionsType): InitialStateType => {
+export const _profileReducer = (state = initialState, action: ActionsType): InitialStateType => {
 
 	switch (action.type) {
 		case 'ADD-POST':
 			let newPost = {
-				"userId": 1,
-				"id": 12,
+				"id": v1(),
 				"type": "posted a new comment",
 				"body": action.post
 			} 
@@ -83,55 +79,55 @@ const setStatusAC = (status: string) => ({ type: 'SET-STATUS', status} as const)
 const setPhotoAC = (photos: PhotosType) => ({ type: 'SET-PROFILE-PHOTO', photos} as const)
 
 //* Thunks
-export const getUserProfileThunkCreator = (profileId: number): AppThunk<Promise<void>> => {
+export const _getUserProfileThunkCreator = (profileId: number): AppThunk<Promise<void>> => {
   return async (dispatch) => {
-		dispatch(setAppStatusAC("loading"));
+		dispatch(setAppStatus({status: 'loading'}));
 		profileAPI.setProfile(profileId)
 			.then((resp) => {
 				dispatch(setUserProfileAC(resp.data));
 				return resp.data.userId
 			})
 			.then((userId) => {
-				dispatch(getStatusThunkCreator(userId))
-				dispatch(setAppStatusAC("success"))
+				dispatch(_getStatusThunkCreator(userId))
+				dispatch(setAppStatus({status: 'success'}))
 			})
          
 
 
 		
 		  //  try {
-      //    dispatch(setAppStatusAC("loading"));
+      //    dispatch(setAppStatus({status: 'loading'}));
       //    const resp = await profileAPI.setProfile(profileId);
       //    dispatch(setUserProfileAC(resp.data));
-      //    dispatch(setAppStatusAC("success"));
+      //    dispatch(setAppStatus({status: 'success'}));
       //  } catch (error) {
       //    handleNetworkError(dispatch, error as { message: string });
       //  }
   };
 };
 
-export const getStatusThunkCreator = (profileId: number): AppThunk<Promise<void>> => {
+export const _getStatusThunkCreator = (profileId: number): AppThunk<Promise<void>> => {
   return async (dispatch) => {
  
-  //  dispatch(setAppStatusAC("loading"));
+  //  dispatch(setAppStatus({status: 'loading'}));
    return profileAPI.getStatus(profileId).then((resp)=> {
    dispatch(setStatusAC(resp.data));
-  //  dispatch(setAppStatusAC("success"));
+  //  dispatch(setAppStatus({status: 'success'}));
 	 })
 
  
     // try {
-    //   dispatch(setAppStatusAC("loading"));
+    //   dispatch(setAppStatus({status: 'loading'}));
     //   const resp = await profileAPI.getStatus(profileId);
     //   dispatch(setStatusAC(resp.data));
-    //   dispatch(setAppStatusAC("success"));
+    //   dispatch(setAppStatus({status: 'success'}));
     // } catch (error) {
     //   handleNetworkError(dispatch, error as { message: string });
     // }
   };
 };
 
-export const updateStatusThunkCreator = (status: string): AppThunk => {
+export const _updateStatusThunkCreator = (status: string): AppThunk => {
 	return async (dispatch) => {
 		const resp = await profileAPI.updateStatus(status)
 		if (resp.data.resultCode === ResultCodesEnum.Success) {
@@ -141,14 +137,14 @@ export const updateStatusThunkCreator = (status: string): AppThunk => {
 }
 
 
-export const saveProfilePhotoThunkCreator = (file: any): AppThunk => {
+export const _updateProfilePhotoThunkCreator = (file: any): AppThunk => {
   return async (dispatch) => {
 		try {
-			dispatch(setAppStatusAC("loading"));
+			dispatch(setAppStatus({status: 'loading'}));
 			const resp = await profileAPI.setProfilePhoto(file);
       if (resp.data.resultCode === ResultCodesEnum.Success) {
         dispatch(setPhotoAC(resp.data.data.photos));
-				dispatch(setAppStatusAC("success"));
+				dispatch(setAppStatus({status: 'success'}));
       } else {
 				handleServerError(dispatch, resp.data)
 			}
@@ -159,15 +155,15 @@ export const saveProfilePhotoThunkCreator = (file: any): AppThunk => {
 };
 
 //используем доп getState() чтобы получить доступ к другой части стейта и взять айди польз-ля
-export const saveProfileInfoTC = (formData: ProfileType): AppThunk => {
-  return async function (dispatch, getState: () => AppStateType) {
-		dispatch(setAppStatusAC('loading'))
-    const userId = getState().auth.userId;
+export const _updateProfileInfoTC = (formData: ProfileType): AppThunk => {
+  return async (dispatch, getState: () => AppStateType) => {
+		dispatch(setAppStatus({ status: "loading" }))
+    const userId = getState().auth.profileData.userId;
 		if (userId ) {
 			try {
 				let resp = await profileAPI.setProfileInfo(formData);
         if (resp.data.resultCode === ResultCodesEnum.Success) {
-          dispatch(getUserProfileThunkCreator(userId));
+          dispatch(_getUserProfileThunkCreator(userId));
         } else {
           handleServerError(dispatch, resp.data);
         }
@@ -188,3 +184,9 @@ type ActionsType =
   | ReturnType<typeof setUserProfileAC>
   | ReturnType<typeof setStatusAC>
   | ReturnType<typeof setPhotoAC>;
+
+	type PostType = {
+		id: string
+		type: string
+		body: string
+	}

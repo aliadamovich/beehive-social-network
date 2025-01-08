@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
-import { getProfile } from '../../../../../redux/selectors/profile-selectors';
 import { Avatar } from '../../../../common/Avatar';
 import styled from 'styled-components';
 import { myTheme } from '../../../../../styles/Theme';
+import { selectProfileInfo } from '../../../../../redux/reducers/profileSlice';
 
 type PostItemPropsType = {
 	type: string
@@ -10,7 +10,7 @@ type PostItemPropsType = {
 	number?: number
 }
 export const PostItem = (props: PostItemPropsType) => {
-	const userProfile = useSelector(getProfile);
+	const userProfile = useSelector(selectProfileInfo);
 	
 	return(
 		<StyledPost>

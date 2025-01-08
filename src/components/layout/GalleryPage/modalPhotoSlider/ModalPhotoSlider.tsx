@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
-import { getPhotoGrid } from '../../../../redux/selectors/photogrid-selectors';
 import { PhotoGrid } from '../PhotoGrid';
 import styled from 'styled-components';
 import { myTheme } from '../../../../styles/Theme';
@@ -10,6 +9,7 @@ import { GrLinkPrevious } from "react-icons/gr";
 import { GrLinkNext } from "react-icons/gr";
 import { Navigation, Pagination } from 'swiper/modules';
 import s from './Swiper.module.scss';
+import { getPhotoGrid } from '../../../../redux/selectors/photogrid-selectors';
 
 export const ModalPhotoSlider = ({preview}: {preview?: boolean}) => {
 

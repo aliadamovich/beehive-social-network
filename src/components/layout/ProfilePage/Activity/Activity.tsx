@@ -1,12 +1,12 @@
 import { useSelector } from 'react-redux';
-import { getPosts } from '../../../../redux/selectors/profile-selectors';
 import { SectionTitle } from '../../../common/SectionTitle';
 import styled from 'styled-components';
 import { PostItem } from '../tabsContent/postsFeed/PostItem';
 import { myTheme } from '../../../../styles/Theme';
+import { selectPosts } from '../../../../redux/reducers/profileSlice';
 
 export const Activity = () => {
-	const posts = useSelector(getPosts);
+	const posts = useSelector(selectPosts);
 	const latestPosts = posts.slice(0, 3).map(p => <PostItem type={p.type} key={p.id} />)
 	return(
 		<ActivityContainer>

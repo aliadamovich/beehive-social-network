@@ -1,11 +1,10 @@
 
 let initialState = {
-  error: 'dfsfkjdsf' as string | null,
-  // error: null as string | null,
+  error: null as string | null,
   status: 'idle' as AppStatusType
 };
 
-export const appReducer = ( state = initialState, action: ActionsType): InitialStateType => {
+export const _appReducer = ( state = initialState, action: ActionsType): InitialStateType => {
   switch (action.type) {
     case "SET-APP-ERROR":
       return { ...state, error: action.error };

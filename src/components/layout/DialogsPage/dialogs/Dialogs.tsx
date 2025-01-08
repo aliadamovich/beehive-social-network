@@ -4,7 +4,6 @@ import { useAppDispatch } from "../../../../redux/app/hooks";
 import { useSelector } from "react-redux";
 import { SingleDialog } from "./SingleDialog";
 import { SendMessage } from "../../../common/sendMessageField/SendMessage";
-import { DialogsType, getAllDialogsTC, sendMessageThunCreator } from "../../../../redux/reducers/dialogsReducer";
 import { NavLink, useOutletContext, useParams } from "react-router-dom";
 import { AppStateType } from "../../../../redux/redux-store";
 import { EmptyDialogs } from "./EmptyDialogs";
@@ -14,17 +13,19 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 import { PATH } from "../../../../routes/routes";
 import { AppStatusType } from "../../../../redux/reducers/appReducer";
 import { MainDialogSkeleton } from "../dialogSkeletons/MainDialogSkeleton";
+import { getAllDialogsTC, selectDialogs, sendMessageThunCreator } from "../../../../redux/reducers/dialogsSlice";
+import { selectStatus } from "../../../../redux/reducers/appSlice";
 
 export const Dialogs = () => {
 	const { handleBackClick } = useOutletContext<any>();
 	const [messageText, setMessageText] = useState('');
 	const [loading, setLoading] = useState(false);
 	const dispatch = useAppDispatch();
-	const messages = useSelector<AppStateType, DialogsType>(state => state.dialoPage.dialogs);
+	const messages = useSelector(selectDialogs);
 	const messagesEndRef = useRef<HTMLDivElement | null>(null);
 	const {id} = useParams();
 	const currentDialogUserId = Number(id);
-	const appStatus = useSelector<AppStateType, AppStatusType>(state => state.app.status);
+	const appStatus = useSelector(selectStatus);
 
 	useEffect(() => {
 		dispatch(getAllDialogsTC(currentDialogUserId))
@@ -35,7 +36,7 @@ export const Dialogs = () => {
 			messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
 		}
 	}, [messages])
-
+	console.log('messages:', messages);
 
 	const sendMessage = () => {
 		setLoading(true)

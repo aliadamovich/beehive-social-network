@@ -16,7 +16,6 @@ export const ProfilePhoto = (props: ProfilePhotoType) => {
 
 	const onInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files.length > 0) {
-			console.log(e.target.files[0]);
 			props.onPhotoChoose(e.target.files[0])
 		}
 	}

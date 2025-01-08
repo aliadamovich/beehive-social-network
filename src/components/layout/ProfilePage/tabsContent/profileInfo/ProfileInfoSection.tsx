@@ -4,18 +4,17 @@ import { ProfileInfo } from './ProfileInfo'
 import { SectionTitle } from '../../../../common/SectionTitle'
 import { ProfileType } from '../../../../../types/types'
 import { useDispatch, useSelector } from 'react-redux'
-import { saveProfileInfoTC } from '../../../../../redux/reducers/profileReducer'
 import { AppDispatch } from '../../../../../redux/redux-store'
-import { getProfile } from '../../../../../redux/selectors/profile-selectors'
+import { selectProfileInfo, updateProfileInfoTC } from '../../../../../redux/reducers/profileSlice'
 
 
 export const ProfileInfoSection = () => {
 	const [editMode, setEditMode] = useState(false)
-	const userProfile = useSelector(getProfile);
+	const userProfile = useSelector(selectProfileInfo);
 	const dispatch = useDispatch<AppDispatch>();
 
 	const saveProfileInfo = (form: ProfileType) => {
-		dispatch(saveProfileInfoTC(form))
+		dispatch(updateProfileInfoTC(form))
 	}
 	const onEditClick = () => {
 		setEditMode(!editMode)

@@ -1,10 +1,10 @@
 import { AppStateType } from "../redux-store";
 
 export const getIsAuth = (state: AppStateType) => {
-  return state.auth.isAuth;
+  return state.auth.profileData.isAuth;
 };
 
 export const getAuthorizedLoginId = (state: AppStateType) => {
-  return state.auth.userId;
+  return state.auth.profileData.userId;
 };
 

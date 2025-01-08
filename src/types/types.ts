@@ -1,9 +1,4 @@
-export type PostType = {
-	userId: number
-	id: number
-	type: string
-	body: string
-}
+
 export type ProfileType = {
   userId: number;
   lookingForAJob: boolean;

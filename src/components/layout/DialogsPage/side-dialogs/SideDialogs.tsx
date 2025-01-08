@@ -6,10 +6,9 @@ import { useEffect } from 'react'
 import { useAppDispatch } from '../../../../redux/app/hooks'
 import { getUsersThunkCreator } from '../../../../redux/reducers/usersReducer'
 import { myTheme } from '../../../../styles/Theme'
-import { AppStatusType } from '../../../../redux/reducers/appReducer'
-import { AppStateType } from '../../../../redux/redux-store'
 import { Skeleton } from 'antd'
 import { SideDialogsSkeleton } from '../dialogSkeletons/SideDialogsSkeleton'
+import { selectStatus } from '../../../../redux/reducers/appSlice'
 
 
 type Props = {
@@ -20,7 +19,7 @@ export const SideDialogs = ({ onDialogClick }: Props) => {
 
 	const users = useSelector(obtainUsers);
 	const dispatch = useAppDispatch();
-	const appStatus = useSelector<AppStateType, AppStatusType>(state => state.app.status);
+	const appStatus = useSelector(selectStatus);
 	useEffect(() => { dispatch(getUsersThunkCreator({count: 20, page: 1, friend: true})) }, [])
 
 	const dialogsArray = users.map(u => {

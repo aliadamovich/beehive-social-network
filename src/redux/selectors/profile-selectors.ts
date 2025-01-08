@@ -1,17 +1,14 @@
 import { AppStateType } from "../redux-store";
 
 export const getProfile = (state: AppStateType) => {
-	return state.profilePage.userProfile;
+	return state.profile.userProfile;
 }
 
 export const getStatus = (state: AppStateType) => {
-	return state.profilePage.status;
+	return state.profile.userStatus
 }
 
 export const getPosts = (state: AppStateType) => {
-	return state.profilePage.posts;
+	return state.profile.posts
 }
 
-// export const getCurrentPage = (state: AppStateType) => {
-// 	return state.usersPage.currentPage;
-// }

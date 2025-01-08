@@ -3,11 +3,11 @@ import { loginSchema } from '../ProfilePage/tabsContent/profileInfo/schema'
 import c from './LoginForm.module.scss'
 import { RiKey2Line } from "react-icons/ri";
 import { LuUser2 } from "react-icons/lu";
-import { LoginTC } from '../../../redux/reducers/authReducer';
 import { useAppDispatch } from '../../../redux/app/hooks';
 import { Button } from '../../common/Button';
 import { useSelector } from 'react-redux';
 import { AppStateType } from '../../../redux/redux-store';
+import { LoginTC } from '../../../redux/reducers/authSlice';
 
 export type SubmittedValueType = {
 	email: string
