@@ -6,10 +6,7 @@ import { setAppStatus } from "./appSlice";
 
 let initialState = {
 	users: [] as Array<UserType>,
-	// currentPage: 1,
 	totalUsers: 0,
-	// usersOnPage: 10,
-	// searchTerm: "",
 	isFetching: false,
 	followingInProgress: [] as Array<number>,
 	searchParams: {
@@ -17,11 +14,11 @@ let initialState = {
 		page: 1,
 		term: "",
 		friend: false
-	}, 
+	},
 }
 
 
-export const usersReducer = (state = initialState, action: ActionsType): InitialStateType => {
+export const _usersReducer = (state = initialState, action: ActionsType): InitialStateType => {
 
 	switch (action.type) {
 		case 'TOGGLE-FOLLOW':
@@ -112,18 +109,18 @@ type getUsersParams = {
 
 export type RequestParams = Required<getUsersParams>
 
-export const getUsersThunkCreator = (params: getUsersParams): AppThunk<Promise<any>> => {
+export const _getUsersThunkCreator = (params: getUsersParams): AppThunk<Promise<any>> => {
 	
 	return async (dispatch, getState) => {
 		const { searchParams } = getState().usersPage
 		const queryParams: RequestParams = {...searchParams, ...params};
 
-		dispatch(toggleIsFetchingAC(true))
+		// dispatch(toggleIsFetchingAC(true))
 		dispatch(setAppStatus({status: 'loading'}))
-		// dispatch(setSearchParamsAC(params))
 		const resp = await usersAPI.getUsers(queryParams)
-		dispatch(toggleIsFetchingAC(false))
+		// dispatch(toggleIsFetchingAC(false))
 		dispatch(setAppStatus({status: 'success'}))
+		dispatch(setSearchParamsAC(queryParams))
 		dispatch(setUsersAC(resp.data.items))
 		dispatch(getUsersQuantityAC(resp.data.totalCount))
 		// return resp.data
@@ -144,7 +141,7 @@ export const getUsersThunkCreator = (params: getUsersParams): AppThunk<Promise<a
 // }
 
 
-export const followUsersThunkCreator = (userId: number): AppThunk => {
+export const _followUsersThunkCreator = (userId: number): AppThunk => {
   return async (dispatch) => {
 		// debugger
 		dispatch(toggleFollowingProgressAC(true, userId));

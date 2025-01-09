@@ -1,14 +1,13 @@
 import { useSelector } from 'react-redux'
 import styled, { css } from 'styled-components'
-import { obtainUsers } from '../../../../redux/selectors/users-selectors'
 import { SideDialogItem } from './SideDialogItem'
 import { useEffect } from 'react'
 import { useAppDispatch } from '../../../../redux/app/hooks'
-import { getUsersThunkCreator } from '../../../../redux/reducers/usersReducer'
 import { myTheme } from '../../../../styles/Theme'
 import { Skeleton } from 'antd'
 import { SideDialogsSkeleton } from '../dialogSkeletons/SideDialogsSkeleton'
 import { selectStatus } from '../../../../redux/reducers/appSlice'
+import { getUsersThunkCreator, selectUsers } from '../../../../redux/reducers/usersSlice'
 
 
 type Props = {
@@ -17,7 +16,7 @@ type Props = {
 
 export const SideDialogs = ({ onDialogClick }: Props) => {
 
-	const users = useSelector(obtainUsers);
+	const users = useSelector(selectUsers);
 	const dispatch = useAppDispatch();
 	const appStatus = useSelector(selectStatus);
 	useEffect(() => { dispatch(getUsersThunkCreator({count: 20, page: 1, friend: true})) }, [])

@@ -33,6 +33,7 @@ export const _authReducer = (state = initialState, action: ActionsType): Initial
 		default: return state
 	}
 }
+
 //* Action Creators
 const setInitializedSuccessAC = () => ({ type: 'INITIALIZE-SUCCESS' } as const)
 const setAuthProfileIdAC = ({ userId, email, login, isAuth, photos }: ProfileData) =>

@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { User } from './User';
 import { useSelector } from 'react-redux';
-import { getFollowingInProgress, getTotalUsers, getUsersOnPage, obtainUsers, getCurrentPage } from '../../../redux/selectors/users-selectors';
-import { followUsersThunkCreator, getUsersThunkCreator } from '../../../redux/reducers/usersReducer';
 import { Pagination } from '../../common/pagination/Pagination';
 import { useAppDispatch } from '../../../redux/app/hooks';
 import { Recent } from '../../common/Recent/Recent';
@@ -12,77 +10,71 @@ import { myTheme } from '../../../styles/Theme';
 import { useSearchParams } from 'react-router-dom';
 import { Search } from '../../common/Search/Search';
 import { UsersSkeleton } from './UsersSkeleton';
-import { AppStateType } from '../../../redux/redux-store';
-import { AppStatusType } from '../../../redux/reducers/appReducer';
+import { followUsersThunkCreator, getUsersThunkCreator, resetSearchParams, selectFollowingInProgress, selectSearchParams, selectTotalUsers, selectUsers, updateParams } from '../../../redux/reducers/usersSlice';
+import { selectStatus } from '../../../redux/reducers/appSlice';
 
-
+export type SearchParamsType = "count" | "page" | "term" | "friend";
 export const Users = () => {
-	const users = useSelector(obtainUsers)
-	const totalUsers = useSelector(getTotalUsers)
-	const usersOnPage = useSelector(getUsersOnPage)
-	const currentPage = useSelector(getCurrentPage)
-	const followingInProgress = useSelector(getFollowingInProgress);
-	const [activePage, setActivePage] = useState(1)
-	const [find, setFind] = useState('');
+	const users = useSelector(selectUsers)
+	const totalUsers = useSelector(selectTotalUsers)
+	const followingInProgress = useSelector(selectFollowingInProgress);
 	const dispatch = useAppDispatch()
 	const [searchParams, setSearchParams] = useSearchParams()
-	const appStatus = useSelector<AppStateType, AppStatusType>(state => state.app.status);
+	const appStatus = useSelector(selectStatus)
 	const params = Object.fromEntries(searchParams)
-	// const initialParams = useSelector(getSearchParams)
+	const {count, friend, page} = useSelector(selectSearchParams)
 
 	useEffect(() => {
-		setSearchParams({
-		...params,
-		count: usersOnPage.toString(),
-		page: currentPage.toString(),
-	})
-		setFind(params.term || '')
 		dispatch(getUsersThunkCreator({...params}))
-
-		// return () => {
-		// 	setSearchParams({})
-		// }
+		return () => {
+			dispatch(resetSearchParams())
+		}
 	}, [])
 
 	const toggleFollowUsers = async (userId: number) => {
 		dispatch(followUsersThunkCreator(userId));
 	}
+	
 
-	const changeCurrentPage = (currentPage: number) => {
+	const changeCurrentPage = async (currentPage: number) => {
+		updateSearchParams({ page: currentPage.toString() })
 		dispatch(getUsersThunkCreator({...params, page: currentPage}))
-			.then(() => {
-				setSearchParams({ ...params, page: currentPage.toString() })
-		})
-		
+	}
+	// Partial<Record<SearchParamsType, string>>
+	const updateSearchParams = (newParams: any) => {
+			setSearchParams(prevParams => ({
+				...Object.fromEntries(prevParams),
+				...newParams,
+			}));
+		dispatch(updateParams({ params: newParams }));
+		}
+
+	const searchInputChangeHandler = (value: string) => {
+		dispatch(getUsersThunkCreator({term: value}))
 	}
 
-	const debounceChangeHandler = (value: string) => {
-		return dispatch(getUsersThunkCreator({term: value}))
-	}
-
-	const searchInputChangeHandler = (searchValue: string) => {
-		setFind(searchValue)
-		setSearchParams({ ...params, term: searchValue })
-	}
+	// const searchInputChangeHandler = (searchValue: string) => {
+	// 	setSearchParams({ ...params, term: searchValue })
+	// }
 
 	// if(appStatus === 'loading') return <UsersSkeleton />
 
 	return (
 		<>
 			<Search
-				debounceChange={debounceChangeHandler}
-				searchInputChangeHandler={searchInputChangeHandler}
-				value={find}
+				updateSearchParams={updateSearchParams}
+				debounceChange={searchInputChangeHandler}
+				// searchInputChangeHandler={searchInputChangeHandler}
+				value={params.term || ''}
 			/>
 			{appStatus === 'loading' ? <UsersSkeleton /> :
 				<StyledUsersContainer>
 					<StyledUsersContent>
 						<Pagination
-							usersOnPage={usersOnPage}
+							usersOnPage={count}
 							changeCurrentPage={changeCurrentPage}
 							totalUsers={totalUsers}
-							activePage={activePage}
-							setActivePage={setActivePage}
+							activePage={page}
 						/>
 						<GridWrapper gap='15px' gtc='repeat(auto-fit, minmax(250px, 1fr))'>
 							{

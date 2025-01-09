@@ -7,19 +7,22 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { AppStateType } from '../../../redux/redux-store';
 import { AppStatusType } from '../../../redux/reducers/appReducer';
 import { useSelector } from 'react-redux';
+import { SearchParamsType } from '../../layout/UsersPage/Users';
 type Props = {
-	debounceChange?: (value: string) => Promise<void>
-	searchInputChangeHandler: (value: string) => void
+	debounceChange?: (value: string) => void
+	// searchInputChangeHandler: (value: string) => void
+	updateSearchParams: (params: Partial<Record<SearchParamsType, string>>) => void
 	value: string
 }
 
-export const Search = ({ debounceChange, searchInputChangeHandler, value }: Props) => {
+export const Search = ({ debounceChange, updateSearchParams, value }: Props) => {
 	const [timerId, setTimerId] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
 	const [searchInProgress, setSearchInProgress] = useState(false);
 	const appStatus = useSelector<AppStateType, AppStatusType>(state => state.app.status);
 	
 	const onChangeTextCallback = (e: ChangeEvent<HTMLInputElement>) => {
-		searchInputChangeHandler(e.currentTarget.value)
+		// searchInputChangeHandler(e.currentTarget.value)
+		updateSearchParams({ term: e.currentTarget.value })
 		if (debounceChange) {
 			setSearchInProgress(true)
 			clearTimeout(timerId)

@@ -8,11 +8,11 @@ type PaginationPropsType = {
 	totalUsers: number 
 	changeCurrentPage: (currentPage: number) => void
 	activePage: number
-	setActivePage: (activePage: number) => void
+	// setActivePage: (activePage: number) => void
 	portionSize?: number
 }
 
-export const Pagination = ({ usersOnPage, totalUsers, changeCurrentPage, activePage, setActivePage, portionSize = 5 }: PaginationPropsType) => {
+export const Pagination = ({ usersOnPage, totalUsers, changeCurrentPage, activePage, portionSize = 5 }: PaginationPropsType) => {
 	const [currentPortion, setCurrentPortion] = useState(1);
 	
 	const numberOfPages = Math.ceil(totalUsers / usersOnPage);
@@ -27,10 +27,9 @@ export const Pagination = ({ usersOnPage, totalUsers, changeCurrentPage, activeP
 
 	const onPageClickHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		changeCurrentPage(Number(e.currentTarget.textContent))
-		setActivePage(Number(e.currentTarget.textContent))
+		// setActivePage(Number(e.currentTarget.textContent))
 	}
 
-	
 	return (
 		
 		<PaginationWrapper>

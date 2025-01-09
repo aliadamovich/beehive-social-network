@@ -1,6 +1,6 @@
 import { combineReducers, UnknownAction } from "redux";
 import { configureStore, ThunkAction } from '@reduxjs/toolkit';
-import { usersReducer } from "./reducers/usersReducer";
+import { _usersReducer } from "./reducers/usersReducer";
 import { photoGridReducer } from "./reducers/photoGridReducer";
 import { _appReducer } from "./reducers/appReducer";
 import { _authReducer } from "./reducers/authReducer";
@@ -10,7 +10,7 @@ import { _profileReducer } from "./reducers/profileReducer";
 export const rootReducer = combineReducers({
 	profile: _profileReducer,
 	dialogs: _dialogReducer,
-	usersPage: usersReducer,
+	usersPage: _usersReducer,
 	auth: _authReducer,
 	grid: photoGridReducer,
 	app: _appReducer,
