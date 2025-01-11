@@ -6,9 +6,12 @@ import { RequestParams } from '../redux/reducers/usersReducer';
 
 //с помощью встроенного метода create создается объект с базовыми насройками
 const axiosInstance = axios.create({
-	baseURL: 'https://social-network.samuraijs.com/api/1.0/',
+	baseURL: process.env.REACT_APP_BASE_URL,
 	withCredentials: true,
-	headers: { "API-KEY": "18ed5bfc-0aae-47f2-8e6a-4b855e26e81b" }
+	headers: {
+		"API-KEY": process.env.REACT_APP_API_KEY,
+		// Authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`
+	},
 })
 
 
@@ -32,6 +35,8 @@ const axiosInstance = axios.create({
 // 		return resp.data;
 // 	},
 // }
+
+
 export const usersAPI = {
 	async getUsers(params: RequestParams) {
 		return axiosInstance.get<UsersResponseType>("users", { params })
@@ -148,6 +153,8 @@ type getAllDialogsWithUserResponseType = {
 	items: SingleDialogItemType[]
 	totalCount: number
 }
+
+
 
 //enum прописываем чтобы не запоминать какой код что означает
 export enum ResultCodesEnum {

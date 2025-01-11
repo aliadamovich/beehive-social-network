@@ -10,7 +10,7 @@ import { myTheme } from '../../../styles/Theme';
 import { useSearchParams } from 'react-router-dom';
 import { Search } from '../../common/Search/Search';
 import { UsersSkeleton } from './UsersSkeleton';
-import { followUsersThunkCreator, getUsersThunkCreator, resetSearchParams, selectFollowingInProgress, selectSearchParams, selectTotalUsers, selectUsers, updateParams } from '../../../redux/reducers/usersSlice';
+import { followUsersThunkCreator, getUsersTC, resetSearchParams, selectFollowingInProgress, selectSearchParams, selectTotalUsers, selectUsers, updateParams } from '../../../redux/reducers/usersSlice';
 import { selectStatus } from '../../../redux/reducers/appSlice';
 
 export type SearchParamsType = "count" | "page" | "term" | "friend";
@@ -25,7 +25,8 @@ export const Users = () => {
 	const {count, friend, page} = useSelector(selectSearchParams)
 
 	useEffect(() => {
-		dispatch(getUsersThunkCreator({...params}))
+		// dispatch(getUsersThunkCreator({...params}))
+		dispatch(getUsersTC({...params}))
 		return () => {
 			dispatch(resetSearchParams())
 		}
@@ -38,7 +39,8 @@ export const Users = () => {
 
 	const changeCurrentPage = async (currentPage: number) => {
 		updateSearchParams({ page: currentPage.toString() })
-		dispatch(getUsersThunkCreator({...params, page: currentPage}))
+		// dispatch(getUsersThunkCreator({...params, page: currentPage}))
+		dispatch(getUsersTC({...params, page: currentPage}))
 	}
 	// Partial<Record<SearchParamsType, string>>
 	const updateSearchParams = (newParams: any) => {
@@ -47,10 +49,11 @@ export const Users = () => {
 				...newParams,
 			}));
 		dispatch(updateParams({ params: newParams }));
-		}
+	}
 
 	const searchInputChangeHandler = (value: string) => {
-		dispatch(getUsersThunkCreator({term: value}))
+		// dispatch(getUsersThunkCreator({term: value}))
+		dispatch(getUsersTC({term: value}))
 	}
 
 	// const searchInputChangeHandler = (searchValue: string) => {

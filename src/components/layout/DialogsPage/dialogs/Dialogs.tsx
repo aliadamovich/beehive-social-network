@@ -5,38 +5,39 @@ import { useSelector } from "react-redux";
 import { SingleDialog } from "./SingleDialog";
 import { SendMessage } from "../../../common/sendMessageField/SendMessage";
 import { NavLink, useOutletContext, useParams } from "react-router-dom";
-import { AppStateType } from "../../../../redux/redux-store";
 import { EmptyDialogs } from "./EmptyDialogs";
 import { myTheme } from "../../../../styles/Theme";
 import { MainButton } from "../../../common/MainButton";
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { PATH } from "../../../../routes/routes";
-import { AppStatusType } from "../../../../redux/reducers/appReducer";
 import { MainDialogSkeleton } from "../dialogSkeletons/MainDialogSkeleton";
-import { getAllDialogsTC, selectDialogs, sendMessageThunCreator } from "../../../../redux/reducers/dialogsSlice";
+import { sendMessageThunCreator } from "../../../../redux/reducers/dialogsSlice";
 import { selectStatus } from "../../../../redux/reducers/appSlice";
+import { useGetAllMessagesQuery } from "../../../../apiDal/DialogsApi";
 
 export const Dialogs = () => {
 	const { handleBackClick } = useOutletContext<any>();
 	const [messageText, setMessageText] = useState('');
 	const [loading, setLoading] = useState(false);
 	const dispatch = useAppDispatch();
-	const messages = useSelector(selectDialogs);
+	// const messages = useSelector(selectDialogs);
 	const messagesEndRef = useRef<HTMLDivElement | null>(null);
 	const {id} = useParams();
 	const currentDialogUserId = Number(id);
 	const appStatus = useSelector(selectStatus);
 
-	useEffect(() => {
-		dispatch(getAllDialogsTC(currentDialogUserId))
-	}, [id])
+	// useEffect(() => {
+	// 	dispatch(getAllDialogsTC(currentDialogUserId))
+	// }, [id])
+
+	const { data } = useGetAllMessagesQuery(currentDialogUserId)
+	const messages = data?.items
 
 	useEffect(() => {
 		if (messagesEndRef.current) {
 			messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
 		}
 	}, [messages])
-	console.log('messages:', messages);
 
 	const sendMessage = () => {
 		setLoading(true)
@@ -48,14 +49,11 @@ export const Dialogs = () => {
 	}
 
 
-	const currentDialog = messages[currentDialogUserId];
-
-	const DialogsArray = () => {
-		if (!currentDialog) return
-		if (currentDialog.length === 0) {
+	const mapDialogs = () => {
+		if (messages?.length === 0) {
 			return <EmptyDialogs text={"start your first dialog..."}/>
 		} else {
-			return currentDialog.map(d => <SingleDialog
+			return messages?.map(d => <SingleDialog
 				text={d.body}
 				messageId={d.id}
 				dialogUserId={currentDialogUserId}
@@ -76,7 +74,7 @@ export const Dialogs = () => {
 					onClick={handleBackClick} />
 			</StyledButtonContainer>
 			<StyledMessages>
-				{DialogsArray()}
+				{mapDialogs()}
 				<div ref={messagesEndRef}></div>
 			</StyledMessages>
 
@@ -89,7 +87,6 @@ export const Dialogs = () => {
 				maxLength={3000}
 				loading={loading}
 			/>
-
 		</>
 	)
 }

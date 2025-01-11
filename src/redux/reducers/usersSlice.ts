@@ -1,8 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { usersAPI } from "../../apiDal/apiDal";
 import { UserType } from "../../types/types";
 import { setAppStatus } from "./appSlice";
-import { AppThunk } from "../store";
+import { AppDispatch, AppStateType, AppThunk } from "../store";
 
 const initialState = {
 	users: [] as Array<UserType>,
@@ -19,9 +19,9 @@ export const usersSlice = createSlice({
 	name: "users",
 	initialState,
 	reducers: (create) => ({
-		setUsers: create.reducer<{ users: UserType[] }>((state, action) => {
-			state.users = action.payload.users
-		}),
+		// setUsers: create.reducer<{ users: UserType[] }>((state, action) => {
+		// 	state.users = action.payload.users
+		// }),
 		getUsersQuantity: create.reducer<{ quantity: number }>((state, action) => {
 			state.totalUsers = action.payload.quantity
 		}),
@@ -43,6 +43,11 @@ export const usersSlice = createSlice({
 			state.searchParams = { ...initialState.searchParams }
 		}),
 	}),
+	extraReducers: (builder) => {
+		builder.addCase(getUsersTC.fulfilled, (state, action) => {
+			state.users = action.payload.users
+		})
+	},
 	selectors: {
 		selectUsers: (state) => state.users,
 		selectSearchParams: (state) => state.searchParams,
@@ -52,32 +57,51 @@ export const usersSlice = createSlice({
 })
 
 export const usersReducer = usersSlice.reducer
-export const { getUsersQuantity, updateParams, resetSearchParams, setUsers, toggleFollow, toggleFollowingProgress } =
+export const { getUsersQuantity, updateParams, resetSearchParams, toggleFollow, toggleFollowingProgress } =
 	usersSlice.actions
 export const { selectSearchParams, selectTotalUsers, selectUsers, selectFollowingInProgress} = usersSlice.selectors
 
-
+//utils
+export const createAppAsyncThunk = createAsyncThunk.withTypes<{
+	state: AppStateType,
+	dispatch: AppDispatch,
+	rejectValue: null
+}>();
 
 //* Thunks
 
 
-export type RequestParams = Required<getUsersParams>
 
-export const getUsersThunkCreator = (params: getUsersParams): AppThunk<Promise<any>> => {
+
+// export const getUsersThunkCreator = (params: getUsersParams): AppThunk<Promise<any>> => {
 	
-	return async (dispatch, getState) => {
+// 	return async (dispatch, getState) => {
+// 		const searchParams = getState().users.searchParams
+// 		const queryParams: RequestParams = { ...searchParams, ...params }
+
+// 		dispatch(setAppStatus({ status: "loading" }))
+// 		const resp = await usersAPI.getUsers(queryParams)
+// 		dispatch(setAppStatus({ status: "success" }))
+// 		// dispatch(updateParams({params: queryParams}))
+// 		dispatch(setUsers({ users: resp.data.items }))
+// 		dispatch(getUsersQuantity({ quantity: resp.data.totalCount }))
+// 	}
+// }
+
+export const getUsersTC = createAppAsyncThunk<{users: UserType[]} , getUsersParams>("users/getUsers", async (params, thunkAPI) => {
+	const { dispatch, getState, rejectWithValue } = thunkAPI
+	try {
 		const searchParams = getState().users.searchParams
 		const queryParams: RequestParams = { ...searchParams, ...params }
-
 		dispatch(setAppStatus({ status: "loading" }))
 		const resp = await usersAPI.getUsers(queryParams)
+		return {users: resp.data.items}
+	} catch (error) {
+		return rejectWithValue(null)
+	} finally {
 		dispatch(setAppStatus({ status: "success" }))
-		// dispatch(updateParams({params: queryParams}))
-		dispatch(setUsers({ users: resp.data.items }))
-		dispatch(getUsersQuantity({ quantity: resp.data.totalCount }))
 	}
-}
-
+})
 
 export const followUsersThunkCreator = (userId: number): AppThunk => {
   return async (dispatch) => {
@@ -116,7 +140,7 @@ export const followUsersThunkCreator = (userId: number): AppThunk => {
 // }
 
 //* Types
-
+export type RequestParams = Required<getUsersParams>
 export type getUsersParams = {
 	count?: number
 	page?: number

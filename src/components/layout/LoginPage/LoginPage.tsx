@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { myTheme } from '../../../styles/Theme'
 import { selectIsAuth } from '../../../redux/reducers/authSlice'
+import { ErrorBanner } from '../../common/ErrorBanner'
 
 export type SubmittedValueType = {
 	email: string
@@ -75,6 +76,7 @@ export const LoginPage = () => {
 					<LoginForm />
 				</LoginContainer>
 			</FormContainer>
+			<ErrorBanner />
 		</Login>
 	)
 }

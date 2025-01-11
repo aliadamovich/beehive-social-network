@@ -6,6 +6,7 @@ import { appReducer } from "./reducers/appSlice";
 import { dialogsReducer } from "./reducers/dialogsSlice";
 import { profileReducer } from "./reducers/profileSlice";
 import { usersReducer } from "./reducers/usersSlice";
+import { baseApi } from "./app/baseApi";
 
 // export const rootReducer = combineReducers({
 // 	profile: profileReducer,
@@ -25,7 +26,9 @@ export const store = configureStore({
 		auth: authReducer,
 		grid: photoGridReducer,
 		app: appReducer,
+		[baseApi.reducerPath]: baseApi.reducer,
 	},
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),
 })
 
 export type AppStateType = ReturnType<typeof store.getState>;
