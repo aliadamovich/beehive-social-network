@@ -1,16 +1,16 @@
-import { createBrowserRouter, createHashRouter, Navigate, Outlet, RouteObject } from "react-router-dom";
-import { DialogsPage } from "../components/layout/DialogsPage/DialogsPage";
-import { Error404 } from "../components/common/Error404";
-import App from "../App";
-import { UsersPage } from "../components/layout/UsersPage/UsersPage";
-import { Gallery } from "../components/layout/GalleryPage/Gallery";
-import { ChatPage } from "../components/layout/ChatPage/ChatPage";
-import { Dialogs } from "../components/layout/DialogsPage/dialogs/Dialogs";
-import { EmptyDialogs } from "../components/layout/DialogsPage/dialogs/EmptyDialogs";
-import { LoginPage } from "../components/layout/LoginPage/LoginPage";
-import { ProfilePage } from "../components/layout/ProfilePage/ProfilePage";
+import { createHashRouter, Navigate, Outlet, RouteObject } from "react-router-dom";
+import { DialogsPage } from "../features/DialogsPage/ui/DialogsPage";
+import { Error404 } from "../common/components/Error404";
+import App from "../app/App";
+import { Dialogs } from "../features/DialogsPage/ui/dialogs/Dialogs";
+import { EmptyDialogs } from "../features/DialogsPage/ui/dialogs/EmptyDialogs";
+import { ProfilePage } from "../features/ProfilePage/ui/ProfilePage";
 import { useSelector } from "react-redux";
-import { selectIsAuth } from "../redux/reducers/authSlice";
+import { ChatPage } from "features/ChatPage/ChatPage";
+import { UsersPage } from "features/UserPage/ui/UsersPage";
+import { selectIsAuth } from "features/LoginPage/model/authSlice";
+import { LoginPage } from "features/LoginPage/ui/LoginPage";
+import { Gallery } from "features/GalleryPage/ui/Gallery";
 
 
 export const PATH = {
@@ -22,7 +22,7 @@ export const PATH = {
 	GALLERY: '/gallery',
 	CHAT: '/chat',
 	LOGIN: '/login',
-	ERROR: '/error404'
+	ERROR: '/404'
 } as const;
 
 //* массив с публичными компонентами

@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css';
+import App from './app/App';
+import './styles/index.css';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from 'react-redux';
 import { HashRouter, RouterProvider} from "react-router-dom";
 import { GlobalStyles } from './styles/Global.styled';
 import { router } from './routes/routes';
-import { store } from './redux/store';
+import { store } from './app/store';
 
 
 
