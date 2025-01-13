@@ -25,13 +25,7 @@ export type PhotosType = {
 	large: string | null
 }
 
-export type UserType = {
-	id: number
-	name: string
-	status: string
-	photos: PhotosType
-	followed: boolean
-}
+
 
 //*server responses
 export type StandartResponse<D = {}> = {

@@ -1,7 +1,7 @@
 import { usersAPI } from "../../apiDal/apiDal";
-import { UserType } from "../../common/types/types";
 import { AppThunk } from "../redux-store";
 import { setAppStatus } from "../../app/appSlice";
+import { UserType } from "features/UserPage/api/usersApi.types";
 
 
 let initialState = {
@@ -100,14 +100,6 @@ export const setSearchParamsAC = (params: getUsersParams) => ({
 //     dispatch(getUsersQuantityAC(resp.totalCount));
 //   };
 // };
-type getUsersParams = {
-	count?: number
-	page?: number
-	term?: string
-	friend?: boolean
-}
-
-export type RequestParams = Required<getUsersParams>
 
 export const _getUsersThunkCreator = (params: getUsersParams): AppThunk<Promise<any>> => {
 	
@@ -115,15 +107,12 @@ export const _getUsersThunkCreator = (params: getUsersParams): AppThunk<Promise<
 		const { searchParams } = getState().usersPage
 		const queryParams: RequestParams = {...searchParams, ...params};
 
-		// dispatch(toggleIsFetchingAC(true))
 		dispatch(setAppStatus({status: 'loading'}))
 		const resp = await usersAPI.getUsers(queryParams)
-		// dispatch(toggleIsFetchingAC(false))
 		dispatch(setAppStatus({status: 'success'}))
-		dispatch(setSearchParamsAC(queryParams))
+		// dispatch(setSearchParamsAC(queryParams))
 		dispatch(setUsersAC(resp.data.items))
 		dispatch(getUsersQuantityAC(resp.data.totalCount))
-		// return resp.data
 	}
 }
 
@@ -178,3 +167,11 @@ type ActionsType =
   | ReturnType<typeof toggleFollowingProgressAC>
   | ReturnType<typeof setSearchParamsAC>;
 
+type getUsersParams = {
+	count?: number
+	page?: number
+	term?: string
+	friend?: boolean
+}
+
+type RequestParams = Required<getUsersParams>

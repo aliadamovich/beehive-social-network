@@ -5,29 +5,32 @@ import { Input, Spin } from 'antd';
 import { ChangeEvent, useState } from 'react';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
-import { SearchParamsType } from 'features/UserPage/ui/Users';
+import { SearchParamsType } from 'features/UserPage/ui/_Users';
 import { selectStatus } from 'app/appSlice';
 
 type Props = {
-	debounceChange?: (value: string) => void
+	debounceChange: (value: string) => void
 	// searchInputChangeHandler: (value: string) => void
-	updateSearchParams: (params: Partial<Record<SearchParamsType, string>>) => void
-	value: string
+	// updateSearchParams: (params: Partial<Record<SearchParamsType, string>>) => void
+	 initialValue: string
 }
 
-export const Search = ({ debounceChange, updateSearchParams, value }: Props) => {
+export const Search = ({ debounceChange, initialValue }: Props) => {
 	const [timerId, setTimerId] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
 	const [searchInProgress, setSearchInProgress] = useState(false);
 	const appStatus = useSelector(selectStatus);
-	
-	const onChangeTextCallback = (e: ChangeEvent<HTMLInputElement>) => {
+	const [searchValue, setSearchValue] = useState(initialValue);
+
+	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		// searchInputChangeHandler(e.currentTarget.value)
-		updateSearchParams({ term: e.currentTarget.value })
+		// updateSearchParams({ term: e.currentTarget.value })
+		setSearchValue(e.currentTarget.value)
 		if (debounceChange) {
 			setSearchInProgress(true)
 			clearTimeout(timerId)
 			const newTimer = setTimeout(async () => {
 				await debounceChange(e.currentTarget.value);
+				// updateSearchParams({ term: e.currentTarget.value })
 				setSearchInProgress(false)
 			}, 1500)
 			setTimerId(newTimer)
@@ -36,14 +39,14 @@ export const Search = ({ debounceChange, updateSearchParams, value }: Props) => 
 
 	const searchValueHandler = async () => {
 		setSearchInProgress(true);
-		await debounceChange?.(value);
+		await debounceChange?.(searchValue);
 		setSearchInProgress(false)
 	}
 
 	return(
 		<StyledSearch>
 			{/* {searchInProgress && <Spin indicator={<LoadingOutlined spin />} size="small" />} */}
-			<Input type="text" value={value} placeholder='Search' onChange={onChangeTextCallback} />
+			<Input type="text" value={searchValue} placeholder='Search' onChange={onChangeHandler} />
 			<StyledIconButton onClick={searchValueHandler} disabled={searchInProgress === true || appStatus=== 'loading'}>
 				<Icon iconId='search' viewBox="0 0 129 129" fill='#FFF' width='15' height='15' />
 			</StyledIconButton>

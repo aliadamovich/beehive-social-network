@@ -39,7 +39,7 @@ export const User = ({ u, toggleFollowUsers, followingInProgress }: UserPropsTyp
 				<MainButton 
 					children={u.followed ? 'Unfollow' : 'Follow'}
 					onClick={() => { toggleFollowUsers(u.id) }} 
-					loading={followingInProgress.some(el => el === u.id) }
+					loading={followingInProgress?.some(el => el === u.id) }
 				/>
 			</StyledUserCard>
 		</>

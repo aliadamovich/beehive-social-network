@@ -1,7 +1,6 @@
-import { UserType } from '../common/types/types';
 import axios from "axios";
 import { ProfileType } from "../common/types/types";
-import { RequestParams } from 'redux-logic/reducers/usersReducer';
+import { RequestParams, UserType } from 'features/UserPage/api/usersApi.types';
 
 //с помощью встроенного метода create создается объект с базовыми насройками
 const axiosInstance = axios.create({

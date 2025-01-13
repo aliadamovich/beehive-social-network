@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { User } from './User';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -11,38 +11,44 @@ import { GridWrapper } from 'common/components/GridWrapper';
 import { Recent } from 'common/components/Recent/Recent';
 import { selectUsers, selectTotalUsers, selectFollowingInProgress, selectSearchParams, getUsersTC, resetSearchParams, updateParams, followUserTC } from 'features/UserPage/model/usersSlice';
 import { Search } from 'common/components/Search/Search';
-import { INITIAL_SEARCH_PARAMS, useGetUsersQuery } from 'features/UserPage/api/usersApi';
 import { Pagination } from 'antd';
-import { getUsersParams } from 'features/UserPage/api/usersApi.types';
+export type SearchParamsType = "count" | "page" | "term" | "friend";
 
-export const Users = () => {
+export const _Users = () => {
+	const users = useSelector(selectUsers)
+	const totalUsers = useSelector(selectTotalUsers)
 	const followingInProgress = useSelector(selectFollowingInProgress);
 	const dispatch = useAppDispatch()
 	const [searchParams, setSearchParams] = useSearchParams()
 	const appStatus = useSelector(selectStatus)
 	const params = Object.fromEntries(searchParams)
-
-	const {data} = useGetUsersQuery(params)
-	const users = data?.items
+	const {count, friend, page} = useSelector(selectSearchParams)
+	
+	useEffect(() => {
+		dispatch(getUsersTC({...params}))
+		return () => {
+			dispatch(resetSearchParams())
+		}
+	}, [])
 
 	const toggleFollowUsers = async (userId: number) => {
 		dispatch(followUserTC(userId));
 	}
 
 	const changeCurrentPage = async (currentPage: number) => {
-		updateSearchParams({ page: currentPage.toString() })
+		dispatch(getUsersTC({...params, page: currentPage}))
 	}
-
-	const updateSearchParams = (newParams: Partial<Record<keyof getUsersParams, string>>) => {
+	// Partial<Record<SearchParamsType, string>>
+	const updateSearchParams = (newParams: any) => {
 			setSearchParams(prevParams => ({
 				...Object.fromEntries(prevParams),
 				...newParams,
 			}));
-		// dispatch(updateParams({ params: newParams }));
+		dispatch(updateParams({ params: newParams }));
 	}
 
 	const searchInputChangeHandler = (value: string) => {
-		updateSearchParams({ term: value })
+		dispatch(getUsersTC({term: value}))
 	}
 
 
@@ -51,21 +57,21 @@ export const Users = () => {
 	return (
 		<>
 			<Search
+				// updateSearchParams={updateSearchParams}
 				debounceChange={searchInputChangeHandler}
+				// searchInputChangeHandler={searchInputChangeHandler}
 				initialValue={params.term || ''}
 			/>
 			{appStatus === 'loading' ? <UsersSkeleton /> :
 				<StyledUsersContainer>
 					<StyledUsersContent>
-
-						<Pagination
-							defaultCurrent={INITIAL_SEARCH_PARAMS.page}
-							defaultPageSize={INITIAL_SEARCH_PARAMS.count}
-							total={data?.totalCount}
-							onChange={changeCurrentPage}
-							showSizeChanger={false}
-							style={{ marginBottom: '20px' }}
-							align='end'
+						<Pagination 
+						showSizeChanger={false}
+						align='end'
+						defaultCurrent={+params.count}
+						total={totalUsers}
+						onChange={changeCurrentPage}
+						style={{marginBottom: '20px'}}
 						/>
 						<GridWrapper gap='15px' gtc='repeat(auto-fit, minmax(250px, 1fr))'>
 							{

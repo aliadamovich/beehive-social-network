@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Users } from './Users';
 import { Container } from 'common/components/Container';
+import { Users } from 'features/UserPage/ui/Users';
 
 
 export const UsersPage = () => {

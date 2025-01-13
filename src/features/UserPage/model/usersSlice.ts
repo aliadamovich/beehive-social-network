@@ -2,7 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { usersAPI } from "apiDal/apiDal";
 import { setAppStatus } from "app/appSlice";
 import { AppDispatch, AppStateType, AppThunk } from "app/store";
-import { UserType } from "common/types/types";
+import { ResultCodesEnum } from "common/enums/enum";
+import { UserType } from "features/UserPage/api/usersApi.types";
 
 
 const initialState = {
@@ -20,16 +21,9 @@ export const usersSlice = createSlice({
 	name: "users",
 	initialState,
 	reducers: (create) => ({
-		// setUsers: create.reducer<{ users: UserType[] }>((state, action) => {
-		// 	state.users = action.payload.users
+		// getUsersQuantity: create.reducer<{ quantity: number }>((state, action) => {
+		// 	state.totalUsers = action.payload.quantity
 		// }),
-		getUsersQuantity: create.reducer<{ quantity: number }>((state, action) => {
-			state.totalUsers = action.payload.quantity
-		}),
-		toggleFollow: create.reducer<{ userId: number }>((state, action) => {
-			const user = state.users.find((u) => u.id === action.payload.userId)
-			if (user) user.followed = !user.followed
-		}),
 		toggleFollowingProgress: create.reducer<{ isFetching: boolean; userId: number }>((state, action) => {
 			if (action.payload.isFetching) {
 				state.followingInProgress.push(action.payload.userId)
@@ -45,9 +39,15 @@ export const usersSlice = createSlice({
 		}),
 	}),
 	extraReducers: (builder) => {
-		builder.addCase(getUsersTC.fulfilled, (state, action) => {
+		builder
+			.addCase(getUsersTC.fulfilled, (state, action) => {
 			state.users = action.payload.users
+			state.totalUsers = action.payload.totalCount
 		})
+			.addCase(followUserTC.fulfilled, (state, action) => {
+				const user = state.users.find((u) => u.id === action.payload.userId)
+				if (user) user.followed = !user.followed
+			})
 	},
 	selectors: {
 		selectUsers: (state) => state.users,
@@ -58,8 +58,7 @@ export const usersSlice = createSlice({
 })
 
 export const usersReducer = usersSlice.reducer
-export const { getUsersQuantity, updateParams, resetSearchParams, toggleFollow, toggleFollowingProgress } =
-	usersSlice.actions
+export const { updateParams, resetSearchParams, toggleFollowingProgress } = usersSlice.actions
 export const { selectSearchParams, selectTotalUsers, selectUsers, selectFollowingInProgress} = usersSlice.selectors
 
 //utils
@@ -72,77 +71,48 @@ export const createAppAsyncThunk = createAsyncThunk.withTypes<{
 //* Thunks
 
 
-
-
-// export const getUsersThunkCreator = (params: getUsersParams): AppThunk<Promise<any>> => {
-	
-// 	return async (dispatch, getState) => {
-// 		const searchParams = getState().users.searchParams
-// 		const queryParams: RequestParams = { ...searchParams, ...params }
-
-// 		dispatch(setAppStatus({ status: "loading" }))
-// 		const resp = await usersAPI.getUsers(queryParams)
-// 		dispatch(setAppStatus({ status: "success" }))
-// 		// dispatch(updateParams({params: queryParams}))
-// 		dispatch(setUsers({ users: resp.data.items }))
-// 		dispatch(getUsersQuantity({ quantity: resp.data.totalCount }))
-// 	}
-// }
-
-export const getUsersTC = createAppAsyncThunk<{users: UserType[]} , getUsersParams>("users/getUsers", async (params, thunkAPI) => {
+export const getUsersTC = createAppAsyncThunk<{users: UserType[], totalCount: number} , getUsersParams>("users/getUsers", async (params, thunkAPI) => {
 	const { dispatch, getState, rejectWithValue } = thunkAPI
 	try {
 		const searchParams = getState().users.searchParams
 		const queryParams: RequestParams = { ...searchParams, ...params }
-		dispatch(setAppStatus({ status: "loading" }))
+		// dispatch(setAppStatus({ status: "loading" }))
 		const resp = await usersAPI.getUsers(queryParams)
-		return {users: resp.data.items}
+		return {users: resp.data.items, totalCount: resp.data.totalCount}
 	} catch (error) {
 		return rejectWithValue(null)
 	} finally {
-		dispatch(setAppStatus({ status: "success" }))
+		// dispatch(setAppStatus({ status: "success" }))
 	}
 })
 
-export const followUsersThunkCreator = (userId: number): AppThunk => {
-  return async (dispatch) => {
-		// debugger
-		dispatch(toggleFollowingProgress({isFetching: true, userId}));
+export const followUserTC = createAppAsyncThunk<{userId: number}, number>("users/followUser", async (userId, thunkAPI) => {
+		const { dispatch, rejectWithValue } = thunkAPI
+		try {
+			dispatch(toggleFollowingProgress({ isFetching: true, userId }))
+			const isFollowed = await usersAPI.checkFollow(userId)
 
-    const isFollowed = await usersAPI.checkFollow(userId);
-		let respData;
-    if (isFollowed === false) {
-      respData = await usersAPI.follow(userId);
-    } else {
-      respData = await usersAPI.unfollow(userId);
-    }
+			const respData = isFollowed
+			? await usersAPI.follow(userId) 
+			: await usersAPI.unfollow(userId)
+			
+			if (respData.resultCode === ResultCodesEnum.Success) {
+				return {userId}
+			}
+			return rejectWithValue(null)
+		} catch (error) {
+			return rejectWithValue(null)
+		}
+		finally{
+			dispatch(toggleFollowingProgress({ isFetching: false, userId }))
+		}
+	}
+)
 
-		if (respData.resultCode === 0) {
-      dispatch(toggleFollow({userId}));
-    }
-		dispatch(toggleFollowingProgress({isFetching: false, userId}));
-		
-  };
-};
-
-
-
-// export const loadMoreUsersThunkCreator = (currentPage: number, usersOnPage: number): AppThunk => {
-// 	return async (dispatch) => {
-//     dispatch(toggleIsFetchingAC(true));
-//     const newPage = currentPage + 1;
-//     dispatch(changeCurrentPageAC(newPage));
-
-//     const response = await usersAPI.getUsers(newPage, usersOnPage);
-
-//     dispatch(loadMoreUsersAC(response.items));
-//     dispatch(toggleIsFetchingAC(false));
-//   };
-// }
 
 //* Types
-export type RequestParams = Required<getUsersParams>
-export type getUsersParams = {
+ type RequestParams = Required<getUsersParams>
+ type getUsersParams = {
 	count?: number
 	page?: number
 	term?: string

@@ -4,9 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Pagination } from '../../../../../common/components/pagination/Pagination'
 import { Loader } from '../../../../../common/components/Loader/Loader'
 import { useAppDispatch } from 'app/hooks'
-import { followUsersThunkCreator, getUsersTC, resetSearchParams, selectFollowingInProgress, selectUsers } from 'features/UserPage/model/usersSlice'
+import { followUserTC, getUsersTC, resetSearchParams, selectFollowingInProgress, selectUsers } from 'features/UserPage/model/usersSlice'
 import { User } from 'features/UserPage/ui/User'
-
 
 
 export const FollowedFriends = ({isOwner} : {isOwner: boolean}) => {
@@ -17,19 +16,17 @@ export const FollowedFriends = ({isOwner} : {isOwner: boolean}) => {
 
 	const dispatch = useAppDispatch()
 	const toggleFollowUsers = (userId: number) => { 
-		dispatch(followUsersThunkCreator(userId)) 
+		dispatch(followUserTC(userId)) 
 	}
 	console.log(users);
 
 	useEffect(() => {
 		if (!isOwner) return;
-		dispatch(getUsersTC({page: 1, count: 10, term: 'd', friend: true}))
-		// dispatch(getUsersThunkCreator({}))
+		dispatch(getUsersTC({page: 1, count: 10,  friend: true}))
 		return () => {
 			dispatch(resetSearchParams())
 		}
 	}, [])
-	// , [currentPage, usersOnPage, dispatch]);
 
 
 	if (!isOwner) return <div>No friends yet...</div>
@@ -41,7 +38,9 @@ export const FollowedFriends = ({isOwner} : {isOwner: boolean}) => {
 												u={u} 
 												key={u.id} 
 												toggleFollowUsers={toggleFollowUsers} 
-												followingInProgress={followingInProgress}/>)
+												followingInProgress={followingInProgress}
+												/>
+												)
 			}
 		</StyledFriends>
 
