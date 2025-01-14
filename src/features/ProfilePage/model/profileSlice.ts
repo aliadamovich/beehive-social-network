@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { profileAPI, ResultCodesEnum } from 'apiDal/apiDal';
+import { profileAPI } from 'apiDal/apiDal';
 import { setAppStatus } from 'app/appSlice';
 import { AppStateType, AppThunk } from 'app/store';
-import { PhotosType, ProfileType } from 'common/types/types';
+import { ResultCodes } from 'common/enums/enum';
+import { PhotosType } from 'common/types/types';
 import { handleNetworkError, handleServerError } from 'common/utils/errorHandlers';
+import { ProfileType } from 'features/ProfilePage/api/profileApi.types';
 import {v1} from 'uuid'
 
 const mockPosts = [
@@ -98,7 +100,7 @@ export const getStatusThunkCreator = (profileId: number): AppThunk<Promise<void>
 export const updateStatusThunkCreator = (status: string): AppThunk => {
 	return async (dispatch) => {
 		const resp = await profileAPI.updateStatus(status)
-		if (resp.data.resultCode === ResultCodesEnum.Success) {
+		if (resp.data.resultCode === ResultCodes.Success) {
 			dispatch(setStatus({status}))
 		}
 	}
@@ -110,7 +112,7 @@ export const updateProfilePhotoThunkCreator = (file: any): AppThunk => {
 		try {
 			dispatch(setAppStatus({status: 'loading'}));
 			const resp = await profileAPI.setProfilePhoto(file);
-      if (resp.data.resultCode === ResultCodesEnum.Success) {
+      if (resp.data.resultCode === ResultCodes.Success) {
         dispatch(setProfilePhoto({photos: resp.data.data.photos}));
 				dispatch(setAppStatus({status: 'success'}));
       } else {
@@ -130,7 +132,7 @@ export const updateProfileInfoTC = (formData: ProfileType): AppThunk => {
 		if (userId ) {
 			try {
 				let resp = await profileAPI.setProfileInfo(formData);
-        if (resp.data.resultCode === ResultCodesEnum.Success) {
+        if (resp.data.resultCode === ResultCodes.Success) {
           dispatch(getUserProfileThunkCreator(userId));
         } else {
           handleServerError(dispatch, resp.data);

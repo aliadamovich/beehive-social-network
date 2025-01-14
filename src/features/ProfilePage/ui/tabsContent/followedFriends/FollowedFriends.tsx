@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
-import { useDispatch, useSelector } from 'react-redux'
-import { useAppDispatch } from 'app/hooks'
-import {  getUsersTC, resetSearchParams, selectFollowingInProgress, selectUsers } from 'features/UserPage/model/usersSlice'
+import { useSelector } from 'react-redux'
+import { selectFollowingInProgress } from 'features/UserPage/model/usersSlice'
 import { User } from 'features/UserPage/ui/User'
 import { INITIAL_SEARCH_PARAMS, useGetUsersQuery } from 'features/UserPage/api/usersApi'
-import { Pagination } from 'antd'
 import { CustomPagination } from 'common/components/customPagination/CustomPagination'
 
 
 export const FollowedFriends = ({isOwner} : {isOwner: boolean}) => {
 	const [page, setPage] = useState(INITIAL_SEARCH_PARAMS.page);
-	const {data} = useGetUsersQuery({friend: true, page})
+	const {data, isFetching} = useGetUsersQuery({friend: true, page})
 	const users = data?.items
 	const followingInProgress = useSelector(selectFollowingInProgress)
-
 
 	if (!isOwner) return <div>No friends yet...</div>
 
@@ -32,7 +29,8 @@ export const FollowedFriends = ({isOwner} : {isOwner: boolean}) => {
 				{users?.map(u => <User
 					u={u}
 					key={u.id}
-					followingInProgress={followingInProgress}
+					isLoading={isFetching}
+					// followingInProgress={followingInProgress}
 				/>)}
 			</StyledFriends>
 		</>

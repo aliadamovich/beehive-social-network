@@ -1,33 +1,40 @@
 import styled from 'styled-components';
 import null_user from './../../../assets/images/user.png';
-import { ProfileType } from '../../../common/types/types';
 import { ChangeEvent } from 'react';
 import { myTheme } from '../../../styles/Theme';
 import { SectionTitle } from '../../../common/components/SectionTitle';
+import { useSetProfilePhotoMutation } from 'features/ProfilePage/api/profileApi';
+import { PhotosType } from 'common/types/types';
+import { ProfileType } from 'features/ProfilePage/api/profileApi.types';
 
 type ProfilePhotoType = {
-	userProfile: ProfileType | null
-	onPhotoChoose: (file: File) => void
+	// userProfile: ProfileType | null
+	// onPhotoChoose: (file: File) => void
 	isOwner: boolean
+	profileData: ProfileType | undefined
+	
 }
 
 
-export const ProfilePhoto = (props: ProfilePhotoType) => {
+export const ProfilePhoto = ({isOwner, profileData}: ProfilePhotoType) => {
 
+	const [setProfilePhoto] = useSetProfilePhotoMutation()
+	
 	const onInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files.length > 0) {
-			props.onPhotoChoose(e.target.files[0])
+			// props.onPhotoChoose(e.target.files[0])
+			// dispatch(updateProfilePhotoThunkCreator(e.target.files[0]))
 		}
 	}
 	return (
 		<>
 			<UserStyledPhoto>
 				{
-					props.userProfile?.photos.large !== null ?
-						<img src={props.userProfile?.photos.large} alt="user" /> :
+					profileData?.photos.large !== null ?
+						<img src={profileData?.photos.large} alt="user" /> :
 						<img src={null_user} alt="user" />
 				}
-				{props.isOwner &&
+				{isOwner &&
 					<>
 					<AddPhotoInput id='file' onChange={onInputChangeHandler} type={'file'} />
 						<label htmlFor="file">+</label>
@@ -35,7 +42,7 @@ export const ProfilePhoto = (props: ProfilePhotoType) => {
 				}
 			</UserStyledPhoto>
 
-			<SectionTitle>{props.userProfile?.fullName}</SectionTitle>
+			<SectionTitle>{profileData?.fullName}</SectionTitle>
 		</>
 	)
 }

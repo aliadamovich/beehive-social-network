@@ -7,48 +7,50 @@ import { useSelector } from 'react-redux';
 import { Avatar } from 'common/components/Avatar';
 import { MainButton } from 'common/components/MainButton';
 import { UserType } from 'features/UserPage/api/usersApi.types';
-import { useFollowUserMutation, useUnfollowUserMutation } from 'features/UserPage/api/usersApi';
+import { useFollowUserMutation, useLazyCheckFollowQuery, useUnfollowUserMutation } from 'features/UserPage/api/usersApi';
 import { useAppDispatch } from 'app/hooks';
-import { toggleFollowingProgress } from 'features/UserPage/model/usersSlice';
+import { selectFollowingInProgress, toggleFollowingProgress } from 'features/UserPage/model/usersSlice';
 
 
 type UserPropsType = {
 	u: UserType
 	// toggleFollowUsers: (userId: number) => void
-	followingInProgress: number[]
+	// followingInProgress: number[]
 	isLoading: boolean
 }
 
-export const User = ({ u, isLoading, followingInProgress }: UserPropsType) => {
+export const User = ({ u, isLoading }: UserPropsType) => {
 	const [followUser, {isLoading: isFollowLoading}] = useFollowUserMutation()
 	const [unfollowUser, {isLoading: isUnfollowLoading}] = useUnfollowUserMutation()
 	const dispatch = useAppDispatch();
+	const [trigger] = useLazyCheckFollowQuery()
+	const followingInProgress = useSelector(selectFollowingInProgress);
 
 	const toggleFollowUser = async () => {
-		console.log(u.followed);
 		try {
 			dispatch(toggleFollowingProgress({ isFetching: true, userId: u.id }))
-			if (u.followed) {
-				unfollowUser(u.id)
-				// .then(() => {
-				// 	dispatch(toggleFollowingProgress({ isFetching: false, userId: u.id }))
-				// })
+			const { data: isUserFollowed } = await trigger(u.id)
+			if (isUserFollowed) {
+					await unfollowUser(u.id)
 			} else {
 				await followUser(u.id)
-				// .then(() => {
-				// 	dispatch(toggleFollowingProgress({ isFetching: false, userId: u.id }))
-				// })
 			}
+			// dispatch(toggleFollowingProgress({ isFetching: true, userId: u.id }))
+			// if (u.followed) {
+			// 	await unfollowUser(u.id)
+			// } else {
+			// 	await followUser(u.id)
+			// }
 		} catch (error) {
 			
 		} finally {
-			// dispatch(toggleFollowingProgress({ isFetching: false, userId: u.id }))
+			dispatch(toggleFollowingProgress({ isFetching: false, userId: u.id }))
 		}
 	}
 
 	return (
 		<>
-			<StyledUserCard >
+			<StyledUserCard>
 				<StyledUserTop>
 
 					<Link to={'/profile/' + u.id}>
@@ -57,32 +59,19 @@ export const User = ({ u, isLoading, followingInProgress }: UserPropsType) => {
 					
 					<StyledUserData>
 						<StyledUserName>{u.name}</StyledUserName>
-						<p>Country: </p>
-						<p>City: </p>
+						<p>Country:</p>
+						<p>City:</p>
 					</StyledUserData>
 
 				</StyledUserTop>
 
 				<StyledStatus><p>{u.status || 'No status yet...'}</p> </StyledStatus>
 				<Divider style={{margin: '12px 0'}}/>
-				{/* <MainButton 
+				<MainButton 
 					children={u.followed ? 'Unfollow' : 'Follow'}
 					onClick={toggleFollowUser} 
-					loading={followingInProgress?.some(el => el === u.id) }
-				/> */}
-				{u.followed 
-					? <MainButton
-						children={'Unfollow'}
-						onClick={toggleFollowUser}
-						loading={isUnfollowLoading}
-						disabled={isLoading}
-					/>
-				: <MainButton
-						children={'Follow'}
-						onClick={toggleFollowUser}
-						loading={isFollowLoading}
-						disabled={isLoading}
-					/>}
+					loading={followingInProgress?.some(el => el === u.id) || isLoading === true }
+				/>
 			</StyledUserCard>
 		</>
 	)

@@ -10,7 +10,7 @@ import { MainButton } from "../../../../common/components/MainButton";
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { PATH } from "../../../../routes/routes";
 import { selectStatus } from "../../../../app/appSlice";
-import { useGetAllMessagesQuery, useSendMessageMutation } from "../../api/DialogsApi";
+import { useGetMessagesWithUserQuery, useSendMessageMutation } from "../../api/DialogsApi";
 import { MainDialogSkeleton } from "./../dialogSkeletons/MainDialogSkeleton";
 import { useAppDispatch } from "app/hooks";
 
@@ -25,7 +25,7 @@ export const Dialogs = () => {
 	const appStatus = useSelector(selectStatus);
 
 
-	const { data } = useGetAllMessagesQuery(currentDialogUserId)
+	const { data } = useGetMessagesWithUserQuery(currentDialogUserId)
 	const [sendMessage] = useSendMessageMutation()
 	const messages = data?.items
 

@@ -10,8 +10,10 @@ import { PATH } from '../../../routes/routes';
 import styled from 'styled-components';
 import { myTheme } from '../../../styles/Theme';
 import { Header } from 'antd/es/layout/layout';
-import { LogoutThunkCreator, selectIsAuth, selectProfileData } from 'features/LoginPage/model/authSlice';
+import { LogoutThunkCreator, selectIsAuth, selectProfileData, setAuthProfile, setIsAuth } from 'features/LoginPage/model/authSlice';
 import { AppDispatch } from 'app/store';
+import { useLogoutMutation } from 'features/LoginPage/api/authApi';
+import { useAppDispatch } from 'app/hooks';
 
 type HeaderPropsType ={
 	collapsed: boolean
@@ -24,13 +26,19 @@ export const HeaderBlock = ({ collapsed, setCollapsed}: HeaderPropsType) => {
 	const { token: { colorBgContainer }, } = theme.useToken();
 	const {login, photos} = useSelector(selectProfileData);
 	const [loading, setLoading] = useState(false);
-	const dispatch = useDispatch<AppDispatch>()
 	const isAuth = useSelector(selectIsAuth);
+	const [logout] = useLogoutMutation()
+	const dispatch = useAppDispatch()
 
 	const onLogoutHandler = () => {
 		setLoading(true)
-		dispatch(LogoutThunkCreator()).then(() => {
+		// dispatch(LogoutThunkCreator()).then(() => {
+		// 	setLoading(false)
+		// })
+		logout().then(() => {
 			setLoading(false)
+			dispatch(setIsAuth({ isAuth: false, userId: null }))
+			// dispatch(setAuthProfile({ email: null, login: null, userId: null, isAuth: false, photos: null }));
 		})
 	}
 

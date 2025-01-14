@@ -7,23 +7,36 @@ import { HeaderBlock } from '../features/header/ui/HeaderBlock';
 import { myTheme } from "../styles/Theme";
 import { ErrorBanner } from '../common/components/ErrorBanner';
 import { SiderBar } from 'features/sideBar/SideBar';
-import { getMeTC, selectIsInitialized } from 'features/LoginPage/model/authSlice';
+import { getMeTC, selectIsInitialized, setIsAuth } from 'features/LoginPage/model/authSlice';
 import { AppDispatch, AppStateType } from 'app/store';
+import { useMeQuery } from 'features/LoginPage/api/authApi';
+import { ResultCodes } from 'common/enums/enum';
 
 
 function App() {
 	const dispatch = useDispatch<AppDispatch>()
 	// const isInitialized = useSelector<AppStateType>(state => state.auth.initialized);
-	const isInitialized = useSelector(selectIsInitialized);
+	// const isInitialized = useSelector(selectIsInitialized);
 	const appStatus = useSelector<AppStateType>(state => state.app.status);
 	const [collapsed, setCollapsed] = useState(true);
-
+	const [isAppInitialized, setIsAppInitialized] = useState(false)
 	const { Content, Footer } = Layout;
 	const {token: { colorBgContainer, borderRadiusLG }} = theme.useToken();
+	
+	const {data, isLoading} = useMeQuery()
+	// console.log(data);
+	useEffect(() => {
+		// dispatch(getMeTC()) 
+		if (!isLoading) {
+			setIsAppInitialized(true)
+			if (data?.resultCode === ResultCodes.Success) {
+				dispatch(setIsAuth({isAuth: true, userId: data?.data.id}))
+			}
+		}
+	},
+		[data]);
 
-	useEffect(() => {dispatch(getMeTC()) }, [dispatch]);
-
-	if (!isInitialized) {
+	if (!isAppInitialized) {
 		return <Loader />;
 	}
 

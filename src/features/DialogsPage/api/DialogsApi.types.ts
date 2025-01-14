@@ -1,5 +1,6 @@
+import { PhotosType } from "common/types/types"
 
-export type SingleDialogItemType = {
+export type SingleDialogItem = {
 	id: string
 	body: string
 	translatedBody: null
@@ -10,3 +11,12 @@ export type SingleDialogItemType = {
 	viewed: boolean
 }
 
+export type AllMessages = {
+	id: number
+	userName: string
+	hasNewMessages: boolean
+	lastDialogActivityDate: string
+	lastUserActivityDate: string
+	newMessagesCount: number
+	photos: PhotosType
+}

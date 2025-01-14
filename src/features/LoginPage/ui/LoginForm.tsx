@@ -5,9 +5,12 @@ import { RiKey2Line } from "react-icons/ri";
 import { LuUser2 } from "react-icons/lu";
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'app/hooks';
-import { LoginTC } from 'features/LoginPage/model/authSlice';
+import { LoginTC, setIsAuth } from 'features/LoginPage/model/authSlice';
 import { Button } from 'common/components/Button';
 import { selectStatus } from 'app/appSlice';
+import { useLoginMutation } from 'features/LoginPage/api/authApi';
+import { ResultCodes } from 'common/enums/enum';
+import { useLazyGetProfileQuery } from 'features/ProfilePage/api/profileApi';
 
 export type SubmittedValueType = {
 	email: string
@@ -17,11 +20,23 @@ export type SubmittedValueType = {
 
 
 export const LoginForm = () => {
-	const dispatch = useAppDispatch();
 	const appStatus = useSelector(selectStatus);
+	const [login] = useLoginMutation()
+	const [getProfileData] = useLazyGetProfileQuery()
+	const dispatch = useAppDispatch()
 
-	const loginHandler = ({ email, password, rememberMe }: SubmittedValueType) => {
-		dispatch(LoginTC(email, password, rememberMe))
+	const loginHandler = (data: SubmittedValueType, resetForm: () => void) => {
+		login(data)
+			.then((resp) => {
+			if (resp.data?.resultCode === ResultCodes.Success && 'userId' in resp.data?.data) {
+				getProfileData(resp.data.data.userId)
+					.then((res) => {
+						dispatch(setIsAuth({ isAuth: true, userId: res.data?.userId }))
+						resetForm()
+					})
+			}
+		})
+		
 	 }
 
 	return (
@@ -29,7 +44,7 @@ export const LoginForm = () => {
 				<Formik
 					initialValues={{ email: '', password: '', rememberMe: false }}
 					validationSchema={loginSchema}
-					onSubmit={(values) => { loginHandler(values) }}
+					onSubmit={(values, actions) => { loginHandler(values, actions.resetForm) }}
 				>
 					{/* в props лежат все values, errors, touched, isSubmitting и тд (я сразу сделала деструктуризацию) */}
 					{({errors, touched}) => (

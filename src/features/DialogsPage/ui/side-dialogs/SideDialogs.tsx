@@ -1,11 +1,9 @@
 import { useSelector } from 'react-redux'
-import styled, { css } from 'styled-components'
-import { useEffect } from 'react'
+import styled from 'styled-components'
 import { SideDialogsSkeleton } from '../dialogSkeletons/SideDialogsSkeleton'
 import { selectStatus } from '../../../../app/appSlice'
-import { useAppDispatch } from 'app/hooks'
-import { getUsersTC, selectUsers } from 'features/UserPage/model/usersSlice'
 import { SideDialogItem } from './SideDialogItem'
+import { useGetAllMessagesQuery } from 'features/DialogsPage/api/DialogsApi'
 
 
 type Props = {
@@ -13,28 +11,25 @@ type Props = {
 }
 
 export const SideDialogs = ({ onDialogClick }: Props) => {
-
-	const users = useSelector(selectUsers);
-	const dispatch = useAppDispatch();
+	const { data: messages } = useGetAllMessagesQuery()
 	const appStatus = useSelector(selectStatus);
-	useEffect(() => { dispatch(getUsersTC({count: 20, page: 1, friend: true})) }, [])
 
-	const dialogsArray = users.map(u => {
-		return < SideDialogItem
-		key = { u.id }
-		name = { u.name }
-		id = { u.id }
-		photo = { u.photos.small }
-		onDialogClick={onDialogClick}
-			/>
-	}
-	)
 
 	if (appStatus === 'loading') return <SideDialogsSkeleton />
 
 
 	return (
-		<StyledDialogsBox>{dialogsArray}</StyledDialogsBox>
+		<StyledDialogsBox>
+			{messages?.map(u => {
+				return < SideDialogItem
+					key={u.id}
+					name={u.userName}
+					id={u.id}
+					photo={u.photos.small}
+					onDialogClick={onDialogClick}
+				/>})
+			}
+		</StyledDialogsBox>
 	)
 }
 
@@ -59,6 +54,7 @@ const StyledDialogsBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 15px;
+	padding: 10px 0;
 	scrollbar-width: 0;
 	&::-webkit-scrollbar {
 		display: none;

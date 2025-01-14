@@ -16,12 +16,12 @@ import { getUsersParams } from 'features/UserPage/api/usersApi.types';
 import { CustomPagination } from 'common/components/customPagination/CustomPagination';
 
 export const Users = () => {
-	const followingInProgress = useSelector(selectFollowingInProgress);
+
 	const [searchParams, setSearchParams] = useSearchParams()
 	const appStatus = useSelector(selectStatus)
 	const params = Object.fromEntries(searchParams)
 
-	const {data, isLoading, isFetching } = useGetUsersQuery(params)
+	const {data, isFetching } = useGetUsersQuery(params)
 	const users = data?.items
 	
 	// const toggleFollowUsers = async (userId: number) => {
@@ -66,7 +66,7 @@ export const Users = () => {
 								users?.map(u =>
 									<User u={u}
 										key={u.id}
-										followingInProgress={followingInProgress}
+										// followingInProgress={followingInProgress}
 										isLoading={isFetching}
 									/>
 								)}

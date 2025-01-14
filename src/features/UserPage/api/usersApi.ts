@@ -15,6 +15,10 @@ export const usersAPI = baseApi.injectEndpoints({
 			}),
 			providesTags: ["Users"],
 		}),
+		checkFollow: build.query<boolean, number>({
+			query: (userId) => `follow/${userId}`,
+			providesTags: ["Users"],
+		}),
 		followUser: build.mutation<StandartResponse, number>({
 			query: (userId) => ({
 				url: `follow/${userId}`,
@@ -32,5 +36,5 @@ export const usersAPI = baseApi.injectEndpoints({
 	}),
 })
 
-export const {useGetUsersQuery, useFollowUserMutation, useUnfollowUserMutation} = usersAPI
+export const {useGetUsersQuery, useFollowUserMutation, useUnfollowUserMutation, useLazyCheckFollowQuery} = usersAPI
 

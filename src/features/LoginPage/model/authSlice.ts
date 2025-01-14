@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { authAPI, profileAPI, ResultCodesEnum } from "apiDal/apiDal";
+import { authAPI, profileAPI } from "apiDal/apiDal";
 import { setAppStatus } from "app/appSlice";
 import { AppThunk } from "app/store";
+import { ResultCodes } from "common/enums/enum";
 import { PhotosType } from "common/types/types";
 import { handleNetworkError, handleServerError } from "common/utils/errorHandlers";
 
@@ -26,6 +27,10 @@ export const authSlice = createSlice({
 		setAuthProfile: create.reducer<ProfileData>((state, action) => {
 			state.profileData = action.payload
 		}),
+		setIsAuth: create.reducer<{isAuth: boolean, userId: number | null}>((state, action) => {
+			state.profileData.isAuth = action.payload.isAuth
+			state.profileData.userId = action.payload.userId
+		})
 	}),
 	selectors: {
 		selectIsAuth: (state) => state.profileData.isAuth,
@@ -37,7 +42,7 @@ export const authSlice = createSlice({
 
 
 export const authReducer = authSlice.reducer;
-export const {setAuthProfile, setInitializedSuccess} = authSlice.actions
+export const { setAuthProfile, setInitializedSuccess, setIsAuth } = authSlice.actions
 export const { selectAuthorizedLoginId, selectIsAuth, selectIsInitialized, selectProfileData } = authSlice.selectors
 
 //* Thunks
@@ -47,7 +52,7 @@ return async(dispatch) => {
   try {
 		// dispatch(setAppStatus({status: 'loading'}));
   	const resp = await authAPI.me();
-  	if (resp.data.resultCode === ResultCodesEnum.Success) {
+  	if (resp.data.resultCode === ResultCodes.Success) {
   		const { id, email, login } = resp.data.data; //деструктуризируем полученный с сервера объект
   		const profileResp = await profileAPI.setProfile(id) //загружаем данные профайла с сервера по полученному id
   			//добавила асинхронный запрос профиля для получения фото для хэдера
@@ -71,7 +76,7 @@ export const LoginTC = (email: string, password: string, rememberMe: boolean): A
 		dispatch(setAppStatus({status: 'loading'}))
 		authAPI.login(email, password, rememberMe)
 		.then(resp => {
-			if (resp.data.resultCode === ResultCodesEnum.Success) {
+			if (resp.data.resultCode === ResultCodes.Success) {
         dispatch(setAppStatus({status: 'success'}));
         dispatch(getMeTC());
       } else {
@@ -88,7 +93,7 @@ export const LogoutThunkCreator = (): AppThunk<Promise<void>> => {
     dispatch(setAppStatus({status: 'loading'}));
     return authAPI.logout()
       .then((resp) => {
-        if (resp.data.resultCode === ResultCodesEnum.Success) {
+        if (resp.data.resultCode === ResultCodes.Success) {
           dispatch(setAppStatus({status: 'success'}));
           dispatch(setAuthProfile({email: null, login: null, userId: null, isAuth: false, photos: null}));
         } else {

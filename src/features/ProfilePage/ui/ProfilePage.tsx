@@ -18,44 +18,54 @@ import { PATH } from "../../../routes/routes";
 import logo from './../../../assets/images/logo_login.svg'
 import { Loader } from "../../../common/components/Loader/Loader";
 import { ProfileSkeleton } from "./skeletons/ProfilePageSkeleton";
-import { selectStatus } from "../../../app/appSlice";
-import { selectAuthorizedLoginId } from "features/LoginPage/model/authSlice";
+import { selectStatus, setAppStatus } from "../../../app/appSlice";
+import { selectAuthorizedLoginId, selectIsAuth } from "features/LoginPage/model/authSlice";
 import { selectProfileInfo, selectUserStatus, getUserProfileThunkCreator, updateProfilePhotoThunkCreator, updateStatusThunkCreator } from "features/ProfilePage/model/profileSlice";
 import { ModalPhotoSlider } from "features/GalleryPage/ui/modalPhotoSlider/ModalPhotoSlider";
 import { AppDispatch } from "app/store";
+import { useGetProfileQuery, useLazyGetProfileQuery } from "features/ProfilePage/api/profileApi";
+import { useMeQuery } from "features/LoginPage/api/authApi";
 
 
 export const ProfilePage = () => {
 	const [activeTab, setActiveTab] = useState('Activity');
-	
-	const location = useLocation();
-	const navigate = useNavigate();
+	const isAuth = useSelector(selectIsAuth);
 	const params = useParams();
 	const dispatch = useDispatch<AppDispatch>();
 
-	const userProfile = useSelector(selectProfileInfo);
+	const [getProfileData] = useLazyGetProfileQuery()
+
+	// const userProfile = useSelector(selectProfileInfo);
 	const status = useSelector(selectUserStatus);
 	const authorizedLoginId = useSelector(selectAuthorizedLoginId);
 	const appStatus = useSelector(selectStatus);
+	const { data, isLoading } = useMeQuery()
+	// let profileId = params.userId ? Number(params.userId) : authorizedLoginId !== null ? authorizedLoginId : 0;
+	let profileId = params.userId ? Number(params.userId) : data?.data.id !== undefined ? authorizedLoginId : 0;
+	// let profileId = Number(params.userId) 
 
-	let profileId = params.userId ? Number(params.userId) : authorizedLoginId !== null ? authorizedLoginId : 0;
 	const isOwner = !params.userId;
 
+
+	// console.log(data);
+	// console.log(isAuth);
+	// const photos = data?.photos
 	//вынесли общую логику в отдельный метод чтобы не дублировать код
-	const refreshProfile = () => {
+	const refreshProfile = async () => {
 		// данное выражение проверяет, если в параметрах роута ничего нет то профиьID равен авторизованному, 
 		//а если есть, профиль ID равен ему (тк authorizedLoginId мб null пришлось внести доп проверку, чтобы тс не ругался)
-		dispatch(getUserProfileThunkCreator(profileId));
-		// await dispatch(getStatusThunkCreator(profileId));
-		// setloading(false)
+		// dispatch(getUserProfileThunkCreator(profileId));
+		dispatch(setAppStatus({ status: 'loading' }));
+		const data = await getProfileData(profileId as number)
+		console.log(data);
 	}
 
 	//фиксит багу при переходе со страницы другого польз-ля на меня (не обновлялись данные - потому что компонента не перерисовывалась)
-	useEffect(()=> {refreshProfile()}, [params.userId])
+	useEffect(()=> {
+		refreshProfile()
+	}, [params.userId])
 
-	const onPhotoChoose = (file: File) => {
-		dispatch(updateProfilePhotoThunkCreator(file))
-	}
+
 
 	const updateStatus = (status: string) => {
 		dispatch(updateStatusThunkCreator(status))
@@ -78,10 +88,12 @@ export const ProfilePage = () => {
 	}
 
 	//если мы не авторизованы то с пути /profile отправляем на страницу логина
-	if (profileId === 0) {
+	// if (profileId === 0) {
+	// 	return <Navigate to={PATH.LOGIN} />
+	// }
+	if (!isAuth) {
 		return <Navigate to={PATH.LOGIN} />
 	}
-
 	if (appStatus === "loading") {
 		return <ProfileSkeleton/>
 	}
@@ -89,13 +101,12 @@ export const ProfilePage = () => {
 	return (
 		<ProfileSection>
 
-
 			<StyledProfileBackground />
 			<Container>
 
 				<StyledProfileTop>
 					<GridProfileUser>
-						<ProfilePhoto userProfile={userProfile} onPhotoChoose={onPhotoChoose} isOwner={isOwner} />
+						{/* <ProfilePhoto profileData={data} isOwner={isOwner} /> */}
 						<ProfileStatus status={status} updateStatus={updateStatus} isOwner={isOwner} />
 					</GridProfileUser>
 

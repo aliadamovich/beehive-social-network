@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { SingleDialogItemType } from '../api/DialogsApi.types';
+import { SingleDialogItem } from '../api/DialogsApi.types';
 import { AppThunk } from 'app/store';
 import { setAppStatus } from 'app/appSlice';
 
@@ -10,10 +10,10 @@ export const dialogsSlice = createSlice({
 		dialogs: {} as DialogsType,
 	},
 	reducers: create => ({
-		getAllMessages: create.reducer<{ userId: number, messages: SingleDialogItemType[] }>((state, action) => {
+		getAllMessages: create.reducer<{ userId: number, messages: SingleDialogItem[] }>((state, action) => {
 			state.dialogs[action.payload.userId] = action.payload.messages
 		}),
-		sendMessage: create.reducer<{ userId: number; message: SingleDialogItemType }>((state, action) => {
+		sendMessage: create.reducer<{ userId: number; message: SingleDialogItem }>((state, action) => {
 			 if (!state.dialogs[action.payload.userId]) {
 					state.dialogs[action.payload.userId] = []
 				}
@@ -89,7 +89,7 @@ export const {selectDialogs} = dialogsSlice.selectors
 type InitialDialogStateType = ReturnType<typeof dialogsSlice.getInitialState>;
 
 export type DialogsType = {
-	[userId: number]: SingleDialogItemType[];
+	[userId: number]: SingleDialogItem[];
 };
 
 // type ThunkType<ReturnType = Promise<void>> = ThunkAction<ReturnType, AppStateType, unknown, ActionsType>

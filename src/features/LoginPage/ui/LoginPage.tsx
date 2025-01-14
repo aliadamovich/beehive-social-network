@@ -9,7 +9,8 @@ import { Navigate } from 'react-router-dom'
 import { myTheme } from '../../../styles/Theme'
 import { ErrorBanner } from 'common/components/ErrorBanner'
 import { Icon } from 'common/components/Icon'
-import { selectIsAuth } from 'features/LoginPage/model/authSlice'
+import { selectAuthorizedLoginId, selectIsAuth } from 'features/LoginPage/model/authSlice'
+import { PATH } from 'routes/routes'
 
 export type SubmittedValueType = {
 	email: string
@@ -20,13 +21,14 @@ export type SubmittedValueType = {
 export const LoginPage = () => {
 	const isAuth = useSelector(selectIsAuth);
 
-
+	const myId = useSelector(selectAuthorizedLoginId)
 	useEffect(() => {
 		console.log("isAuth:", isAuth); // Проверка значения isAuth
 	}, [isAuth]);
 	
 
-	if (isAuth) return <Navigate to='/profile' />
+	// if (isAuth) return <Navigate to={`/profile/${myId}`} />
+	if (isAuth) return <Navigate to={PATH.PROFILE} />
 
 	return (
 		

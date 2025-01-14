@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ProfileType } from "../common/types/types";
+import { ProfileType } from "features/ProfilePage/api/profileApi.types";
 import { RequestParams, UserType } from 'features/UserPage/api/usersApi.types';
 
 //с помощью встроенного метода create создается объект с базовыми насройками
@@ -11,7 +11,6 @@ const axiosInstance = axios.create({
 		// Authorization: `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`
 	},
 })
-
 
 
 export const usersAPI = {
@@ -56,6 +55,7 @@ export const profileAPI = {
       headers: { "Content-Type": "multipart/form-data" },
     });
   },
+	
   setProfileInfo(form: ProfileType) {
     return axiosInstance.put(`profile/`, form);
   },
@@ -136,7 +136,7 @@ type SingleDialogItemType = {
 
 
 //enum прописываем чтобы не запоминать какой код что означает
-export enum ResultCodesEnum {
+ enum ResultCodesEnum {
 	Success = 0,
 	Error = 1
 }
