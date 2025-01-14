@@ -13,31 +13,24 @@ export const usersAPI = baseApi.injectEndpoints({
 				url: "users",
 				params: { ...INITIAL_SEARCH_PARAMS, ...params },
 			}),
+			providesTags: ["Users"],
 		}),
 		followUser: build.mutation<StandartResponse, number>({
 			query: (userId) => ({
 				url: `follow/${userId}`,
-				method: "POST"
+				method: "POST",
 			}),
+			invalidatesTags: ["Users"],
 		}),
-		// sendMessage: build.mutation<
-		// 	StandartResponse<{ message: SingleDialogItemType }>,
-		// 	{ userId: number; message: string }
-		// >({
-		// 	query: ({ userId, message }) => ({
-		// 		url: `dialogs/${userId}/messages`,
-		// 		method: "POST",
-		// 		body: { message },
-		// 	}),
-		// }),
-		// deleteMessage: build.mutation<StandartResponse, string>({
-		// 	query: (messageId) => ({
-		// 		url: `dialogs/messages/${messageId}`,
-		// 		method: "DELETE",
-		// 	}),
-		// }),
+		unfollowUser: build.mutation<StandartResponse, number>({
+			query: (userId) => ({
+				url: `follow/${userId}`,
+				method: "DELETE",
+			}),
+			invalidatesTags: ["Users"],
+		}),
 	}),
 })
 
-export const {useGetUsersQuery} = usersAPI
+export const {useGetUsersQuery, useFollowUserMutation, useUnfollowUserMutation} = usersAPI
 

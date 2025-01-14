@@ -33,6 +33,11 @@ const StyledButton = styled(Button)`
 	flex-direction: row-reverse;
 	&:hover{
 		background-color: ${ myTheme.colors.accentLight } !important;
-		opacity: 0.8
+		opacity: 0.8;
+	}
+	&:disabled {
+		 &:hover{
+			background-color: rgba(0, 0, 0, 0.04) !important;
+		 }
 	}
 `

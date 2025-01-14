@@ -1,22 +1,51 @@
 import { Link } from 'react-router-dom';
 import userPhoto from './../../../assets/images/user.png';
-import { UserType } from '../../../common/types/types';
 import { Card, Divider } from 'antd';
 import styled from 'styled-components';
 import { myTheme } from '../../../styles/Theme';
 import { useSelector } from 'react-redux';
 import { Avatar } from 'common/components/Avatar';
 import { MainButton } from 'common/components/MainButton';
+import { UserType } from 'features/UserPage/api/usersApi.types';
+import { useFollowUserMutation, useUnfollowUserMutation } from 'features/UserPage/api/usersApi';
+import { useAppDispatch } from 'app/hooks';
+import { toggleFollowingProgress } from 'features/UserPage/model/usersSlice';
 
 
 type UserPropsType = {
 	u: UserType
-	toggleFollowUsers: (userId: number) => void
+	// toggleFollowUsers: (userId: number) => void
 	followingInProgress: number[]
+	isLoading: boolean
 }
 
-export const User = ({ u, toggleFollowUsers, followingInProgress }: UserPropsType) => {
-	
+export const User = ({ u, isLoading, followingInProgress }: UserPropsType) => {
+	const [followUser, {isLoading: isFollowLoading}] = useFollowUserMutation()
+	const [unfollowUser, {isLoading: isUnfollowLoading}] = useUnfollowUserMutation()
+	const dispatch = useAppDispatch();
+
+	const toggleFollowUser = async () => {
+		console.log(u.followed);
+		try {
+			dispatch(toggleFollowingProgress({ isFetching: true, userId: u.id }))
+			if (u.followed) {
+				unfollowUser(u.id)
+				// .then(() => {
+				// 	dispatch(toggleFollowingProgress({ isFetching: false, userId: u.id }))
+				// })
+			} else {
+				await followUser(u.id)
+				// .then(() => {
+				// 	dispatch(toggleFollowingProgress({ isFetching: false, userId: u.id }))
+				// })
+			}
+		} catch (error) {
+			
+		} finally {
+			// dispatch(toggleFollowingProgress({ isFetching: false, userId: u.id }))
+		}
+	}
+
 	return (
 		<>
 			<StyledUserCard >
@@ -36,11 +65,24 @@ export const User = ({ u, toggleFollowUsers, followingInProgress }: UserPropsTyp
 
 				<StyledStatus><p>{u.status || 'No status yet...'}</p> </StyledStatus>
 				<Divider style={{margin: '12px 0'}}/>
-				<MainButton 
+				{/* <MainButton 
 					children={u.followed ? 'Unfollow' : 'Follow'}
-					onClick={() => { toggleFollowUsers(u.id) }} 
+					onClick={toggleFollowUser} 
 					loading={followingInProgress?.some(el => el === u.id) }
-				/>
+				/> */}
+				{u.followed 
+					? <MainButton
+						children={'Unfollow'}
+						onClick={toggleFollowUser}
+						loading={isUnfollowLoading}
+						disabled={isLoading}
+					/>
+				: <MainButton
+						children={'Follow'}
+						onClick={toggleFollowUser}
+						loading={isFollowLoading}
+						disabled={isLoading}
+					/>}
 			</StyledUserCard>
 		</>
 	)

@@ -1,48 +1,41 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
-import { Pagination } from '../../../../../common/components/pagination/Pagination'
-import { Loader } from '../../../../../common/components/Loader/Loader'
 import { useAppDispatch } from 'app/hooks'
-import { followUserTC, getUsersTC, resetSearchParams, selectFollowingInProgress, selectUsers } from 'features/UserPage/model/usersSlice'
+import {  getUsersTC, resetSearchParams, selectFollowingInProgress, selectUsers } from 'features/UserPage/model/usersSlice'
 import { User } from 'features/UserPage/ui/User'
+import { INITIAL_SEARCH_PARAMS, useGetUsersQuery } from 'features/UserPage/api/usersApi'
+import { Pagination } from 'antd'
+import { CustomPagination } from 'common/components/customPagination/CustomPagination'
 
 
 export const FollowedFriends = ({isOwner} : {isOwner: boolean}) => {
-
-	const users = useSelector(selectUsers)
+	const [page, setPage] = useState(INITIAL_SEARCH_PARAMS.page);
+	const {data} = useGetUsersQuery({friend: true, page})
+	const users = data?.items
 	const followingInProgress = useSelector(selectFollowingInProgress)
-
-
-	const dispatch = useAppDispatch()
-	const toggleFollowUsers = (userId: number) => { 
-		dispatch(followUserTC(userId)) 
-	}
-	console.log(users);
-
-	useEffect(() => {
-		if (!isOwner) return;
-		dispatch(getUsersTC({page: 1, count: 10,  friend: true}))
-		return () => {
-			dispatch(resetSearchParams())
-		}
-	}, [])
 
 
 	if (!isOwner) return <div>No friends yet...</div>
 
 	return (
+		<>
+			<CustomPagination
+				onChange={(p) => { console.log(p); setPage(p) }}
+				defaultCurrent={page}
+				total={data?.totalCount}
+				style={{marginBottom: '10px'}}
+				size='small'
+			/>
 
-		<StyledFriends>
-			{users.map(u => <User
-												u={u} 
-												key={u.id} 
-												toggleFollowUsers={toggleFollowUsers} 
-												followingInProgress={followingInProgress}
-												/>
-												)
-			}
-		</StyledFriends>
+			<StyledFriends>
+				{users?.map(u => <User
+					u={u}
+					key={u.id}
+					followingInProgress={followingInProgress}
+				/>)}
+			</StyledFriends>
+		</>
 
 	)
 }
