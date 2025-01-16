@@ -22,9 +22,9 @@ export const LoginPage = () => {
 	const isAuth = useSelector(selectIsAuth);
 
 	const myId = useSelector(selectAuthorizedLoginId)
-	useEffect(() => {
-		console.log("isAuth:", isAuth); // Проверка значения isAuth
-	}, [isAuth]);
+	// useEffect(() => {
+	// 	console.log("isAuth:", isAuth); // Проверка значения isAuth
+	// }, [isAuth]);
 	
 
 	// if (isAuth) return <Navigate to={`/profile/${myId}`} />

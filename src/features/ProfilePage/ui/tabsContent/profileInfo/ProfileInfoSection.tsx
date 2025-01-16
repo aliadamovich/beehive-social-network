@@ -1,20 +1,19 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { ProfileForm } from './ProfileForm'
 import { ProfileInfo } from './ProfileInfo'
 import { SectionTitle } from '../../../../../common/components/SectionTitle'
-import { ProfileType } from '../../../../../common/types/types'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectProfileInfo, updateProfileInfoTC } from 'features/ProfilePage/model/profileSlice'
-import { AppDispatch } from 'app/store'
+import { ProfileType } from 'features/ProfilePage/api/profileApi.types'
+import { useSetProfileInfoMutation } from 'features/ProfilePage/api/profileApi'
 
-
-export const ProfileInfoSection = () => {
+type Props = {
+	profileData: ProfileType | undefined
+}
+export const ProfileInfoSection = ({ profileData }: Props) => {
 	const [editMode, setEditMode] = useState(false)
-	const userProfile = useSelector(selectProfileInfo);
-	const dispatch = useDispatch<AppDispatch>();
+	const [setProfileInfo] = useSetProfileInfoMutation()
 
 	const saveProfileInfo = (form: ProfileType) => {
-		dispatch(updateProfileInfoTC(form))
+		setProfileInfo(form)
 	}
 	const onEditClick = () => {
 		setEditMode(!editMode)
@@ -22,10 +21,10 @@ export const ProfileInfoSection = () => {
 	return (
 		<>
 			<SectionTitle>Personal Information:</SectionTitle>
-			{userProfile &&
+			{profileData &&
 			editMode
-				? <ProfileForm userProfile={userProfile} saveProfileInfo={saveProfileInfo} onEditClick={onEditClick} />
-				: <ProfileInfo userProfile={userProfile} onEditClick={onEditClick} />
+				? <ProfileForm userProfile={profileData} saveProfileInfo={saveProfileInfo} onEditClick={onEditClick} />
+				: <ProfileInfo userProfile={profileData} onEditClick={onEditClick} />
 		}
 		</>
 	)

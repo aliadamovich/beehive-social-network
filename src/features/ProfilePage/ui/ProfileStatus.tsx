@@ -1,63 +1,55 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { myTheme } from '../../../styles/Theme'
-import { CiEdit } from "react-icons/ci";
-import { MdArrowRightAlt } from "react-icons/md";
 import { Input } from 'antd';
 import { EditOutlined  } from '@ant-design/icons';
-import { Button } from 'antd';
 import { MainButton } from '../../../common/components/MainButton';
+import { useUpdateStatusMutation } from 'features/ProfilePage/api/profileApi';
 
 type ProfileStatusPropsType = {
-	status: string
 	isOwner: boolean
-	updateStatus: (status: string) => void
+	profileStatus: string | undefined
 }
 
-export const ProfileStatus = (props: ProfileStatusPropsType) => {
-	// debugger
+export const ProfileStatus = ({ profileStatus, isOwner }: ProfileStatusPropsType) => {
 	const [editMode, setEditMode] = useState(false)
-	const [status, setStatus] = useState(props.status)
-	const { Search } = Input;
+	const [status, setStatus] = useState(profileStatus || '')
+	const [updateStatus, {isLoading}] = useUpdateStatusMutation();
 
-	//исп-ем хук чтобы он подгрузил статус когда в пропсах он придет (указываем зависимость - )
-	useEffect(() => { setStatus(props.status) }, [props.status])
+	useEffect(() => {
+		if (profileStatus) {
+		setStatus(profileStatus)
+		}
+	}, [profileStatus])
 
-	const changeEditMode = () => {
-		if(props.isOwner) setEditMode(!editMode)
-	}
-	
 	const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setStatus(e.currentTarget.value)
 	}
 
-	const onButtonClickHandler = () => {
-		props.updateStatus(status)
-		changeEditMode()
+	const blurHandler = () => {
+		if (status !== profileStatus) {
+			updateStatus(status)
+		}
+		console.log(status);
+		console.log(profileStatus);
+		setEditMode(false)
 	}
 
 	return (
 		<StatusContainer>
-			{ editMode ?
-				<StyledInput
-					variant='filled' value={status} onChange={onInputChange} 
-					onBlur={onButtonClickHandler} 
-					autoFocus={true} 
+			{editMode
+			?<StyledInput
+					variant='filled' value={status} onChange={onInputChange}
+					onBlur={blurHandler}
+					autoFocus={true}
 					showCount maxLength={30}
 				/>
-					
-				: 
-				<StatusWrapper>
-					{status 
-					?	<>
-						<Status onDoubleClick={changeEditMode}>{status}</Status>
-							{props.isOwner && 
-								<MainButton icon={<EditOutlined />} onClick={onButtonClickHandler} loading={false}/>
-							}
-						</>
-					: <Status>No status...</Status> }
-						
-				 </StatusWrapper>
+				: <StatusWrapper>
+					<StyledStatus>{status || 'No status'}</StyledStatus>
+					{isOwner &&
+						<MainButton icon={<EditOutlined />} onClick={() => { setEditMode(true) }} loading={isLoading} />
+					}
+				</StatusWrapper>
 			}
 		</StatusContainer>
 	)
@@ -101,7 +93,7 @@ const StatusWrapper = styled.div`
 		}
 	}
 `
-const Status = styled.div`
+const StyledStatus = styled.div`
 	display: inline-block;
 	padding: 8px 10px;
 	background-color: ${myTheme.colors.backgroundLayout};

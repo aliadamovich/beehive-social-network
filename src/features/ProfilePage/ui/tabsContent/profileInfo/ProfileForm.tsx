@@ -1,13 +1,12 @@
-
 import { useFormik } from 'formik'
 import { basicSchema } from '../../../lib/profileFormSchema'
 import { MdSaveAlt } from "react-icons/md";
 import { Description } from './ProfileInfo';
-import { ContactsType, ProfileType } from '../../../../../common/types/types';
 import { Checkbox, Input } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { MainButton } from '../../../../../common/components/MainButton';
 import styled from 'styled-components';
+import { ContactsType, ProfileType } from 'features/ProfilePage/api/profileApi.types';
 
 
 type Props = {

@@ -7,7 +7,7 @@ import { HeaderBlock } from '../features/header/ui/HeaderBlock';
 import { myTheme } from "../styles/Theme";
 import { ErrorBanner } from '../common/components/ErrorBanner';
 import { SiderBar } from 'features/sideBar/SideBar';
-import { getMeTC, selectIsInitialized, setIsAuth } from 'features/LoginPage/model/authSlice';
+import { setIsAuth } from 'features/LoginPage/model/authSlice';
 import { AppDispatch, AppStateType } from 'app/store';
 import { useMeQuery } from 'features/LoginPage/api/authApi';
 import { ResultCodes } from 'common/enums/enum';

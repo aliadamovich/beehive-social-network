@@ -70,79 +70,78 @@ export const {addPost, setProfilePhoto, setStatus, setUserProfile} = profileSlic
 export const { selectPosts, selectUserStatus, selectProfileInfo} = profileSlice.selectors
 
 //* Thunks
-export const getUserProfileThunkCreator = (profileId: number): AppThunk<Promise<void>> => {
-  return async (dispatch) => {
-		dispatch(setAppStatus({status: 'loading'}));
-		profileAPI.setProfile(profileId)
-			.then((resp) => {
-				dispatch(setUserProfile({profile: resp.data}));
-				return resp.data.userId
-			})
-			.then((userId) => {
-				dispatch(getStatusThunkCreator(userId))
-				dispatch(setAppStatus({status: 'success'}))
-			})
-  };
-};
+// export const getUserProfileThunkCreator = (profileId: number): AppThunk<Promise<void>> => {
+//   return async (dispatch) => {
+// 		dispatch(setAppStatus({status: 'loading'}));
+// 		profileAPI.setProfile(profileId)
+// 			.then((resp) => {
+// 				dispatch(setUserProfile({profile: resp.data}));
+// 				return resp.data.userId
+// 			})
+// 			.then((userId) => {
+// 				dispatch(getStatusThunkCreator(userId))
+// 				dispatch(setAppStatus({status: 'success'}))
+// 			})
+//   };
+// };
 
-export const getStatusThunkCreator = (profileId: number): AppThunk<Promise<void>> => {
-  return async (dispatch) => {
+// export const getStatusThunkCreator = (profileId: number): AppThunk<Promise<void>> => {
+//   return async (dispatch) => {
  
-  //  dispatch(setAppStatus({status: 'loading'}));
-   return profileAPI.getStatus(profileId).then((resp)=> {
-   dispatch(setStatus({status: resp.data}));
-  //  dispatch(setAppStatus({status: 'success'}));
-	 })
+//   //  dispatch(setAppStatus({status: 'loading'}));
+//    return profileAPI.getStatus(profileId).then((resp)=> {
+//    dispatch(setStatus({status: resp.data}));
+//   //  dispatch(setAppStatus({status: 'success'}));
+// 	 })
+//   };
+// };
 
-  };
-};
-
-export const updateStatusThunkCreator = (status: string): AppThunk => {
-	return async (dispatch) => {
-		const resp = await profileAPI.updateStatus(status)
-		if (resp.data.resultCode === ResultCodes.Success) {
-			dispatch(setStatus({status}))
-		}
-	}
-}
+// export const updateStatusThunkCreator = (status: string): AppThunk => {
+// 	return async (dispatch) => {
+// 		const resp = await profileAPI.updateStatus(status)
+// 		if (resp.data.resultCode === ResultCodes.Success) {
+// 			dispatch(setStatus({status}))
+// 		}
+// 	}
+// }
 
 
-export const updateProfilePhotoThunkCreator = (file: any): AppThunk => {
-  return async (dispatch) => {
-		try {
-			dispatch(setAppStatus({status: 'loading'}));
-			const resp = await profileAPI.setProfilePhoto(file);
-      if (resp.data.resultCode === ResultCodes.Success) {
-        dispatch(setProfilePhoto({photos: resp.data.data.photos}));
-				dispatch(setAppStatus({status: 'success'}));
-      } else {
-				handleServerError(dispatch, resp.data)
-			}
-		} catch (error) {
-			handleNetworkError(dispatch, error as {message: string})
-		}
-  };
-};
+// export const updateProfilePhotoThunkCreator = (file: any): AppThunk => {
+//   return async (dispatch) => {
+// 		try {
+// 			dispatch(setAppStatus({status: 'loading'}));
+// 			const resp = await profileAPI.setProfilePhoto(file);
+//       if (resp.data.resultCode === ResultCodes.Success) {
+//         dispatch(setProfilePhoto({photos: resp.data.data.photos}));
+// 				dispatch(setAppStatus({status: 'success'}));
+//       } else {
+// 				handleServerError(dispatch, resp.data)
+// 			}
+// 		} catch (error) {
+// 			handleNetworkError(dispatch, error as {message: string})
+// 		}
+//   };
+// };
 
 //используем доп getState() чтобы получить доступ к другой части стейта и взять айди польз-ля
-export const updateProfileInfoTC = (formData: ProfileType): AppThunk => {
-  return async (dispatch, getState: () => AppStateType) => {
-		dispatch(setAppStatus({ status: "loading" }))
-    const userId = getState().auth.profileData.userId;
-		if (userId ) {
-			try {
-				let resp = await profileAPI.setProfileInfo(formData);
-        if (resp.data.resultCode === ResultCodes.Success) {
-          dispatch(getUserProfileThunkCreator(userId));
-        } else {
-          handleServerError(dispatch, resp.data);
-        }
-			} catch (error) {
-				handleNetworkError(dispatch, error as { message: string });
-			}
-		}
-  };
-};
+// export const updateProfileInfoTC = (formData: ProfileType): AppThunk => {
+//   return async (dispatch, getState: () => AppStateType) => {
+// 		dispatch(setAppStatus({ status: "loading" }))
+//     const userId = getState().auth.profileData.userId;
+// 		if (userId ) {
+// 			try {
+// 				let resp = await profileAPI.setProfileInfo(formData);
+//         if (resp.data.resultCode === ResultCodes.Success) {
+//           dispatch(getUserProfileThunkCreator(userId));
+//         } else {
+//           handleServerError(dispatch, resp.data);
+//         }
+// 			} catch (error) {
+// 				handleNetworkError(dispatch, error as { message: string });
+// 			}
+// 		}
+//   };
+// };
 
 
 

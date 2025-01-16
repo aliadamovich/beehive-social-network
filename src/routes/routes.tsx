@@ -55,7 +55,8 @@ const privateRoutes: RouteObject[] = [
 		children: [
 			{
 				index: true,
-				element: <EmptyDialogs text={"Choose you dialog..."} />
+				element: <EmptyDialogs text={"Choose you dialog..."} />,
+				errorElement: <Navigate to={PATH.ERROR} />
 			},
 			{
 				path: ':id',

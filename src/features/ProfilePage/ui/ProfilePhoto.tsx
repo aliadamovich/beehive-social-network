@@ -8,31 +8,34 @@ import { PhotosType } from 'common/types/types';
 import { ProfileType } from 'features/ProfilePage/api/profileApi.types';
 
 type ProfilePhotoType = {
-	// userProfile: ProfileType | null
-	// onPhotoChoose: (file: File) => void
 	isOwner: boolean
 	profileData: ProfileType | undefined
 	
 }
 
-
+type FormDataFields = {
+	image: any;
+};
 export const ProfilePhoto = ({isOwner, profileData}: ProfilePhotoType) => {
 
 	const [setProfilePhoto] = useSetProfilePhotoMutation()
 	
 	const onInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files.length > 0) {
-			// props.onPhotoChoose(e.target.files[0])
-			// dispatch(updateProfilePhotoThunkCreator(e.target.files[0]))
+			const formData = new FormData() as FormData;
+			formData.append("image", e.target.files[0]);
+			console.log(formData);
+			console.log(e.target.files[0]);
+			setProfilePhoto(formData)
 		}
 	}
 	return (
 		<>
 			<UserStyledPhoto>
 				{
-					profileData?.photos.large !== null ?
-						<img src={profileData?.photos.large} alt="user" /> :
-						<img src={null_user} alt="user" />
+					profileData?.photos.large
+					? <img src={profileData?.photos.large} alt="user" /> 
+					: <img src={null_user} alt="user" />
 				}
 				{isOwner &&
 					<>

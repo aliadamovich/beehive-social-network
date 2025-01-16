@@ -5,7 +5,7 @@ import { RiKey2Line } from "react-icons/ri";
 import { LuUser2 } from "react-icons/lu";
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'app/hooks';
-import { LoginTC, setIsAuth } from 'features/LoginPage/model/authSlice';
+import { setIsAuth } from 'features/LoginPage/model/authSlice';
 import { Button } from 'common/components/Button';
 import { selectStatus } from 'app/appSlice';
 import { useLoginMutation } from 'features/LoginPage/api/authApi';
@@ -28,7 +28,7 @@ export const LoginForm = () => {
 	const loginHandler = (data: SubmittedValueType, resetForm: () => void) => {
 		login(data)
 			.then((resp) => {
-			if (resp.data?.resultCode === ResultCodes.Success && 'userId' in resp.data?.data) {
+				if (resp.data?.resultCode === ResultCodes.Success && 'userId' in resp.data?.data) {
 				getProfileData(resp.data.data.userId)
 					.then((res) => {
 						dispatch(setIsAuth({ isAuth: true, userId: res.data?.userId }))

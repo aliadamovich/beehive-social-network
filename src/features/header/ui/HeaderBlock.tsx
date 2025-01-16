@@ -10,8 +10,7 @@ import { PATH } from '../../../routes/routes';
 import styled from 'styled-components';
 import { myTheme } from '../../../styles/Theme';
 import { Header } from 'antd/es/layout/layout';
-import { LogoutThunkCreator, selectIsAuth, selectProfileData, setAuthProfile, setIsAuth } from 'features/LoginPage/model/authSlice';
-import { AppDispatch } from 'app/store';
+import { selectIsAuth, setIsAuth } from 'features/LoginPage/model/authSlice';
 import { useLogoutMutation } from 'features/LoginPage/api/authApi';
 import { useAppDispatch } from 'app/hooks';
 
@@ -24,7 +23,7 @@ type HeaderPropsType ={
 export const HeaderBlock = ({ collapsed, setCollapsed}: HeaderPropsType) => {
 	const { Header } = Layout;
 	const { token: { colorBgContainer }, } = theme.useToken();
-	const {login, photos} = useSelector(selectProfileData);
+	// const {login, photos} = useSelector(selectProfileData);
 	const [loading, setLoading] = useState(false);
 	const isAuth = useSelector(selectIsAuth);
 	const [logout] = useLogoutMutation()
@@ -37,7 +36,8 @@ export const HeaderBlock = ({ collapsed, setCollapsed}: HeaderPropsType) => {
 		// })
 		logout().then(() => {
 			setLoading(false)
-			dispatch(setIsAuth({ isAuth: false, userId: null }))
+			dispatch(setIsAuth({ isAuth: false, userId: undefined }))
+			console.log('header',isAuth);
 			// dispatch(setAuthProfile({ email: null, login: null, userId: null, isAuth: false, photos: null }));
 		})
 	}
@@ -53,8 +53,8 @@ export const HeaderBlock = ({ collapsed, setCollapsed}: HeaderPropsType) => {
 			/>
 			<HeaderContainer >
 				<FlexWrapper gap='10px' align='center'>
-					<span>{login}</span>
-					{photos?.small && <Avatar photo={photos.small} />}
+					{/* <span>{login}</span>
+					{photos?.small && <Avatar photo={photos.small} />} */}
 				</FlexWrapper>
 
 				{isAuth ?
