@@ -3,29 +3,29 @@ import { Avatar } from '../../../../../common/components/Avatar';
 import styled from 'styled-components';
 import { myTheme } from '../../../../../styles/Theme';
 import { selectProfileInfo } from 'features/ProfilePage/model/profileSlice';
+import { selectProfileData } from 'features/ProfilePage/model/selectors/profileDataSelector';
 
 type PostItemPropsType = {
 	type: string
 	message?: string
-	number?: number
+	profileId: number | undefined
 }
-export const PostItem = (props: PostItemPropsType) => {
-	const userProfile = useSelector(selectProfileInfo);
-	
+export const PostItem = ({type, message, profileId}: PostItemPropsType) => {
+	const profileData = useSelector(selectProfileData(profileId))
 	return(
 		<StyledPost>
 			<div>
-				{userProfile?.photos?.small && <Avatar photo={userProfile.photos?.small} />}
+				{profileData?.photos?.small && <Avatar photo={profileData.photos?.small} />}
 			</div>
 			<StyledPostContent>
 				<div>
 					<StyledTitle>
-						<span>{userProfile?.fullName}</span>
-						{` ${props.type}`}
+						<span>{profileData?.fullName}</span>
+						{` ${type}`}
 					</StyledTitle>
 					<StyledTime>14 hours <span> ago</span></StyledTime>
 				</div>
-				<StyledPostBody>{props.message}</StyledPostBody>
+				<StyledPostBody>{message}</StyledPostBody>
 				<StyledLikes>0 likes</StyledLikes>
 			</StyledPostContent>
 		</StyledPost>

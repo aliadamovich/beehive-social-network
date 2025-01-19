@@ -1,7 +1,7 @@
 import React from "react";
 import { Skeleton, Row, Col, Avatar, Button, Card, Typography, Space } from "antd";
 import { GridProfileUser, StyledProfileBottom, StyledProfileTop, TabsMenu } from "../ProfilePage";
-import { UserStyledPhoto } from "../ProfilePhoto";
+import { UserStyledPhoto } from "../ProfileUser/ProfilePhoto";
 import { Container } from "../../../../common/components/Container";
 import styled from "styled-components";
 import { myTheme } from "../../../../styles/Theme";

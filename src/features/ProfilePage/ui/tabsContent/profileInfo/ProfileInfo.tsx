@@ -1,45 +1,46 @@
 import { FiEdit } from "react-icons/fi";
 import styled from 'styled-components';
 import { myTheme } from "../../../../../styles/Theme";
-import { ContactsType, ProfileType } from "../../../../../common/types/types";
+import { ContactsType, ProfileType } from "features/ProfilePage/api/profileApi.types";
 
 type ProfileInfoPropsType = {
-	userProfile: ProfileType | null
-	onEditClick: () => void
+	userProfile: ProfileType | undefined
+	editProfileHandler: () => void
+	isOwner: boolean
 }
 
-export const ProfileInfo = (props: ProfileInfoPropsType) => {
-	if (props.userProfile === null) return;
+export const ProfileInfo = ({ userProfile, editProfileHandler, isOwner }: ProfileInfoPropsType) => {
 
 	return (
 
 		<StyledProfile>
-			<FiEdit onClick={props.onEditClick} />
+			{isOwner && <FiEdit onClick={editProfileHandler} />}
+
 			<InfoBlock>
 				<Description>About Me:</Description>
-				<Value>{props.userProfile.aboutMe}</Value>
+				<Value>{userProfile?.aboutMe}</Value>
 			</InfoBlock>
 
 			<InfoBlock>
 				<Description>Full name:</Description>
-				<Value>{props.userProfile.fullName}</Value>
+				<Value>{userProfile?.fullName}</Value>
 			</InfoBlock>
 
 			<InfoBlock>
 				<Description>Lookin for a job:</Description>
-				<Value>{props.userProfile.lookingForAJob ? 'Yes' : 'No'}</Value>
+				<Value>{userProfile?.lookingForAJob ? 'Yes' : 'No'}</Value>
 			</InfoBlock>
 
 			<InfoBlock>
 				<Description>Job Description:</Description>
-				<Value>{props.userProfile.lookingForAJobDescription}</Value>
+				<Value>{userProfile?.lookingForAJobDescription}</Value>
 			</InfoBlock>
 
 			<ContactsTitle>Contacts:</ContactsTitle>
-			{Object.keys(props.userProfile.contacts).map(key => {
+			{Object.keys(userProfile?.contacts || {}).map(key => {
 				return <InfoBlock key={key}>
 					<Description>{key}:</Description>
-					<Value>{props.userProfile?.contacts[key as keyof ContactsType]}</Value>
+					<Value>{userProfile?.contacts[key as keyof ContactsType]}</Value>
 				</InfoBlock>
 			})}
 		</StyledProfile>

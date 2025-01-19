@@ -4,28 +4,28 @@ import { ProfileInfo } from './ProfileInfo'
 import { SectionTitle } from '../../../../../common/components/SectionTitle'
 import { ProfileType } from 'features/ProfilePage/api/profileApi.types'
 import { useSetProfileInfoMutation } from 'features/ProfilePage/api/profileApi'
+import { selectProfileData } from 'features/ProfilePage/model/selectors/profileDataSelector'
+import { useSelector } from 'react-redux'
+import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType'
 
-type Props = {
-	profileData: ProfileType | undefined
-}
-export const ProfileInfoSection = ({ profileData }: Props) => {
+
+export const ProfileInfoSection = ({ profileId, isOwner }: ProfileProps) => {
 	const [editMode, setEditMode] = useState(false)
+	const profileData = useSelector(selectProfileData(profileId))
 	const [setProfileInfo] = useSetProfileInfoMutation()
 
 	const saveProfileInfo = (form: ProfileType) => {
 		setProfileInfo(form)
 	}
-	const onEditClick = () => {
-		setEditMode(!editMode)
-	}
+
 	return (
 		<>
 			<SectionTitle>Personal Information:</SectionTitle>
-			{profileData &&
-			editMode
-				? <ProfileForm userProfile={profileData} saveProfileInfo={saveProfileInfo} onEditClick={onEditClick} />
-				: <ProfileInfo userProfile={profileData} onEditClick={onEditClick} />
-		}
+			{
+				profileData && editMode
+				? <ProfileForm userProfile={profileData} saveProfileInfo={saveProfileInfo} onEditClick={() => { setEditMode(!editMode) }} />
+				: <ProfileInfo userProfile={profileData} editProfileHandler={() => { setEditMode(!editMode) }} isOwner={isOwner} />
+			}
 		</>
 	)
 }

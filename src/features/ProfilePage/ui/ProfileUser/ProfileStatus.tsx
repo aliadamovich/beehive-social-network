@@ -1,25 +1,22 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { myTheme } from '../../../styles/Theme'
 import { Input } from 'antd';
 import { EditOutlined  } from '@ant-design/icons';
-import { MainButton } from '../../../common/components/MainButton';
 import { useUpdateStatusMutation } from 'features/ProfilePage/api/profileApi';
+import { MainButton } from 'common/components/MainButton';
+import { myTheme } from 'styles/Theme';
+import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType';
+import { useSelector } from 'react-redux';
+import { selectProfileStatus } from 'features/ProfilePage/model/selectors/profileStatusSelector';
 
-type ProfileStatusPropsType = {
-	isOwner: boolean
-	profileStatus: string | undefined
-}
-
-export const ProfileStatus = ({ profileStatus, isOwner }: ProfileStatusPropsType) => {
+export const ProfileStatus = ({ profileId, isOwner }: ProfileProps) => {
 	const [editMode, setEditMode] = useState(false)
-	const [status, setStatus] = useState(profileStatus || '')
 	const [updateStatus, {isLoading}] = useUpdateStatusMutation();
+	const profileStatus = useSelector(selectProfileStatus(profileId));
+	const [status, setStatus] = useState(profileStatus || '')
 
 	useEffect(() => {
-		if (profileStatus) {
-		setStatus(profileStatus)
-		}
+		setStatus(profileStatus || '')
 	}, [profileStatus])
 
 	const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,8 +27,6 @@ export const ProfileStatus = ({ profileStatus, isOwner }: ProfileStatusPropsType
 		if (status !== profileStatus) {
 			updateStatus(status)
 		}
-		console.log(status);
-		console.log(profileStatus);
 		setEditMode(false)
 	}
 

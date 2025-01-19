@@ -7,10 +7,11 @@ import { Timeline } from 'antd';
 import styled from 'styled-components';
 import { myTheme } from '../../../../../styles/Theme';
 import { addPost, selectPosts } from 'features/ProfilePage/model/profileSlice';
+import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType';
 
 
 
-export const PostsFeed = React.memo(({isOwner}: {isOwner: boolean}) => {
+export const PostsFeed = React.memo(({isOwner, profileId}: ProfileProps) => {
 	const [post, setPost] = useState('');
 	const posts = useSelector(selectPosts);
 	const dispatch = useDispatch()
@@ -22,11 +23,11 @@ export const PostsFeed = React.memo(({isOwner}: {isOwner: boolean}) => {
 		}
 	}
 
-	const items = posts.map((p) => ({
+	const postItems = posts.map((p) => ({
 		key: p.id,
 		color: `${myTheme.colors.accentLight}`,
 		style: { padding: '0' }, 
-		children: <PostItem message={p.body} type={p.type} />,
+		children: <PostItem message={p.body} type={p.type} profileId={profileId}/>,
 	}));
 	
 	return (
@@ -43,7 +44,7 @@ export const PostsFeed = React.memo(({isOwner}: {isOwner: boolean}) => {
 					loading={false}
 				/>
 				<StyledPostsContainer>
-					<Timeline items={items} />
+					<Timeline items={postItems} />
 				</StyledPostsContainer>
 			</>
 			: <div>No posts yet...</div>

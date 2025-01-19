@@ -1,16 +1,19 @@
-import React from 'react'
 import styled from 'styled-components'
-import { myTheme } from '../../../styles/Theme'
+import { myTheme } from '../../../../styles/Theme'
+import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType'
+import { useGetUsersQuery } from 'features/UserPage/api/usersApi'
 
-export const ProfileCounter = () => {
+export const FriendsCounter = ({profileId, isOwner}: ProfileProps) => {
+	const { data: friends} = useGetUsersQuery({friend: true})
+
 	return (
 		<StyledCounter>
 			<Counter>
-				<span>0</span>
+				<span>{isOwner ? friends?.totalCount : 0}</span>
 				Friends
 			</Counter>
 			<Counter>
-				<span>3</span>
+				<span>0</span>
 				Groups
 			</Counter>
 		</StyledCounter>

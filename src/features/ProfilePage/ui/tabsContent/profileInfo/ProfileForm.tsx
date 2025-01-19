@@ -10,7 +10,7 @@ import { ContactsType, ProfileType } from 'features/ProfilePage/api/profileApi.t
 
 
 type Props = {
-	userProfile: ProfileType
+	userProfile: ProfileType 
 	saveProfileInfo: (values: ProfileType) => void
 	onEditClick: () => void
 }

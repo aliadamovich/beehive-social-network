@@ -1,26 +1,19 @@
 import styled from 'styled-components';
-import null_user from './../../../assets/images/user.png';
+import null_user from './../../../../assets/images/user.png';
 import { ChangeEvent } from 'react';
-import { myTheme } from '../../../styles/Theme';
-import { SectionTitle } from '../../../common/components/SectionTitle';
+import { myTheme } from '../../../../styles/Theme';
+import { SectionTitle } from '../../../../common/components/SectionTitle';
 import { useSetProfilePhotoMutation } from 'features/ProfilePage/api/profileApi';
-import { PhotosType } from 'common/types/types';
-import { ProfileType } from 'features/ProfilePage/api/profileApi.types';
+import { useSelector } from 'react-redux';
+import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType';
+import { selectProfileData } from 'features/ProfilePage/model/selectors/profileDataSelector';
 
-type ProfilePhotoType = {
-	isOwner: boolean
-	profileData: ProfileType | undefined
-	
-}
 
-type FormDataFields = {
-	image: any;
-};
-export const ProfilePhoto = ({isOwner, profileData}: ProfilePhotoType) => {
-
+export const ProfilePhoto = ({ profileId, isOwner }: ProfileProps) => {
+	const profileData = useSelector(selectProfileData(profileId))
 	const [setProfilePhoto] = useSetProfilePhotoMutation()
-	
-	const onInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+
+	const addPhotoHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files.length > 0) {
 			const formData = new FormData() as FormData;
 			formData.append("image", e.target.files[0]);
@@ -39,7 +32,7 @@ export const ProfilePhoto = ({isOwner, profileData}: ProfilePhotoType) => {
 				}
 				{isOwner &&
 					<>
-					<AddPhotoInput id='file' onChange={onInputChangeHandler} type={'file'} />
+					<AddPhotoInput id='file' onChange={addPhotoHandler} type={'file'} />
 						<label htmlFor="file">+</label>
 					</>
 				}

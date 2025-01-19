@@ -4,18 +4,30 @@ import styled from 'styled-components';
 import { PostItem } from '../tabsContent/postsFeed/PostItem';
 import { myTheme } from '../../../../styles/Theme';
 import { selectPosts } from 'features/ProfilePage/model/profileSlice';
+import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType';
 
-export const Activity = () => {
+export const Activity = ({isOwner, profileId}: ProfileProps) => {
 	const posts = useSelector(selectPosts);
-	const latestPosts = posts.slice(0, 3).map(p => <PostItem type={p.type} key={p.id} />)
+	const latestPosts = posts.slice(0, 3).map(p => <PostItem type={p.type} key={p.id} profileId={profileId}/>)
 	return(
-		<ActivityContainer>
-			<SectionTitle>Recent activity</SectionTitle>
-			{latestPosts}
-		</ActivityContainer>
+		<StyledActivitySection>
+			<ActivityContainer>
+				<SectionTitle>Recent activity</SectionTitle>
+				{isOwner && latestPosts.length ? latestPosts : <div>No activity yet...</div>}
+			</ActivityContainer>
+		</StyledActivitySection>
 	)
 }
 
+const StyledActivitySection = styled.div`
+	padding-top: 30px;
+	border-top: 1px solid ${myTheme.colors.borderColor};
+	border-left: 1px solid ${myTheme.colors.borderColor};
+
+	@media ${myTheme.media[1350]} {
+		display: none;
+	}
+`
 const ActivityContainer = styled.div`
 	padding: 0 0 0 20px;
 	& > h2 {
