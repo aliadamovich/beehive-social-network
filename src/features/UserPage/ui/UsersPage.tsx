@@ -10,6 +10,7 @@ export const UsersPage = () => {
 			<Container>
 				<UsersWrapper>
 					<Users />
+					{/* <InfiniteScrollList /> */}
 				</UsersWrapper>
 			</Container>
 		</StyledUsers>

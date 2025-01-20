@@ -11,8 +11,25 @@ export const usersAPI = baseApi.injectEndpoints({
 		getUsers: build.query<ResponseWithItems<UserType[]>, getUsersParams>({
 			query: (params) => ({
 				url: "users",
+				// url: `users?page=${page}`,
 				params: { ...INITIAL_SEARCH_PARAMS, ...params },
 			}),
+			serializeQueryArgs: ({ endpointName, queryArgs }) => {
+				return `${endpointName}-${JSON.stringify(queryArgs)}`
+			},
+			// Always merge incoming data to the cache entry
+			merge: (currentCache: ResponseWithItems<UserType[]>, newItems: ResponseWithItems<UserType[]>, {arg}) => {
+				const isNewSearch = arg.page === 1
+				if (isNewSearch) { // Если это новый поиск по параметру, заменяем кэш 
+				currentCache.items = newItems.items; } 
+				else { // Иначе добавляем новые элементы к существующим 
+				currentCache.items.push(...newItems.items)
+				}
+			},
+			// Refetch when the page arg changes
+			forceRefetch({ currentArg, previousArg }) {
+				return currentArg !== previousArg
+			},
 			providesTags: ["Users"],
 		}),
 		checkFollow: build.query<boolean, number>({

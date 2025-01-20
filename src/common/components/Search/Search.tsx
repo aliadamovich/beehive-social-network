@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Icon } from '../Icon';
 import { Field } from 'formik';
 import { Input, Spin } from 'antd';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { SearchParamsType } from 'features/UserPage/ui/_Users';
@@ -20,7 +20,8 @@ export const Search = ({ debounceChange, initialValue }: Props) => {
 	const [searchInProgress, setSearchInProgress] = useState(false);
 	const appStatus = useSelector(selectStatus);
 	const [searchValue, setSearchValue] = useState(initialValue);
-
+	useEffect(() => { setSearchValue(initialValue) },
+	[initialValue])
 	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		// searchInputChangeHandler(e.currentTarget.value)
 		// updateSearchParams({ term: e.currentTarget.value })
@@ -29,7 +30,7 @@ export const Search = ({ debounceChange, initialValue }: Props) => {
 			setSearchInProgress(true)
 			clearTimeout(timerId)
 			const newTimer = setTimeout(async () => {
-				await debounceChange(e.currentTarget.value);
+				debounceChange(e.currentTarget.value);
 				// updateSearchParams({ term: e.currentTarget.value })
 				setSearchInProgress(false)
 			}, 1500)
