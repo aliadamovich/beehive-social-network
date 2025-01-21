@@ -23,50 +23,48 @@ export const Users = () => {
 	const appStatus = useSelector(selectStatus)
 	const params = Object.fromEntries(searchParams)
 	const [page, setPage] = useState(INITIAL_SEARCH_PARAMS.page);
-	const [maxPage, setMaxPage] = useState(0);
 	const [hasMore, setHasMore] = useState(true);
-	// const { data, isFetching, isLoading } = useGetUsersQuery({ page });
 	const [timerId, setTimerId] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
-	const {data, isFetching, refetch } = useGetUsersQuery({...params, page})
+	const {data, isFetching } = useGetUsersQuery({...params, page})
 	const users = data?.items
-	
-	useEffect(() => {
-		// if (data) {
-		// 	setMaxPage(Math.ceil(data.totalCount / INITIAL_SEARCH_PARAMS.count));
-		// }
-		// console.log(maxPage);
-		// if (page >= maxPage) return
+	const totalCount = data?.totalCount || 0;
+	const maxPage = Math.ceil(totalCount / INITIAL_SEARCH_PARAMS.count)
 
+	// useEffect(() => {
+	// 	if (page >= maxPage) {
+	// 		setHasMore(false)
+	// 	}
+	// }, [page, maxPage, data])
+
+	useEffect(() => {
 		const handleScroll = () => {
 			const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-			
-			
 
 			if (scrollTop + clientHeight >= scrollHeight && !isFetching && hasMore) {
-				// setPage((prevPage) => prevPage + 1);
+				setPage((prevPage) => prevPage + 1);
 
-				clearTimeout(timerId)
-				const newTimer = setTimeout(() => {
-					setPage((prevPage) => prevPage + 1);
-				}, 500)
-				setTimerId(newTimer)
+				// clearTimeout(timerId)
+				// const newTimer = setTimeout(() => {
+				// 	setPage((prevPage) => prevPage + 1);
+				// }, 500)
+				// setTimerId(newTimer)
 			}
 		};
 
 		window.addEventListener('scroll', handleScroll);
 		return () => {
-			usersAPI.util.invalidateTags(["Users"]); 
+			// usersAPI.util.invalidateTags(["Users"]);
 			window.removeEventListener('scroll', handleScroll);
 		}
 	}, 
 	[isFetching, hasMore]);
 
-	useEffect(() => {
-		console.log(data?.items.length);
-		if (data?.items.length && data?.items.length < data?.totalCount) {
-			setHasMore(false)
-		}
-	}, [data])
+	// useEffect(() => {
+	// 	if (data) {
+	// 		setMaxPage(Math.ceil(data.totalCount / INITIAL_SEARCH_PARAMS.count));
+	// 		console.log(maxPage);
+	// 	}
+	// }, [data])
 
 	const updateSearchParams = (newParams: Partial<Record<keyof getUsersParams, string>>) => {
 		if (newParams.term === "") {
@@ -80,6 +78,7 @@ export const Users = () => {
 		});
 		
 		setPage(1)
+		setHasMore(true)
 		// dispatch(updateParams({ params: newParams }));
 	}
 

@@ -21,11 +21,7 @@ interface UseLazeyInfiniteDataProps<T, N> {
  * in orther to make it work when invalidating tags it makes the first page request through rtk-query hook
  * and whenever it changes it will refetch the rest data
  */
-const useLazyInfiniteData = 
-<
-	T extends { endpoints: any; util: any },
-	N extends keyof T['endpoints'],
->({
+const useLazyInfiniteData = <T extends { endpoints: any; util: any }, N extends keyof T['endpoints'],>({
 	api,
 	apiEndpointName,
 	apiArgs,

@@ -20,9 +20,11 @@ export const usersAPI = baseApi.injectEndpoints({
 			// Always merge incoming data to the cache entry
 			merge: (currentCache: ResponseWithItems<UserType[]>, newItems: ResponseWithItems<UserType[]>, {arg}) => {
 				const isNewSearch = arg.page === 1
+				console.log(arg)
+				debugger
 				if (isNewSearch) { // Если это новый поиск по параметру, заменяем кэш 
-				currentCache.items = newItems.items; } 
-				else { // Иначе добавляем новые элементы к существующим 
+				currentCache.items = [...newItems.items];
+			 } else { // Иначе добавляем новые элементы к существующим 
 				currentCache.items.push(...newItems.items)
 				}
 			},
