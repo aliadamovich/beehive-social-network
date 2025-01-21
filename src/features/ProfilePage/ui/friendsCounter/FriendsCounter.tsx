@@ -5,7 +5,6 @@ import { useGetUsersQuery } from 'features/UserPage/api/usersApi'
 
 export const FriendsCounter = ({profileId, isOwner}: ProfileProps) => {
 	const { data: friends} = useGetUsersQuery({friend: true})
-
 	return (
 		<StyledCounter>
 			<Counter>

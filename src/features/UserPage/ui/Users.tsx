@@ -15,10 +15,10 @@ import { Pagination, Spin } from 'antd';
 import { getUsersParams } from 'features/UserPage/api/usersApi.types';
 import { CustomPagination } from 'common/components/customPagination/CustomPagination';
 import { Loader } from 'common/components/Loader/Loader';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export const Users = () => {
-
+	const dispatch = useAppDispatch()
 	const [searchParams, setSearchParams] = useSearchParams()
 	const appStatus = useSelector(selectStatus)
 	const params = Object.fromEntries(searchParams)
@@ -27,45 +27,99 @@ export const Users = () => {
 	const [timerId, setTimerId] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
 	const {data, isFetching } = useGetUsersQuery({...params, page})
 	const users = data?.items
-	const totalCount = data?.totalCount || 0;
-	const maxPage = Math.ceil(totalCount / INITIAL_SEARCH_PARAMS.count)
-
+	const [maxPage, setMaxPage] = useState<null | number>(null); 
+	// const maxPage = Math.ceil(totalCount / INITIAL_SEARCH_PARAMS.count)
+	// console.log(maxPage, 'maxPage');
 	// useEffect(() => {
-	// 	if (page >= maxPage) {
-	// 		setHasMore(false)
+	// 	console.log('page1' , page);
+	// 	if (totalCount > 0) { // Убедитесь, что данные загружены
+	// 		const maxPage = Math.ceil(totalCount / INITIAL_SEARCH_PARAMS.count);
+	// 		if (page > maxPage) {
+	// 			setHasMore(false)
+	// 		} else {
+	// 			setHasMore(true); // Сбрасываем, если появилась новая страница
+	// 		}
 	// 	}
-	// }, [page, maxPage, data])
+	 
+	// }, [ totalCount, page])
+	// useEffect(() => {
+		
+	// 	// if (data)
+	// 	// 	setMaxPage(Math.ceil(data.totalCount / INITIAL_SEARCH_PARAMS.count));
+	// 	console.log('page2', page);
 
+
+	// 	window.addEventListener('scroll', handleScroll);
+	// 	return () => {
+	// 		// usersAPI.util.invalidateTags(["Users"]);
+	// 		window.removeEventListener('scroll', handleScroll);
+	// 	}
+	// }, 
+	// 	[ ]);
 	useEffect(() => {
-		const handleScroll = () => {
-			const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-
-			if (scrollTop + clientHeight >= scrollHeight && !isFetching && hasMore) {
-				setPage((prevPage) => prevPage + 1);
-
-				// clearTimeout(timerId)
-				// const newTimer = setTimeout(() => {
-				// 	setPage((prevPage) => prevPage + 1);
-				// }, 500)
-				// setTimerId(newTimer)
-			}
-		};
-
-		window.addEventListener('scroll', handleScroll);
-		return () => {
-			// usersAPI.util.invalidateTags(["Users"]);
-			window.removeEventListener('scroll', handleScroll);
+		if (data?.totalCount) {
+			// debugger
+			setMaxPage(Math.ceil(data.totalCount / INITIAL_SEARCH_PARAMS.count));
 		}
-	}, 
-	[isFetching, hasMore]);
+		if (maxPage && page > maxPage) {
+			setHasMore(false);
+		} else {
+			setHasMore(true);
+		}
+	},[data, page, maxPage])
 
-	// useEffect(() => {
-	// 	if (data) {
-	// 		setMaxPage(Math.ceil(data.totalCount / INITIAL_SEARCH_PARAMS.count));
-	// 		console.log(maxPage);
+		useEffect(() => {
+			
+			window.addEventListener('scroll', handleScroll);
+			return () => {
+				// usersAPI.util.invalidateTags(["Users"]);
+				window.removeEventListener('scroll', handleScroll);
+			}
+
+		// }, [page, searchParams])
+		}, [isFetching, hasMore, maxPage])
+
+
+	// const loadMore = () => {
+	// 	if (maxPage && page <= maxPage) {
+	// 		setPage((prevPage) => prevPage + 1)
 	// 	}
-	// }, [data])
+	// }
+	const loadMore = () => {
+		if (maxPage  && page < maxPage && hasMore) {
+			setPage((prevPage) => prevPage + 1);
+		} 
+	}
+	const handleScroll = () => {
+		const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
+		if (
+			scrollTop + clientHeight >= scrollHeight &&
+			hasMore &&
+			!isFetching
+		) {
+			loadMore();
+		}
+	}
+	// const handleScroll = () => {
+
+	// 	const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+	// 	if ((scrollTop + clientHeight >= scrollHeight) && hasMore && !isFetching) {
+	// 		console.log('scroll');
+	// 		// setPage((prevPage) => prevPage + 1)
+	// 		// clearTimeout(timerId)
+	// 		// const newTimer = setTimeout(() => {
+	// 		// 	setPage((prevPage) => {
+	// 		// 		const newPage = prevPage + 1
+	// 		// 		console.log('page3', newPage);
+	// 		// 		return newPage
+	// 		// 	});
+
+	// 		// }, 500)
+	// 		// setTimerId(newTimer)
+	// 		loadMore()
+	// 	}
+	// };
 	const updateSearchParams = (newParams: Partial<Record<keyof getUsersParams, string>>) => {
 		if (newParams.term === "") {
 			searchParams.delete("term");
@@ -79,6 +133,7 @@ export const Users = () => {
 		
 		setPage(1)
 		setHasMore(true)
+		setMaxPage(null);
 		// dispatch(updateParams({ params: newParams }));
 	}
 
@@ -89,7 +144,7 @@ export const Users = () => {
 
 	// if(appStatus === 'loading') return <UsersSkeleton />
 	
-
+	console.log('page4', page);
 	return (
 		<>
 			<Search

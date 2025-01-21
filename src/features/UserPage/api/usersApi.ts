@@ -3,25 +3,28 @@ import { ResponseWithItems, StandartResponse } from "common/types/types"
 import { getUsersParams, UserType } from "features/UserPage/api/usersApi.types"
 
 export const INITIAL_SEARCH_PARAMS = {
-	count: 12,
+	count: 6,
 	page: 1,
 }
 export const usersAPI = baseApi.injectEndpoints({
 	endpoints: (build) => ({
 		getUsers: build.query<ResponseWithItems<UserType[]>, getUsersParams>({
-			query: (params) => ({
+			query: (params) => {
+			return {
 				url: "users",
 				// url: `users?page=${page}`,
 				params: { ...INITIAL_SEARCH_PARAMS, ...params },
-			}),
+				// params: params,
+			}
+			},
 			serializeQueryArgs: ({ endpointName, queryArgs }) => {
-				return `${endpointName}-${JSON.stringify(queryArgs)}`
+				// return `${endpointName}-${JSON.stringify(queryArgs)}`
+				return endpointName
 			},
 			// Always merge incoming data to the cache entry
 			merge: (currentCache: ResponseWithItems<UserType[]>, newItems: ResponseWithItems<UserType[]>, {arg}) => {
 				const isNewSearch = arg.page === 1
-				console.log(arg)
-				debugger
+				// debugger
 				if (isNewSearch) { // Если это новый поиск по параметру, заменяем кэш 
 				currentCache.items = [...newItems.items];
 			 } else { // Иначе добавляем новые элементы к существующим 

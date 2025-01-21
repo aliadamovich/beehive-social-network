@@ -64,8 +64,7 @@ const useLazyInfiniteData = <T extends { endpoints: any; util: any }, N extends 
 		[apiArgs.params],
 	);
 
-	useEffect(
-		function loadMoreDataOnPageNumberIncrease() {
+	useEffect(() => {
 			if (firstPageData)
 				setMaxPage(Math.ceil((firstPageData as any).count / limit));
 
