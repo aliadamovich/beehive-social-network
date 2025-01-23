@@ -9,10 +9,9 @@ import { Activity } from "./profileActivity/Activity";
 import { myTheme } from "../../../styles/Theme";
 import { PATH } from "../../../routes/routes";
 import logo from './../../../assets/images/logo_login.svg'
-import { setAppStatus } from "../../../app/appSlice";
 import { selectAuthorizedLoginId, selectIsAuth } from "features/LoginPage/model/authSlice";
 import { AppDispatch } from "app/store";
-import { useGetProfileQuery, useLazyGetProfileQuery, useLazyGetStatusQuery } from "features/ProfilePage/api/profileApi";
+import { useLazyGetProfileQuery, useLazyGetStatusQuery } from "features/ProfilePage/api/profileApi";
 import { ProfileTabs } from "features/ProfilePage/ui/tabs/ProfileTabs";
 import { TabsContent } from "features/ProfilePage/ui/tabsContent/TabsContent";
 import { ProfileUser } from "features/ProfilePage/ui/ProfileUser/ProfileUser";
@@ -22,14 +21,15 @@ import { ProfileSkeleton } from "features/ProfilePage/ui/skeletons/ProfilePageSk
 
 
 export const ProfilePage = () => {
+	//!моргание при переходе с пролфиля на профиль
 	const isAuth = useSelector(selectIsAuth);
+	const [isProfileUpdated, setIsProfileUpdated] = useState(false)
 	const params = useParams();
 	const isOwner = !params.userId;
 	const [activeTab, setActiveTab] = useState<TABS>(isOwner ? TABS.ACTIVITY : TABS.PROFILE);
 	const dispatch = useDispatch<AppDispatch>();
 
 	const authorizedLoginId = useSelector(selectAuthorizedLoginId);
-
 	let profileId = params.userId ? Number(params.userId) : authorizedLoginId;
 	
 	const [getProfileData, {isLoading, isFetching}] = useLazyGetProfileQuery()
@@ -39,19 +39,21 @@ export const ProfilePage = () => {
 		if (!profileId) {
 			return
 		}
-		// dispatch(setAppStatus({ status: 'loading' }));
-		getProfileData(profileId)
-		getProfileStatus(profileId)
-		setActiveTab(isOwner ? TABS.ACTIVITY : TABS.PROFILE)
-				// dispatch(setAppStatus({ status: 'success' }))
-	}, [params.userId])
+		 getProfileData(profileId).then(() => {
+			setIsProfileUpdated(true)
+			 setActiveTab(isOwner ? TABS.ACTIVITY : TABS.PROFILE)
+		 })
+		// getProfileStatus(profileId)
+	return () => {
+		setIsProfileUpdated(false)
+	}
+	}, [params.userId, profileId])
 
-	if (profileId === undefined || isLoading || isFetching) {
+	if (!isProfileUpdated || !profileId || isLoading || isFetching) {
+		// debugger
 		return <ProfileSkeleton />;
 	}
 
-
-	//если мы не авторизованы то с пути /profile отправляем на страницу логина
 	// if (!profileId) {
 	// 	return <Navigate to={PATH.LOGIN} />
 	// }
@@ -59,10 +61,8 @@ export const ProfilePage = () => {
 	if (!isAuth) {
 		return <Navigate to={PATH.LOGIN} />
 	}
-	// if (isLoading || isFetching) {
-	// 	return <ProfileSkeleton/>
-	// }
-	
+
+	// debugger
 	return (
 		<ProfileSection>
 

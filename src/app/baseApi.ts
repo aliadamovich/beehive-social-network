@@ -11,6 +11,6 @@ export const baseApi = createApi({
 		},
 	}),
 	endpoints: () => ({}),
-	tagTypes: ["Users", "Profile", "UserStatus"],
+	tagTypes: ["Users", "Profile", "UserStatus", "Dialogs"],
 	keepUnusedDataFor: 5,
 })

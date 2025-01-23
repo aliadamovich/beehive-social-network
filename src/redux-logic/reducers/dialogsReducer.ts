@@ -1,8 +1,9 @@
-import {  ResultCodesEnum, SingleDialogItemType } from './../../apiDal/apiDal';
 import { dialogsAPI } from "../../apiDal/apiDal";
 import { AppThunk } from '../redux-store';
-import { handleNetworkError, handleServerError } from '../../utils/errorHandlers';
 import { setAppStatus } from '../../app/appSlice';
+import { handleNetworkError, handleServerError } from "common/utils/errorHandlers";
+import { ResultCodes } from "common/enums/enum";
+import { SingleDialogItem } from "features/DialogsPage/api/DialogsApi.types";
 
 let initialState = {
   dialogs: {} as DialogsType,
@@ -44,8 +45,10 @@ export const _dialogReducer = (state = initialState, action: ActionsType): Initi
 
 
 //* Action Creators
-export const getAllMessagesAC = (userId: number, dialogs: SingleDialogItemType[]) => ({ type: "GET-ALL-MESSAGES-WITH-USER", userId, dialogs } as const);
-export const sendMessageAC = (userId: number, message: SingleDialogItemType) => ({ type: "SEND-MESSAGE-TO-SERVER",userId,  message } as const);
+export const getAllMessagesAC = (userId: number, dialogs: SingleDialogItem[]) =>
+	({ type: "GET-ALL-MESSAGES-WITH-USER", userId, dialogs } as const)
+export const sendMessageAC = (userId: number, message: SingleDialogItem) =>
+	({ type: "SEND-MESSAGE-TO-SERVER", userId, message } as const)
 export const deleteMessageAC = (messageId: string, userId: number) => ({ type: "DELETE-MESSAGE-FROM-SERVER",  messageId, userId } as const);
 
 
@@ -75,8 +78,8 @@ export const _sendMessageThunCreator = (userId: number, message: string): AppThu
   return (dispatch) => {
 		return dialogsAPI.sendMessageToServer(userId, message)
 		.then((resp) => {
-		if (resp.data.resultCode === ResultCodesEnum.Success) {
-			dispatch(sendMessageAC(userId, resp.data.data.message));
+		if (resp.data.resultCode === ResultCodes.Success) {
+			dispatch(sendMessageAC(userId, resp.data.data.message))
 		} else {
 			handleServerError(dispatch, resp.data)
 		}
@@ -89,7 +92,7 @@ export const _deleteMessageTC = (messageId: string, dialogUserId: number): AppTh
 	return (dispatch) => {
 		return dialogsAPI.deleteMessageFromServer(messageId)
 			.then((resp) => {
-				if (resp.data.resultCode === ResultCodesEnum.Success) {
+				if (resp.data.resultCode === ResultCodes.Success) {
 					dispatch(deleteMessageAC(messageId, dialogUserId))
 				} else {
 					handleServerError(dispatch, resp.data)
@@ -105,7 +108,7 @@ export const _deleteMessageTC = (messageId: string, dialogUserId: number): AppTh
 type InitialStateType = typeof initialState;
 
 export type DialogsType = {
-  [userId: number]: SingleDialogItemType[];
+  [userId: number]: SingleDialogItem[];
 };
 
 type ActionsType =

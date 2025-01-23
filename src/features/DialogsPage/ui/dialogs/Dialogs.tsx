@@ -25,7 +25,7 @@ export const Dialogs = () => {
 	const appStatus = useSelector(selectStatus);
 
 
-	const { data } = useGetMessagesWithUserQuery(currentDialogUserId)
+	const { data, isLoading } = useGetMessagesWithUserQuery(currentDialogUserId)
 	const [sendMessage] = useSendMessageMutation()
 	const messages = data?.items
 
@@ -62,7 +62,7 @@ export const Dialogs = () => {
 		}
 	}
 
-	if (appStatus === 'loading') return <MainDialogSkeleton />
+	if (isLoading) return <MainDialogSkeleton />
 
 	return (
 		<>

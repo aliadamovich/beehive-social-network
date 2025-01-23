@@ -30,7 +30,7 @@ function App() {
 		if (!isLoading) {
 			setIsAppInitialized(true)
 			if (data?.resultCode === ResultCodes.Success) {
-				dispatch(setIsAuth({isAuth: true, userId: data?.data.id}))
+				dispatch(setIsAuth({isAuth: true, userId: data.data.id}))
 			}
 		}
 	},

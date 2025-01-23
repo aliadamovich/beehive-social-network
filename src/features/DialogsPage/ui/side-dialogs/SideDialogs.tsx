@@ -11,11 +11,11 @@ type Props = {
 }
 
 export const SideDialogs = ({ onDialogClick }: Props) => {
-	const { data: messages } = useGetAllMessagesQuery()
+	const { data: messages, isLoading } = useGetAllMessagesQuery()
 	const appStatus = useSelector(selectStatus);
 
 
-	if (appStatus === 'loading') return <SideDialogsSkeleton />
+	if (isLoading) return <SideDialogsSkeleton />
 
 
 	return (
