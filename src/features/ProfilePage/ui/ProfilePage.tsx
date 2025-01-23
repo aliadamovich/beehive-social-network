@@ -12,12 +12,13 @@ import logo from './../../../assets/images/logo_login.svg'
 import { setAppStatus } from "../../../app/appSlice";
 import { selectAuthorizedLoginId, selectIsAuth } from "features/LoginPage/model/authSlice";
 import { AppDispatch } from "app/store";
-import { useLazyGetProfileQuery, useLazyGetStatusQuery } from "features/ProfilePage/api/profileApi";
+import { useGetProfileQuery, useLazyGetProfileQuery, useLazyGetStatusQuery } from "features/ProfilePage/api/profileApi";
 import { ProfileTabs } from "features/ProfilePage/ui/tabs/ProfileTabs";
 import { TabsContent } from "features/ProfilePage/ui/tabsContent/TabsContent";
 import { ProfileUser } from "features/ProfilePage/ui/ProfileUser/ProfileUser";
 import { ProfileMiniGallery } from "features/ProfilePage/ui/profileMiniGallery/ProfileMiniGallery";
 import { TABS } from "features/ProfilePage/lib/tabsEnum";
+import { ProfileSkeleton } from "features/ProfilePage/ui/skeletons/ProfilePageSkeleton";
 
 
 export const ProfilePage = () => {
@@ -30,23 +31,24 @@ export const ProfilePage = () => {
 	const authorizedLoginId = useSelector(selectAuthorizedLoginId);
 
 	let profileId = params.userId ? Number(params.userId) : authorizedLoginId;
-
-	const [getProfileData] = useLazyGetProfileQuery()
+	
+	const [getProfileData, {isLoading, isFetching}] = useLazyGetProfileQuery()
 	const [getProfileStatus] = useLazyGetStatusQuery()
 
 	useEffect(() => {
 		if (!profileId) {
 			return
 		}
-		dispatch(setAppStatus({ status: 'loading' }));
+		// dispatch(setAppStatus({ status: 'loading' }));
 		getProfileData(profileId)
-			.then(() => { getProfileStatus(profileId) })
-			.then(() => {
-				setActiveTab(isOwner ? TABS.ACTIVITY : TABS.PROFILE)
-				dispatch(setAppStatus({ status: 'success' }))
-			})
+		getProfileStatus(profileId)
+		setActiveTab(isOwner ? TABS.ACTIVITY : TABS.PROFILE)
+				// dispatch(setAppStatus({ status: 'success' }))
 	}, [params.userId])
 
+	if (profileId === undefined || isLoading || isFetching) {
+		return <ProfileSkeleton />;
+	}
 
 
 	//если мы не авторизованы то с пути /profile отправляем на страницу логина
@@ -57,7 +59,7 @@ export const ProfilePage = () => {
 	if (!isAuth) {
 		return <Navigate to={PATH.LOGIN} />
 	}
-	// if (appStatus === "loading") {
+	// if (isLoading || isFetching) {
 	// 	return <ProfileSkeleton/>
 	// }
 	

@@ -25,6 +25,9 @@ export type PhotosType = {
 	large: string | null
 }
 
+export type EntityStatus = "idle" | "loading" | "rejected"
+
+
 
 
 //*server responses

@@ -13,7 +13,7 @@ export const ProfileUser = ({ profileId, isOwner }: ProfileProps) => {
 	)
 }
 
-const StyledProfileUser = styled.div`
+export const StyledProfileUser = styled.div`
 	text-align: center;
 	position: relative;
 	@media ${myTheme.media[950]} {

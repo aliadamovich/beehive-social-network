@@ -1,4 +1,4 @@
-import { PhotosType } from "common/types/types"
+import { EntityStatus, PhotosType } from "common/types/types"
 
 export type getUsersParams = {
 	count?: number
@@ -15,5 +15,8 @@ export type UserType = {
 	followed: boolean
 }
 
+export type DomainUser = UserType & {
+	entityStatus: EntityStatus
+}
 
 export type RequestParams = Required<getUsersParams>

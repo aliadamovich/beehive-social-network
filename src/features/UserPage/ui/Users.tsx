@@ -21,13 +21,16 @@ export const Users = () => {
 	const dispatch = useAppDispatch()
 	const [searchParams, setSearchParams] = useSearchParams()
 	const appStatus = useSelector(selectStatus)
-	const params = Object.fromEntries(searchParams)
+	const params: getUsersParams = Object.fromEntries(searchParams)
+	const upd = { ...params, page: params.page ? Number(params.page) : 1, count: params.count ? Number(params.count) : INITIAL_SEARCH_PARAMS.count }
 	const [page, setPage] = useState(INITIAL_SEARCH_PARAMS.page);
 	const [hasMore, setHasMore] = useState(true);
 	const [timerId, setTimerId] = useState<ReturnType<typeof setTimeout> | undefined>(undefined);
-	const {data, isFetching } = useGetUsersQuery({...params, page})
+	const {data, isFetching, isLoading } = useGetUsersQuery({...upd})
 	const users = data?.items
 	const [maxPage, setMaxPage] = useState<null | number>(null); 
+console.log(params);
+	//! Не решена проблема бесконечного запроса при окончании юзеров и проблема перехода на страницу профайла с юзеров
 	// const maxPage = Math.ceil(totalCount / INITIAL_SEARCH_PARAMS.count)
 	// console.log(maxPage, 'maxPage');
 	// useEffect(() => {
@@ -56,18 +59,18 @@ export const Users = () => {
 	// 	}
 	// }, 
 	// 	[ ]);
-	useEffect(() => {
-		if (data?.totalCount) {
-			// debugger
-			setMaxPage(Math.ceil(data.totalCount / INITIAL_SEARCH_PARAMS.count));
-		}
-		if (maxPage && page > maxPage) {
-			setHasMore(false);
-		} else {
-			setHasMore(true);
-		}
-	},[data, page, maxPage])
-
+	// useEffect(() => {
+	// 	if (data?.totalCount) {
+	// 		// debugger
+	// 		setMaxPage(Math.ceil(data.totalCount / INITIAL_SEARCH_PARAMS.count));
+	// 	}
+	// 	if (maxPage && page > maxPage) {
+	// 		setHasMore(false);
+	// 	} else {
+	// 		setHasMore(true);
+	// 	}
+	// },[data, page, maxPage])
+	console.log(users);
 		useEffect(() => {
 			
 			window.addEventListener('scroll', handleScroll);
@@ -86,9 +89,13 @@ export const Users = () => {
 	// 	}
 	// }
 	const loadMore = () => {
-		if (maxPage  && page < maxPage && hasMore) {
-			setPage((prevPage) => prevPage + 1);
-		} 
+		// if (maxPage && page < maxPage && hasMore) {
+			// setPage((prevPage) => prevPage + 1);
+			setSearchParams((prevParams) => ({
+				...Object.fromEntries(prevParams),
+				page: (Number(prevParams.get("page") || 1) + 1).toString(),
+			}));
+		// }
 	}
 	const handleScroll = () => {
 		const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
@@ -126,15 +133,16 @@ export const Users = () => {
 		} 
 
 		setSearchParams(prevParams => {
-			const updatedParams = { ...Object.fromEntries(prevParams), ...newParams };
+			const updatedParams = { ...Object.fromEntries(prevParams), 
+				...newParams, page: '1' };
 			if(!newParams.term) delete updatedParams.term;
+
 			return updatedParams
 		});
-		
-		setPage(1)
+		console.log(params);
+		// setPage(1)
 		setHasMore(true)
 		setMaxPage(null);
-		// dispatch(updateParams({ params: newParams }));
 	}
 
 	const searchInputChangeHandler = (value: string) => {
@@ -142,9 +150,9 @@ export const Users = () => {
 	}
 
 
-	// if(appStatus === 'loading') return <UsersSkeleton />
+	if (isLoading) return <UsersSkeleton />
 	
-	console.log('page4', page);
+
 	return (
 		<>
 			<Search
@@ -165,6 +173,7 @@ export const Users = () => {
 												key={u.id}
 												// followingInProgress={followingInProgress}
 												isLoading={false}
+												params={params}
 											/>)
 						}
 						</GridWrapper>

@@ -20,7 +20,7 @@ export const ProfileTabs = (props: Props) => {
 	)
 }
 
-const TabsMenu = styled.nav`
+export const TabsMenu = styled.nav`
 	display: flex;
 	flex-direction: column;
 	justify-content: end;
@@ -28,7 +28,7 @@ const TabsMenu = styled.nav`
 	z-index: 1;
 `
 
-const TabsList = styled.ul`
+export const TabsList = styled.ul`
 	display: flex;
 	gap: 20px;
 

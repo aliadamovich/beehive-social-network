@@ -1,10 +1,12 @@
 import React from "react";
 import { Skeleton, Row, Col, Avatar, Button, Card, Typography, Space } from "antd";
-import { GridProfileUser, StyledProfileBottom, StyledProfileTop, TabsMenu } from "../ProfilePage";
+import { StyledProfileBottom, StyledProfileTop } from "../ProfilePage";
 import { UserStyledPhoto } from "../ProfileUser/ProfilePhoto";
 import { Container } from "../../../../common/components/Container";
 import styled from "styled-components";
 import { myTheme } from "../../../../styles/Theme";
+import { StyledProfileUser } from "features/ProfilePage/ui/ProfileUser/ProfileUser";
+import { TabsList, TabsMenu } from "features/ProfilePage/ui/tabs/ProfileTabs";
 
 export const ProfileSkeleton = () => {
 	return (
@@ -16,15 +18,15 @@ export const ProfileSkeleton = () => {
 			<Container>
 				<StyledProfileTop>
 					
-					<GridProfileUser style={{}}>
+					<StyledProfileUser style={{}}>
 						<UserStyledPhoto>
 							<Skeleton.Image style={{ width: "240px", height: '240px', borderRadius: '8px' }} />
 						</UserStyledPhoto>
 							<Skeleton.Input style={{ width: 150, height: 30, display: 'block'}} active />
-					</GridProfileUser>
+					</StyledProfileUser>
 	
 					<TabsMenu>
-							<ul>
+							<TabsList>
 								<li >
 									<Skeleton.Button active style={{ width: 60, height: 60 }} />
 								</li>
@@ -37,7 +39,7 @@ export const ProfileSkeleton = () => {
 								<li >
 									<Skeleton.Button active style={{ width: 60, height: 60 }} />
 								</li>
-							</ul>
+							</TabsList>
 					</TabsMenu>
 				</StyledProfileTop>
 	
