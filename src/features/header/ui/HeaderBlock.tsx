@@ -26,18 +26,18 @@ export const HeaderBlock = ({ collapsed, setCollapsed}: HeaderPropsType) => {
 	// const {login, photos} = useSelector(selectProfileData);
 	const [loading, setLoading] = useState(false);
 	const isAuth = useSelector(selectIsAuth);
-	const [logout] = useLogoutMutation()
+	const [logout, {isLoading}] = useLogoutMutation()
 	const dispatch = useAppDispatch()
 
 	const onLogoutHandler = () => {
-		setLoading(true)
+		// setLoading(true)
 		// dispatch(LogoutThunkCreator()).then(() => {
 		// 	setLoading(false)
 		// })
 		logout().then(() => {
-			setLoading(false)
+			// setLoading(false)
 			dispatch(setIsAuth({ isAuth: false, userId: undefined }))
-			console.log('header',isAuth);
+			// console.log('header',isAuth);
 			// dispatch(setAuthProfile({ email: null, login: null, userId: null, isAuth: false, photos: null }));
 		})
 	}
@@ -58,7 +58,7 @@ export const HeaderBlock = ({ collapsed, setCollapsed}: HeaderPropsType) => {
 				</FlexWrapper>
 
 				{isAuth ?
-					<MainButton onClick={onLogoutHandler} icon={<PoweroffOutlined />} children={'Log out'} loading={loading} />
+						<MainButton onClick={onLogoutHandler} icon={<PoweroffOutlined />} children={'Log out'} loading={isLoading} />
 					:
 					<Link to={PATH.LOGIN}>
 						<Button variant="link">Login</Button>

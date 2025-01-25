@@ -23,7 +23,7 @@ import { ProfileSkeleton } from "features/ProfilePage/ui/skeletons/ProfilePageSk
 export const ProfilePage = () => {
 	//!моргание при переходе с пролфиля на профиль
 	const isAuth = useSelector(selectIsAuth);
-	const [isProfileUpdated, setIsProfileUpdated] = useState(false)
+	// const [isProfileUpdated, setIsProfileUpdated] = useState(false)
 	const params = useParams();
 	const isOwner = !params.userId;
 	const [activeTab, setActiveTab] = useState<TABS>(isOwner ? TABS.ACTIVITY : TABS.PROFILE);
@@ -40,23 +40,23 @@ export const ProfilePage = () => {
 			return
 		}
 		 getProfileData(profileId).then(() => {
-			setIsProfileUpdated(true)
+			// setIsProfileUpdated(true)
 			 setActiveTab(isOwner ? TABS.ACTIVITY : TABS.PROFILE)
 		 })
 		// getProfileStatus(profileId)
-	return () => {
-		setIsProfileUpdated(false)
+		return () => {
+			// setIsProfileUpdated(false)
 	}
 	}, [params.userId, profileId])
 
-	if (!isProfileUpdated || !profileId || isLoading || isFetching) {
+	if ( isLoading || isFetching) {
 		// debugger
 		return <ProfileSkeleton />;
 	}
 
-	// if (!profileId) {
-	// 	return <Navigate to={PATH.LOGIN} />
-	// }
+	if (!profileId) {
+		return <Navigate to={PATH.LOGIN} />
+	}
 
 	if (!isAuth) {
 		return <Navigate to={PATH.LOGIN} />

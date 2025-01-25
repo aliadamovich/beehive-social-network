@@ -17,16 +17,13 @@ import { useAppDispatch } from "app/hooks";
 export const Dialogs = () => {
 	const { handleBackClick } = useOutletContext<any>();
 	const [messageText, setMessageText] = useState('');
-	const [loading, setLoading] = useState(false);
-	const dispatch = useAppDispatch();
 	const messagesEndRef = useRef<HTMLDivElement | null>(null);
 	const {id} = useParams();
 	const currentDialogUserId = Number(id);
-	const appStatus = useSelector(selectStatus);
 
 
 	const { data, isLoading } = useGetMessagesWithUserQuery(currentDialogUserId)
-	const [sendMessage] = useSendMessageMutation()
+	const [sendMessage, {isLoading: isMessageSendLoading}] = useSendMessageMutation()
 	const messages = data?.items
 
 	useEffect(() => {
@@ -36,12 +33,9 @@ export const Dialogs = () => {
 	}, [messages])
 
 	const sendMessageHandler = () => {
-		setLoading(true)
 		sendMessage({ userId: currentDialogUserId, message: messageText })
-		// dispatch(sendMessageThunCreator(currentDialogUserId, messageText))
 			.then(() => {
 				setMessageText('')
-				setLoading(false)
 			})
 	}
 
@@ -62,18 +56,23 @@ export const Dialogs = () => {
 		}
 	}
 
-	if (isLoading) return <MainDialogSkeleton />
+	
 
 	return (
 		<>
-			<StyledButtonContainer to={PATH.DIALOGS}>
-				<MainButton type="primary" loading={false} icon={<ArrowLeftOutlined />}
-					onClick={handleBackClick} />
-			</StyledButtonContainer>
-			<StyledMessages>
-				{mapDialogs()}
-				<div ref={messagesEndRef}></div>
-			</StyledMessages>
+			{ (isLoading) 
+			? <MainDialogSkeleton />
+			: <>
+				<StyledButtonContainer to={PATH.DIALOGS}>
+					<MainButton type="primary" loading={false} icon={<ArrowLeftOutlined />}
+						onClick={handleBackClick} />
+				</StyledButtonContainer>
+				<StyledMessages>
+					{mapDialogs()}
+					<div ref={messagesEndRef}></div>
+				</StyledMessages>
+			</> 
+			}
 
 			<SendMessage
 				messageText={messageText}
@@ -82,7 +81,8 @@ export const Dialogs = () => {
 				title="Send"
 				showCount={false}
 				maxLength={3000}
-				loading={loading}
+				disabled={isLoading}
+				loading={isMessageSendLoading}
 			/>
 		</>
 	)

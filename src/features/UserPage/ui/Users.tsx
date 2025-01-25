@@ -29,7 +29,6 @@ export const Users = () => {
 	const {data, isFetching, isLoading } = useGetUsersQuery({...upd})
 	const users = data?.items
 	const [maxPage, setMaxPage] = useState<null | number>(null); 
-console.log(params);
 	//! Не решена проблема бесконечного запроса при окончании юзеров и проблема перехода на страницу профайла с юзеров
 	// const maxPage = Math.ceil(totalCount / INITIAL_SEARCH_PARAMS.count)
 	// console.log(maxPage, 'maxPage');
@@ -70,7 +69,6 @@ console.log(params);
 	// 		setHasMore(true);
 	// 	}
 	// },[data, page, maxPage])
-	console.log(users);
 		useEffect(() => {
 			
 			window.addEventListener('scroll', handleScroll);
@@ -130,7 +128,7 @@ console.log(params);
 	const updateSearchParams = (newParams: Partial<Record<keyof getUsersParams, string>>) => {
 		if (newParams.term === "") {
 			searchParams.delete("term");
-		} 
+		}
 
 		setSearchParams(prevParams => {
 			const updatedParams = { ...Object.fromEntries(prevParams), 
@@ -139,7 +137,6 @@ console.log(params);
 
 			return updatedParams
 		});
-		console.log(params);
 		// setPage(1)
 		setHasMore(true)
 		setMaxPage(null);
@@ -200,6 +197,13 @@ const StyledUsersContainer = styled.div`
 	
 	>div:nth-child(2) {
 		flex: 1 1 auto;
+	}
+
+	@media ${myTheme.media[950]} {
+		justify-content: center;
+		>div:nth-child(2) {
+			display: none;
+		}
 	}
 `
 

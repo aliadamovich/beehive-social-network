@@ -9,8 +9,11 @@ import { StyledProfileUser } from "features/ProfilePage/ui/ProfileUser/ProfileUs
 import { TabsList, TabsMenu } from "features/ProfilePage/ui/tabs/ProfileTabs";
 
 export const ProfileSkeleton = () => {
+
+
+
 	return (
-		<div style={{ padding:' 20px', width: '100%' }}>
+		<div >
 
 			<StyledSkeletonBackground>
 			</StyledSkeletonBackground>
@@ -18,7 +21,7 @@ export const ProfileSkeleton = () => {
 			<Container>
 				<StyledProfileTop>
 					
-					<StyledProfileUser style={{}}>
+					<StyledProfileUser >
 						<UserStyledPhoto>
 							<Skeleton.Image style={{ width: "240px", height: '240px', borderRadius: '8px' }} />
 						</UserStyledPhoto>
@@ -27,18 +30,12 @@ export const ProfileSkeleton = () => {
 	
 					<TabsMenu>
 							<TabsList>
-								<li >
-									<Skeleton.Button active style={{ width: 60, height: 60 }} />
-								</li>
-								<li >
-									<Skeleton.Button active style={{ width: 60, height: 60 }} />
-								</li>
-								<li >
-									<Skeleton.Button active style={{ width: 60, height: 60 }} />
-								</li>
-								<li >
-									<Skeleton.Button active style={{ width: 60, height: 60 }} />
-								</li>
+
+							{[...Array(4)].map((_, index) => (
+								<StyledTabsButtons key={index}>
+									<Skeleton.Button active />
+								</StyledTabsButtons>
+							))}
 							</TabsList>
 					</TabsMenu>
 				</StyledProfileTop>
@@ -56,13 +53,13 @@ export const ProfileSkeleton = () => {
 					</SkeletonGallery>
 		
 					<Card title={
-						<div style={{display: 'flex', justifyContent:'space-around'}}>
+						<StyledSkeletonFeed>
 							<Skeleton.Input active />
-							<Skeleton.Button active style={{ width: 100 }} />
-						</div>} style={{margin: '20px 30px 0' }}>
+							<Skeleton.Button active style={{ maxWidth: 100 }} />
+						</StyledSkeletonFeed>} style={{margin: '20px 30px 10px' }}>
 						{[...Array(4)].map((_, index) => (
 							<Row align="middle" key={index} style={{ marginBottom: 20, width: '100%' }}>
-								<Avatar size={40} style={{ backgroundColor: "#f0f0f0", marginRight: 10 }} />
+								<Avatar size={40} style={{ backgroundColor: "#f0f0f0", marginRight: 10, marginBottom: 10 }} />
 								<div style={{ display: 'flex', flexDirection: "column", flex: '1 1 auto' }}>
 									<Skeleton.Input style={{ width: 80, height: 15 }} active />
 									<Skeleton.Input style={{  height: 20, marginBottom: 5, width: '100%' }} active />
@@ -89,7 +86,26 @@ export const ProfileSkeleton = () => {
 	)
 };
 
+const StyledTabsButtons = styled.li`
+width: 60px;
+height: 60px;
+display: inline-block;
+>div {
+	height: 100%;
+	width: 100% !important;
+	span {
+		width: 100% !important;
+		height: 100% !important;
+		display: inline-block !important;
+		min-width: 50px !important;
+	}
+}
 
+ @media ${myTheme.media[576]} {
+		width: 50px;
+		height: 50px;
+	}
+`
 const StyledSkeletonBackground = styled.div`
 	width: 100%;
 	height: 100%;
@@ -107,8 +123,20 @@ const StyledSkeletonBackground = styled.div`
 			border-radius: 8px;
 		}
 `
+const StyledSkeletonFeed = styled.div`
+display: flex;
+justify-content: space-around;
 
+@media ${myTheme.media[576]} {
+		 div:nth-child(2){
+				display: none !important;
+		 }
+		
+		
+	}
+`
 const SkeletonGallery = styled.div`
+	padding: 0 20px 0;
 	display: grid;
 	gap: 10px;
 	margin-top: 20px;

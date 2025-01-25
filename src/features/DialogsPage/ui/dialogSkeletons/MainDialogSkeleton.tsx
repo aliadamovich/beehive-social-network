@@ -7,19 +7,13 @@ export const MainDialogSkeleton = () => {
 	return (
 		<>
 			<StyledMessages>
-				{[...Array(9)].map((_, index) => <SingleDialogSkeleton key={index} fromMe={true}/>)}
-				
+				<SingleDialogSkeleton fromMe={true}/>
+				<SingleDialogSkeleton fromMe={false}/>
+				<SingleDialogSkeleton fromMe={false}/>
+				<SingleDialogSkeleton fromMe={true}/>
+				<SingleDialogSkeleton fromMe={false}/>
+				{/* {[...Array(9)].map((_, index) => <SingleDialogSkeleton key={index} fromMe={true}/>)} */}
 			</StyledMessages>
-			<StyledSendMessage>
-					<StyledContent>
-	
-						<StyledMessageBody>
-							<Skeleton.Input active size='large' />
-							<Skeleton.Button active/>
-						</StyledMessageBody>
-	
-					</StyledContent>
-				</StyledSendMessage>
 		</>
 	)
 }
@@ -46,7 +40,7 @@ const StyledMessage = styled.div<{ fromMe: boolean }>`
 	flex-direction: row;
 	align-items: end;
 	gap: 20px;
-	padding: 8px 0;
+	padding: 10px 0;
 	>:first-child{
 		flex: 0 0 50px;
 	}
@@ -70,6 +64,8 @@ const StyledTextBox = styled.div<{ fromMe: boolean }>`
 	padding: 10px;
 	border-radius: 8px;
 	min-width: 200px;
+	width: 100%;
+	
 	min-height: 60px;
 	&::before {
 		content: "";
@@ -93,41 +89,5 @@ const StyledTextBox = styled.div<{ fromMe: boolean }>`
 
 	@media ${myTheme.media[576]} {
 		padding: 5px;
-	}
-`
-
-
-const StyledSendMessage = styled.div`
-	position: sticky;
-	bottom: 0;
-	border-top: 1px solid ${myTheme.colors.borderColor};
-	width: 100%;
-	padding-top: 20px;
-	padding-bottom: 30px;
-	background-color: ${myTheme.colors.whiteBackground};
-`
-const StyledContent = styled.div`
-	padding: 0 20px;
-`
-const StyledMessageBody = styled.div`
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	margin-bottom: 8px;
-	
-	>div:first-child{
-		flex: 0 0 80%;
-		  span {
-			display: block;
-			width: 100% !important;
-		 }
-	}
-
-	@media ${myTheme.media[768]} {
-			flex-direction: column;
-			align-items: start;
-		}
-		>div:first-child{
-		width: 100%;
 	}
 `

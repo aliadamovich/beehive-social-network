@@ -24,7 +24,7 @@ export const ProfileStatus = ({ profileId, isOwner }: ProfileProps) => {
 	}
 
 	const blurHandler = () => {
-		if (status !== profileStatus) {
+		if (status !== profileStatus && status !== '') {
 			updateStatus(status)
 		}
 		setEditMode(false)
