@@ -12,6 +12,10 @@ export const dialogsAPI = baseApi.injectEndpoints({
 			query: (userId) => `dialogs/${userId}/messages`,
 			providesTags: ["Dialogs"],
 		}),
+		getMessagesByDate: build.query<SingleDialogItem[], {date: string, userId: number}>({
+			query: ({userId, date}) => `dialogs/${userId}/messages/new?newerThen=${date}`,
+			providesTags: ["Dialogs"],
+		}),
 		sendMessage: build.mutation<StandartResponse<{ message: SingleDialogItem }>, { userId: number; message: string }>({
 			query: ({ userId, message }) => ({
 				url: `dialogs/${userId}/messages`,
@@ -30,5 +34,5 @@ export const dialogsAPI = baseApi.injectEndpoints({
 	}),
 })
 
-export const { useGetAllMessagesQuery, useGetMessagesWithUserQuery, useDeleteMessageMutation, useSendMessageMutation } = dialogsAPI
+export const { useGetAllMessagesQuery, useLazyGetMessagesByDateQuery, useGetMessagesWithUserQuery, useDeleteMessageMutation, useSendMessageMutation } = dialogsAPI
 

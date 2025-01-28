@@ -7,46 +7,62 @@ import { useState } from 'react';
 import { ModalWindow } from '../../../../common/components/modal/ModalWindow';
 import { useDeleteMessageMutation } from 'features/DialogsPage/api/DialogsApi';
 import { useAppDispatch } from 'app/hooks';
+import { SingleDialogItem } from 'features/DialogsPage/api/DialogsApi.types';
+import { getTimeFromIso } from 'features/DialogsPage/lib/getTimeFunction';
 
-type SingleDialogPropsType = {
-	text: string
-	messageId: string
-	userName: string
-	photo: string | null
+
+type Props = {
+	message: SingleDialogItem
 	fromMe: boolean
-	dialogUserId: number
+	photo: string | null
 }
 
-export const SingleDialog = (props: SingleDialogPropsType) => {
+export const SingleDialog = ({message, fromMe, photo}: Props) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const dispatch = useAppDispatch();
 	const [deleteMessage] = useDeleteMessageMutation()
+
 	const confirmDeleteHandler = () => {
-		// dispatch(deleteMessageTC(props.messageId, props.dialogUserId))
-		deleteMessage(props.messageId)
+		deleteMessage(message.id)
 	}
+	
 	const likeButtonClickHandler = () => {}
 
+
 	return(
-		<StyledMessage fromMe={props.fromMe}>
-			<Avatar photo={props.photo} width={'50px'} height={'50px'} />
-			<StyledTextBox fromMe={props.fromMe}>
-				<StyledName>{props.userName}</StyledName>
-				<p>{props.text}</p>
-			</StyledTextBox>
-			<StyledIconButtons>
-				<IconButton onClick={() => { setIsModalOpen(true) }}>
-					<CloseOutlined />
-				</IconButton>
-	
-				<IconButton onClick={likeButtonClickHandler}>
-					<HeartOutlined />
-				</IconButton>
-			</StyledIconButtons>
-			{isModalOpen && <ModalWindow title='Delete this message?' isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} confirmHandler={confirmDeleteHandler}/>}
-		</StyledMessage>
+		<StyledMessageContainer>
+			<StyledTimeStamp>{getTimeFromIso(message.addedAt)}</StyledTimeStamp>
+			<StyledMessage fromMe={fromMe}>
+				<Avatar photo={photo} width={'50px'} height={'50px'} />
+				<StyledTextBox fromMe={fromMe}>
+					<StyledName>{message.senderName}</StyledName>
+					<p>{message.body}</p>
+				</StyledTextBox>
+				<StyledIconButtons>
+					<IconButton onClick={() => { setIsModalOpen(true) }}>
+						<CloseOutlined />
+					</IconButton>
+		
+					<IconButton onClick={likeButtonClickHandler}>
+						<HeartOutlined />
+					</IconButton>
+				</StyledIconButtons>
+				{isModalOpen && <ModalWindow title='Delete this message?' isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} confirmHandler={confirmDeleteHandler}/>}
+			</StyledMessage>
+		</StyledMessageContainer>
 	)
 }
+
+const StyledMessageContainer = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+`
+
+const StyledTimeStamp = styled.span`
+	font-size: 11px;
+
+`
 
 const StyledMessage = styled.div<{ fromMe: boolean }>`
 	display: flex;

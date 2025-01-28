@@ -43,7 +43,7 @@ export const ProfilePage = () => {
 			// setIsProfileUpdated(true)
 			 setActiveTab(isOwner ? TABS.ACTIVITY : TABS.PROFILE)
 		 })
-		// getProfileStatus(profileId)
+		getProfileStatus(profileId)
 		return () => {
 			// setIsProfileUpdated(false)
 	}

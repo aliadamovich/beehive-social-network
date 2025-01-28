@@ -16,7 +16,7 @@ export const MainButton = ({ children, icon, type, loading, disabled, ...props }
 
 	return (
 		<StyledButton
-			type="primary"
+			type='primary'
 			icon={icon}
 			loading={loading}
 			name='Logout'

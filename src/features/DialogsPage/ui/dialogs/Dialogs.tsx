@@ -1,82 +1,90 @@
-import { useEffect, useRef, useState } from "react"
+import { Fragment, useCallback, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
-import { useSelector } from "react-redux";
 import { SingleDialog } from "./SingleDialog";
 import { SendMessage } from "../../../../common/components/sendMessageField/SendMessage";
-import { NavLink, useOutletContext, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { EmptyDialogs } from "./EmptyDialogs";
-import { myTheme } from "../../../../styles/Theme";
-import { MainButton } from "../../../../common/components/MainButton";
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { PATH } from "../../../../routes/routes";
-import { selectStatus } from "../../../../app/appSlice";
-import { useGetMessagesWithUserQuery, useSendMessageMutation } from "../../api/DialogsApi";
+import { useGetMessagesWithUserQuery, useLazyGetMessagesByDateQuery, useSendMessageMutation } from "../../api/DialogsApi";
 import { MainDialogSkeleton } from "./../dialogSkeletons/MainDialogSkeleton";
-import { useAppDispatch } from "app/hooks";
+import { SingleDialogItem } from "features/DialogsPage/api/DialogsApi.types";
+import { Divider, Typography } from "antd";
+import { getDateFromISO } from "features/DialogsPage/lib/getDateFunction";
+import { DialogsHeader } from "features/DialogsPage/ui/dialogs/DialogsHeader";
+import { groupMessagesByDate } from "features/DialogsPage/lib/groupByDateFunc";
 
 export const Dialogs = () => {
-	const { handleBackClick } = useOutletContext<any>();
-	const [messageText, setMessageText] = useState('');
+	const [isDateFilterActive, setIsDateFilterActive] = useState(false);
 	const messagesEndRef = useRef<HTMLDivElement | null>(null);
 	const {id} = useParams();
 	const currentDialogUserId = Number(id);
 
-
 	const { data, isLoading } = useGetMessagesWithUserQuery(currentDialogUserId)
+	const [getMessagesByDate, { data: messagesByDate }] = useLazyGetMessagesByDateQuery();
+
 	const [sendMessage, {isLoading: isMessageSendLoading}] = useSendMessageMutation()
 	const messages = data?.items
+
+	const displayedMessages = isDateFilterActive ? messagesByDate : messages;
+	let sortedMessages = groupMessagesByDate(displayedMessages || [])
+	let sortedDates = Object.keys(sortedMessages)
 
 	useEffect(() => {
 		if (messagesEndRef.current) {
 			messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
 		}
-	}, [messages])
+	}, [messages, messagesByDate])
 
-	const sendMessageHandler = () => {
-		sendMessage({ userId: currentDialogUserId, message: messageText })
-			.then(() => {
-				setMessageText('')
-			})
+	useEffect(() => {
+		resetDateFilter()
+	}, [currentDialogUserId])
+
+
+	const datePickerChangeHandler = (date: string) => {
+		setIsDateFilterActive(true);
+		getMessagesByDate({ userId: Number(id), date })
+	}
+
+	const resetDateFilter = () => {
+		setIsDateFilterActive(false); 
+	};
+
+	const sendMessageHandler = (message: string) => {
+		return sendMessage({ userId: currentDialogUserId, message })
 	}
 
 
-	const mapDialogs = () => {
-		if (messages?.length === 0) {
-			return <EmptyDialogs text={"start your first dialog..."}/>
-		} else {
-			return messages?.map(d => <SingleDialog
-				text={d.body}
-				messageId={d.id}
-				dialogUserId={currentDialogUserId}
-				key={d.id}
-				userName={d.senderName}
-				photo={null}
-				fromMe={d.senderId !== currentDialogUserId}
-			/>)
-		}
-	}
-
-	
-
+	console.log(sortedMessages );
+	console.log('sorted dates' + sortedDates);
 	return (
 		<>
-			{ (isLoading) 
+			{ (isLoading)
 			? <MainDialogSkeleton />
 			: <>
-				<StyledButtonContainer to={PATH.DIALOGS}>
-					<MainButton type="primary" loading={false} icon={<ArrowLeftOutlined />}
-						onClick={handleBackClick} />
-				</StyledButtonContainer>
+					<DialogsHeader datePickerChangeHandler={datePickerChangeHandler} />
 				<StyledMessages>
-					{mapDialogs()}
+					{displayedMessages?.length === 0
+					? <EmptyDialogs text={"start your first dialog..."} />
+						: sortedDates?.map((date, i) =>
+							<Fragment key={i}>
+						<Divider orientation="center">
+							<Typography.Text type="secondary">{getDateFromISO(date)}</Typography.Text>
+						</Divider>
+							{sortedMessages[date].map(d=> <SingleDialog
+								key={d.id}
+								message={d}
+								photo={null}
+								fromMe={d.senderId !== currentDialogUserId}
+							/>)
+							}
+							</Fragment>
+					)
+					}
 					<div ref={messagesEndRef}></div>
 				</StyledMessages>
 			</> 
 			}
 
 			<SendMessage
-				messageText={messageText}
-				updateText={setMessageText}
 				addMessage={sendMessageHandler}
 				title="Send"
 				showCount={false}
@@ -98,18 +106,3 @@ const StyledMessages = styled.div`
 `
 
 
-const StyledButtonContainer = styled(NavLink)`
-	display: none;
-
-	@media ${myTheme.media[950]} {
-		position: sticky;
-		width: 100%;
-		z-index: 1000;
-		top: 0%;
-		left: 0%;
-		background-color: #fff;
-		border-radius: 8px;
-		display: block;
-		padding: 10px;
-	}
-`

@@ -20,9 +20,27 @@ export const ModalWindow = ({ title, setIsModalOpen, isModalOpen, confirmHandler
 			setIsModalOpen(false);
 		};
 
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+		if (event.key === "Enter") {
+			event.preventDefault(); 
+			console.log(111);
+			handleOk();
+		}
+	};
+
 		return (
 			<Modal title={title} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} 
-			okButtonProps={{style: { backgroundColor: myTheme.colors.accentLight, color: '#fff' }}}>
+			keyboard
+			okButtonProps={{style: { backgroundColor: myTheme.colors.accentLight, color: '#fff' }}}
+				afterOpenChange={(open) => {
+					if (open) document.getElementById("modal-content")?.focus();
+				}}
+				>
+				<div
+					tabIndex={-1} 
+					id="modal-content"
+					onKeyDown={handleKeyDown} 
+				></div>
 			</Modal>
 		)
 };

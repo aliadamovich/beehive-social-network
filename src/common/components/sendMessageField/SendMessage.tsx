@@ -3,11 +3,10 @@ import TextArea from "antd/es/input/TextArea";
 import { SendOutlined } from '@ant-design/icons';
 import { myTheme } from "../../../styles/Theme";
 import { MainButton } from "./../MainButton";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
 
-type SendMessageType = {
-	messageText: string
-	updateText: (message: string) => void
-	addMessage: () => void
+type Props = {
+	addMessage: (message: string) => Promise<any> | void
 	title: string
 	showCount?: boolean
 	maxLength?: number
@@ -15,7 +14,29 @@ type SendMessageType = {
 	disabled?: boolean
 }
 
-export const SendMessage = (props: SendMessageType) => {
+export const SendMessage = (props: Props) => {
+	const [inputValue, setInputValue] = useState<string>("")
+
+	const keyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+		if (e.key === "Enter") {
+			e.preventDefault()
+			addMessageHandler()
+		}
+	}
+	const changeInputHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+		setInputValue(e.currentTarget.value)
+	}
+
+	const addMessageHandler = () => {
+		if (inputValue.trim()) {
+			const result = props.addMessage(inputValue.trim());
+			if (result instanceof Promise) {
+				result.then(() => setInputValue("")); 
+			} else {
+				setInputValue("");
+			}
+		}
+	}
 
 	return (
 		<StyledSendMessage>
@@ -24,17 +45,18 @@ export const SendMessage = (props: SendMessageType) => {
 				<StyledMessageBody>
 
 					<TextArea
-						onChange={(e) => { props.updateText(e.currentTarget.value) }}
-						value={props.messageText}
+						onChange={changeInputHandler}
+						value={inputValue}
 						placeholder='Write your message...'
 						autoSize={{ minRows: 1, maxRows: 6 }}
+						onKeyDown={keyPressHandler}
 						showCount={props.showCount} maxLength={props.maxLength}
 						>
 						
 					</TextArea>
 					<MainButton 
 						children={props.title} 
-						onClick={() => { props.addMessage() }} 
+						onClick={addMessageHandler }
 						icon={<SendOutlined />}
 						loading={props.loading}
 						disabled={props.disabled}

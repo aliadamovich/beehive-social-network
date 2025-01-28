@@ -44,7 +44,7 @@ const StyledDialogPage = styled.section`
 	overflow: hidden;
 	max-width: 1110px;
 	margin: 0px auto;
-	height: calc(100vh - var(--header-height) - var(--content-margin) - var(--footer-height) );
+	height: calc(100vh - var(--header-height) - var(--content-margin) - var(--footer-height));
 `
 
 const StyledDialogPageBody = styled.div`

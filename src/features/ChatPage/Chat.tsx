@@ -74,16 +74,16 @@ export const Chat = () => {
 
 	const updateText = (message: string) => {setMyMessageText(message)}
 
-	const addMessage = () => {
-		if (!myMessageText.trim()) return;
-		wsRef.current?.send(myMessageText);
-		setMyMessageText('');
+	const addMessage = (message: string) => {
+		// if (!myMessageText.trim()) return;
+		wsRef.current?.send(message);
+		// setMyMessageText('');
 	}
 
 	const messagesArray = messages.map((m, i) => <SingleDialog
 		fromMe={m.userId === myUserId}
 		text={m.message}
-		key={i} 
+		key={i}
 		userName={m.userName}
 		photo={m.photo}
 		dialogUserId={0}
@@ -102,8 +102,8 @@ export const Chat = () => {
 			<SendMessage
 				loading={false}
 				title='Send Message'
-				messageText={myMessageText}
-				updateText={updateText}
+				// messageText={myMessageText}
+				// updateText={updateText}
 				addMessage={addMessage}
 				disabled={readyStatus === 'pending'}
 			/>
@@ -113,7 +113,7 @@ export const Chat = () => {
 }
 
 const StyledChat = styled.div`
-height: calc(100vh - 60px);
+height: calc(100vh - var(--header-height) - var(--content-margin) - var(--footer-height));
 overflow: hidden;
 position: relative;
 display: flex;
