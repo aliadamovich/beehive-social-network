@@ -166,11 +166,11 @@ export const Users = () => {
 						/> */}
 						<GridWrapper gap='15px' gtc='repeat(auto-fit, minmax(250px, 1fr))'>
 						{users?.map(u =>
-											<User u={u}
-												key={u.id}
+											<User user={u}
+											key={u.id}
+											params={params}
 												// followingInProgress={followingInProgress}
-												isLoading={false}
-												params={params}
+												// isLoading={false}
 											/>)
 						}
 						</GridWrapper>

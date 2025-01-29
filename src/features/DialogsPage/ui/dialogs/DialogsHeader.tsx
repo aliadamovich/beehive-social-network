@@ -6,27 +6,40 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 import { myTheme } from 'styles/Theme'
 import { DatePicker, DatePickerProps } from 'antd';
 import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 
 type Props = {
-	datePickerChangeHandler: (date: string) => void
+	dateChangeHandler: (date: string | null) => void
+	isDateFilterActive: boolean
 }
 
-export const DialogsHeader = ({ datePickerChangeHandler }: Props) => {
-	
+export const DialogsHeader = ({ dateChangeHandler, isDateFilterActive }: Props) => {
+	const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null);
 	const { handleBackClick } = useOutletContext<any>();
+	
+	useEffect(() => {
+		if (!isDateFilterActive) {
+			setSelectedDate(null);
+		}
+	}, [isDateFilterActive]);
 
 	const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-		const newDate = dayjs(dateString as string).toISOString();
-		datePickerChangeHandler(newDate)
+		// debugger
+		setSelectedDate(date)
+		// const newDate = dayjs(dateString as string).toISOString();
+		dateChangeHandler(date ? dayjs(dateString as string).toISOString() : null);
+		// if(date === null) {
+		// 	setSelectedDate(null)
+		// }
 	}
+
 	return (
-		<StyledButtonContainer >
+		<StyledButtonContainer>
 			<NavLink to={PATH.DIALOGS}>
-				<MainButton loading={false} icon={<ArrowLeftOutlined />}
-					onClick={handleBackClick} />
+				<MainButton loading={false} icon={<ArrowLeftOutlined />} onClick={handleBackClick} />
 			</NavLink>
 			<StyledCalendar>
-				<DatePicker onChange={onChange} placeholder='Search by date'/>
+				<DatePicker onChange={onChange} placeholder='Search by date' value={selectedDate} allowClear/>
 			</StyledCalendar>
 		</StyledButtonContainer>
 	)

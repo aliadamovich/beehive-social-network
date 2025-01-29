@@ -7,6 +7,7 @@ import TextArea from 'antd/es/input/TextArea';
 import { MainButton } from '../../../../../common/components/MainButton';
 import styled from 'styled-components';
 import { ContactsType, ProfileType } from 'features/ProfilePage/api/profileApi.types';
+import { myTheme } from 'styles/Theme';
 
 
 type Props = {
@@ -95,7 +96,9 @@ export const ProfileForm = (props: Props) => {
 			 	</>
 		})}
 			{/* пришось делать приведение типов key as keyof ContactsType */}
-			<MainButton loading={false} children='Save Info' icon={<MdSaveAlt />} disabled={formik.isSubmitting} htmlType='submit'/>
+			<ButtonContainer>
+				<MainButton loading={false} children='Save Info' icon={<MdSaveAlt />} disabled={formik.isSubmitting} htmlType='submit'/>
+			</ButtonContainer>
 		</StyledForm>
 
 	)
@@ -123,9 +126,18 @@ const StyledFormBlock = styled.div`
 	padding: 5px 10px;
 	display: flex;
 	gap: 15px;
+
+	@media ${myTheme.media[576]} {
+			flex-direction: column;
+	}
 `
 
 const StyledError = styled.p`
 	font-size: 12px;
 	text-align: right;
+`
+
+const ButtonContainer = styled.div`
+	width: 100%;
+	text-align: center;
 `

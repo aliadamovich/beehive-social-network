@@ -7,6 +7,8 @@ import { useSetProfileInfoMutation } from 'features/ProfilePage/api/profileApi'
 import { selectProfileData } from 'features/ProfilePage/model/selectors/profileDataSelector'
 import { useSelector } from 'react-redux'
 import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType'
+import styled from 'styled-components'
+import { myTheme } from 'styles/Theme'
 
 
 export const ProfileInfoSection = ({ profileId, isOwner }: ProfileProps) => {
@@ -20,7 +22,7 @@ export const ProfileInfoSection = ({ profileId, isOwner }: ProfileProps) => {
 
 	return (
 		<>
-			<SectionTitle>Personal Information:</SectionTitle>
+			<StyledHeader><SectionTitle>Personal Information:</SectionTitle></StyledHeader>
 			{
 				profileData && editMode
 				? <ProfileForm userProfile={profileData} saveProfileInfo={saveProfileInfo} onEditClick={() => { setEditMode(!editMode) }} />
@@ -30,3 +32,8 @@ export const ProfileInfoSection = ({ profileId, isOwner }: ProfileProps) => {
 	)
 }
 
+const StyledHeader = styled.div`
+	@media ${myTheme.media[576]} {
+		padding: 0 10px;
+	}
+`

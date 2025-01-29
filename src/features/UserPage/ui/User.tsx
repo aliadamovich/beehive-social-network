@@ -1,86 +1,44 @@
 import { Link } from 'react-router-dom';
 import userPhoto from './../../../assets/images/user.png';
-import { Card, Divider } from 'antd';
+import { Divider } from 'antd';
 import styled from 'styled-components';
 import { myTheme } from '../../../styles/Theme';
-import { useSelector } from 'react-redux';
 import { Avatar } from 'common/components/Avatar';
-import { MainButton } from 'common/components/MainButton';
-import { DomainUser, getUsersParams, UserType } from 'features/UserPage/api/usersApi.types';
-import { useFollowUserMutation, useLazyCheckFollowQuery, usersAPI, useUnfollowUserMutation } from 'features/UserPage/api/usersApi';
-import { useAppDispatch } from 'app/hooks';
-import { selectFollowingInProgress, toggleFollowingProgress } from 'features/UserPage/model/usersSlice';
-import { updateStatusQueryData } from 'features/UserPage/lib/updateStatusQueryData';
+import { DomainUser, getUsersParams } from 'features/UserPage/api/usersApi.types';
+import { FollowUserButton } from 'features/UserPage/ui/FollowUserButton';
 
 
-type UserPropsType = {
-	u: DomainUser
-	// toggleFollowUsers: (userId: number) => void
-	// followingInProgress: number[]
-	isLoading: boolean
+export type UserPropsType = {
+	user: DomainUser 
 	params: getUsersParams
 }
 
-export const User = ({ u, isLoading, params }: UserPropsType) => {
-	const [followUser, {isLoading: isFollowLoading}] = useFollowUserMutation()
-	const [unfollowUser, {isLoading: isUnfollowLoading}] = useUnfollowUserMutation()
-	const dispatch = useAppDispatch();
-	const [trigger] = useLazyCheckFollowQuery()
-	const followingInProgress = useSelector(selectFollowingInProgress);
-
-	const toggleFollowUser = async () => {
-		try {
-			// dispatch(usersAPI.util.updateQueryData('getUsers', params, (state) => {
-			// 	let users = state.items
-			// 	let index = users.findIndex((user) => user.id === u.id)
-			// 	users[index].entityStatus = 'loading'
-			// } ))
-			updateStatusQueryData({dispatch, params, userId: u.id, status: 'loading'})
-			// dispatch(toggleFollowingProgress({ isFetching: true, userId: u.id }))
-			const { data: isUserFollowed } = await trigger(u.id)
-			if (isUserFollowed) {
-					await unfollowUser(u.id).unwrap()
-			} else {
-				await followUser(u.id).unwrap()
-			}
-		} catch (error) {
-			
-		} finally {
-			updateStatusQueryData({ dispatch, params, userId: u.id, status: 'idle' })
-			// dispatch(toggleFollowingProgress({ isFetching: false, userId: u.id }))
-		}
-	}
+export const User = ({ user, ...props }: UserPropsType) => {
 
 	return (
 		<>
 			<StyledUserCard>
 				<StyledUserTop>
-
-					<Link to={'/profile/' + u.id}>
-						<Avatar photo={u.photos.small !== null ? u.photos.small : userPhoto} width='80px' height='80px' />
+					<Link to={'/profile/' + user.id}>
+						<Avatar photo={user.photos.small !== null ? user.photos.small : userPhoto} width='80px' height='80px' />
 					</Link>
 					
 					<StyledUserData>
-						<StyledUserName>{u.name}</StyledUserName>
+						<StyledUserName>{user.name}</StyledUserName>
 						<p>Country:</p>
 						<p>City:</p>
 					</StyledUserData>
-
 				</StyledUserTop>
 
-				<StyledStatus><p>{u.status || 'No status yet...'}</p> </StyledStatus>
+				<StyledStatus><p>{user.status || 'No status yet...'}</p> </StyledStatus>
 				<Divider style={{margin: '12px 0'}}/>
-				<MainButton 
-					children={u.followed ? 'Unfollow' : 'Follow'}
-					onClick={toggleFollowUser} 
-					// loading={followingInProgress?.some(el => el === u.id) || isLoading === true }
-					// loading={isFollowLoading === true || isUnfollowLoading === true }
-					loading={u.entityStatus === 'loading'}
-				/>
+				<FollowUserButton user={user} {...props}/>
+
 			</StyledUserCard>
 		</>
 	)
 }
+
 const StyledUserCard = styled.div`
 	border: 1px solid #f0f0f0;
 	border-radius: 8px;

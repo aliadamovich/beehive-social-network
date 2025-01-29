@@ -6,7 +6,7 @@ import { Container } from "../../../../common/components/Container";
 import styled from "styled-components";
 import { myTheme } from "../../../../styles/Theme";
 import { StyledProfileUser } from "features/ProfilePage/ui/ProfileUser/ProfileUser";
-import { TabsList, TabsMenu } from "features/ProfilePage/ui/tabs/ProfileTabs";
+import { TabsContainer, TabsList } from "features/ProfilePage/ui/tabs/ProfileNavigation";
 
 export const ProfileSkeleton = () => {
 
@@ -28,7 +28,7 @@ export const ProfileSkeleton = () => {
 							<Skeleton.Input style={{ width: 150, height: 30, display: 'block'}} active />
 					</StyledProfileUser>
 	
-					<TabsMenu>
+					<TabsContainer>
 							<TabsList>
 
 							{[...Array(4)].map((_, index) => (
@@ -37,7 +37,7 @@ export const ProfileSkeleton = () => {
 								</StyledTabsButtons>
 							))}
 							</TabsList>
-					</TabsMenu>
+					</TabsContainer>
 				</StyledProfileTop>
 	
 	

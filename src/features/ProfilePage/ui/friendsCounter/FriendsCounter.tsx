@@ -2,19 +2,34 @@ import styled from 'styled-components'
 import { myTheme } from '../../../../styles/Theme'
 import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType'
 import { useGetUsersQuery } from 'features/UserPage/api/usersApi'
+import { useEffect, useState } from 'react'
 
-export const FriendsCounter = ({profileId, isOwner}: ProfileProps) => {
-	const { data: friends} = useGetUsersQuery({friend: true})
+export const FriendsCounter = (props: ProfileProps) => {
+	const [width, setWidth] = useState(window.innerWidth);
+	const breakpoint = 950;
+
+	useEffect(() => {
+		window.addEventListener("resize", () => setWidth(window.innerWidth));
+	}, []);
+	return (
+		<>
+			{width > breakpoint && <Counter {...props}/> }
+		</>
+	)
+} 
+
+const Counter = ({profileId, isOwner}: ProfileProps) => {
+	// const { data: friends} = useGetUsersQuery({friend: true})
 	return (
 		<StyledCounter>
-			<Counter>
-				<span>{isOwner ? friends?.totalCount : 0}</span>
+			<CounterItem>
+				{/* <span>{isOwner ? friends?.totalCount : 0}</span> */}
 				Friends
-			</Counter>
-			<Counter>
+			</CounterItem>
+			<CounterItem>
 				<span>0</span>
 				Groups
-			</Counter>
+			</CounterItem>
 		</StyledCounter>
 	)
 }
@@ -27,7 +42,7 @@ const StyledCounter = styled.div`
 	padding-bottom: 15px;
 `
 
-const Counter = styled.div`
+const CounterItem = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

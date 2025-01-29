@@ -31,6 +31,7 @@ export const ModalWindow = ({ title, setIsModalOpen, isModalOpen, confirmHandler
 		return (
 			<Modal title={title} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} 
 			keyboard
+			style={{top: '50%', transform: 'translateY(-50%'}}
 			okButtonProps={{style: { backgroundColor: myTheme.colors.accentLight, color: '#fff' }}}
 				afterOpenChange={(open) => {
 					if (open) document.getElementById("modal-content")?.focus();

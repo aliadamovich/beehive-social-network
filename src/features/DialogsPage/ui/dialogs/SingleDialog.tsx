@@ -10,6 +10,7 @@ import { useAppDispatch } from 'app/hooks';
 import { SingleDialogItem } from 'features/DialogsPage/api/DialogsApi.types';
 import { getTimeFromIso } from 'features/DialogsPage/lib/getTimeFunction';
 
+//!нет фото пользователей в диалогах
 
 type Props = {
 	message: SingleDialogItem

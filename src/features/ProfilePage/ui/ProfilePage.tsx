@@ -12,7 +12,7 @@ import logo from './../../../assets/images/logo_login.svg'
 import { selectAuthorizedLoginId, selectIsAuth } from "features/LoginPage/model/authSlice";
 import { AppDispatch } from "app/store";
 import { useLazyGetProfileQuery, useLazyGetStatusQuery } from "features/ProfilePage/api/profileApi";
-import { ProfileTabs } from "features/ProfilePage/ui/tabs/ProfileTabs";
+import { ProfileNavigation } from "features/ProfilePage/ui/tabs/ProfileNavigation";
 import { TabsContent } from "features/ProfilePage/ui/tabsContent/TabsContent";
 import { ProfileUser } from "features/ProfilePage/ui/ProfileUser/ProfileUser";
 import { ProfileMiniGallery } from "features/ProfilePage/ui/profileMiniGallery/ProfileMiniGallery";
@@ -70,7 +70,7 @@ export const ProfilePage = () => {
 			<Container>
 				<StyledProfileTop>
 					<ProfileUser profileId={profileId} isOwner={isOwner} />
-					<ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+					<ProfileNavigation activeTab={activeTab} setActiveTab={setActiveTab} isOwner={isOwner} />
 				</StyledProfileTop>
 
 				<StyledProfileBottom>

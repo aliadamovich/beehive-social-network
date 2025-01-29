@@ -72,6 +72,9 @@ const StyledProfile = styled.div`
 	align-items: center;
 	gap: 15px;
 	
+	@media ${myTheme.media[576]} {
+		flex-direction: column;
+	}
 `
 
 export const Description = styled.span`
@@ -84,6 +87,9 @@ export const Description = styled.span`
 	text-transform: capitalize;
 	display: flex;
 	align-items: center;
+	@media ${myTheme.media[576]} {
+		justify-content: center;
+	}
 `
 
 const Value = styled.p`
