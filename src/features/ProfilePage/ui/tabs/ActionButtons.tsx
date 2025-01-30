@@ -1,5 +1,6 @@
 import { Skeleton } from 'antd'
 import { MainButton } from 'common/components/MainButton'
+import { useStartDialogWithUserMutation } from 'features/DialogsPage/api/DialogsApi'
 import { useGetUsersQuery } from 'features/UserPage/api/usersApi'
 import { FollowUserButton } from 'features/UserPage/ui/FollowUserButton'
 import { NavLink, useParams } from 'react-router-dom'
@@ -9,17 +10,21 @@ import { myTheme } from 'styles/Theme'
 
 export const ActionButtons = () => {
 	const {userId} = useParams();
-	const { data, isFetching, isLoading } = useGetUsersQuery({})
+	// const { data, isFetching, isLoading } = useGetUsersQuery({})
 	// const user = data?.items?.find(u => u.id === Number(userId))
 	// console.log('userId', userId);
-	console.log('data', data);
-	console.log(data);
-// debugger
+	console.log(userId);
+	const [startDialog] = useStartDialogWithUserMutation()
+	const startDialogHandler = () => {
+		startDialog(Number(userId))
+	}
 	return (
 		<>
 			<StyledButtons>
 				<NavLink to={`${PATH.DIALOGS}/${userId}`}>
-					<span><MainButton children='Start dialog' loading={false} /></span>
+					<span>
+						<MainButton children='Start dialog' loading={false} onClick={startDialogHandler}/>
+					</span>
 				</NavLink>
 				
 				{/* {user && <FollowUserButton user={user} params={{}} />} */}

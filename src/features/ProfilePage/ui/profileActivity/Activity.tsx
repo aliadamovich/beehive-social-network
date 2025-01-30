@@ -5,8 +5,9 @@ import { PostItem } from '../tabsContent/postsFeed/PostItem';
 import { myTheme } from '../../../../styles/Theme';
 import { selectPosts } from 'features/ProfilePage/model/profileSlice';
 import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType';
+import React from 'react';
 
-export const Activity = ({isOwner, profileId}: ProfileProps) => {
+export const Activity = React.memo(({isOwner, profileId}: ProfileProps) => {
 	const posts = useSelector(selectPosts);
 	const latestPosts = posts.slice(0, 3).map(p => <PostItem type={p.type} key={p.id} profileId={profileId}/>)
 	return(
@@ -17,7 +18,7 @@ export const Activity = ({isOwner, profileId}: ProfileProps) => {
 			</ActivityContainer>
 		</StyledActivitySection>
 	)
-}
+})
 
 const StyledActivitySection = styled.div`
 	padding-top: 30px;

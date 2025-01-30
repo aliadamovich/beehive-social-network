@@ -31,7 +31,10 @@ export const SendMessage = (props: Props) => {
 		if (inputValue.trim()) {
 			const result = props.addMessage(inputValue.trim());
 			if (result instanceof Promise) {
-				result.then(() => setInputValue("")); 
+				result.then(() => {
+					setInputValue("")
+					
+				})
 			} else {
 				setInputValue("");
 			}

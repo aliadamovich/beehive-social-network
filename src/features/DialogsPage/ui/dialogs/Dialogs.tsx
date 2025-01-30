@@ -53,37 +53,37 @@ export const Dialogs = () => {
 
 
 	const sendMessageHandler = (message: string) => {
-		return sendMessage({ userId: currentDialogUserId, message })
+		return sendMessage({ userId: currentDialogUserId, message }).unwrap()
+
 	}
-console.log(displayedMessages);
 	return (
 		<>
-			{ (isLoading)
-			? <MainDialogSkeleton />
-			: <>
-					<DialogsHeader dateChangeHandler={dateChangeHandler} isDateFilterActive={isDateFilterActive}/>
-				<StyledMessages>
-					<div ref={messagesStartRef}></div>
-					{displayedMessages?.length === 0
-					? <EmptyDialogs text={"start your first dialog..."} />
-						: sortedDates?.map((date, i) =>
-							<Fragment key={i}>
-						<Divider orientation="center">
-							<Typography.Text type="secondary">{getDateFromISO(date)}</Typography.Text>
-						</Divider>
-							{sortedMessages[date].map(d=> <SingleDialog
-								key={d.id}
-								message={d}
-								photo={null}
-								fromMe={d.senderId !== currentDialogUserId}
-							/>)
-							}
-							</Fragment>
-					)
-					}
-					<div ref={messagesEndRef}></div>
-				</StyledMessages>
-			</> 
+			{(isLoading)
+				? <MainDialogSkeleton />
+				: <>
+					<DialogsHeader dateChangeHandler={dateChangeHandler} isDateFilterActive={isDateFilterActive} />
+					<StyledMessages>
+						<div ref={messagesStartRef}></div>
+						{displayedMessages?.length === 0
+							? <EmptyDialogs text={"Send your message..."} />
+							: sortedDates?.map((date, i) =>
+								<Fragment key={i}>
+									<Divider orientation="center">
+										<Typography.Text type="secondary">{getDateFromISO(date)}</Typography.Text>
+									</Divider>
+									{sortedMessages[date].map(d => <SingleDialog
+										key={d.id}
+										message={d}
+										photo={null}
+										fromMe={d.senderId !== currentDialogUserId}
+									/>)
+									}
+								</Fragment>
+							)
+						}
+						<div ref={messagesEndRef}></div>
+					</StyledMessages>
+				</>
 			}
 
 			<SendMessage

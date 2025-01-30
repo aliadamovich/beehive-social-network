@@ -22,7 +22,7 @@ export const FollowedFriends = ({isOwner} : {isOwner: boolean}) => {
 	}, [])
 
 	if (!isOwner) return <div>No friends yet...</div>
-	if (isLoading) return <UsersSkeleton />
+	if (isLoading) return <UsersSkeleton withoutSideBar />
 
 	return (
 		<>

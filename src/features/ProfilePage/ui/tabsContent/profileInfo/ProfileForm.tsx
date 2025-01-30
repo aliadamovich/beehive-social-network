@@ -8,28 +8,29 @@ import { MainButton } from '../../../../../common/components/MainButton';
 import styled from 'styled-components';
 import { ContactsType, ProfileType } from 'features/ProfilePage/api/profileApi.types';
 import { myTheme } from 'styles/Theme';
+import { useSetProfileInfoMutation } from 'features/ProfilePage/api/profileApi';
 
 
 type Props = {
 	userProfile: ProfileType 
-	saveProfileInfo: (values: ProfileType) => void
-	onEditClick: () => void
+	setEditMode: () => void
 }
 
-export const ProfileForm = (props: Props) => {
+export const ProfileForm = ({userProfile, setEditMode}: Props) => {
+
+	const [setProfileInfo, {isLoading}] = useSetProfileInfoMutation()
+
 	const formik = useFormik({
 		initialValues: {
-			...props.userProfile
+			...userProfile
 		},
 		validationSchema: basicSchema,
 		onSubmit(values) {
-			props.saveProfileInfo(values)
-			props.onEditClick()
-		}, //когда сработает событие onSubmit формик вызовет handleSubmit который в свою очередь вызовет ф-ю которую мы тут прописали (выше ееопределение)
+			setProfileInfo(values).unwrap().then(() => setEditMode())
+		},
 	})
 	
 	return (
-	
 		<StyledForm onSubmit={formik.handleSubmit}>
 
 			<StyledFormBlock>
@@ -60,6 +61,7 @@ export const ProfileForm = (props: Props) => {
 		<StyledFormBlock>
 			<Description as='label' htmlFor="lookingForAJob">Lookin for a job: </Description>
 			<Checkbox name="lookingForAJob" id="lookingForAJob"
+			checked={formik.values.lookingForAJob}
 				onChange={formik.handleChange}
 				onBlur={formik.handleBlur}
 			/>
@@ -79,7 +81,7 @@ export const ProfileForm = (props: Props) => {
 			{formik.errors.lookingForAJobDescription && formik.touched.lookingForAJobDescription && <StyledError>{formik.errors.lookingForAJobDescription}</StyledError>}
 		<h3>Contacts:</h3>
 
-		{Object.keys(props.userProfile.contacts).map(key => {
+		{Object.keys(userProfile.contacts).map(key => {
 			return <>
 			 	<StyledFormBlock key={key}>
 					<Description as='label' htmlFor={`contacts.${key}`}>{key}:</Description>
@@ -91,13 +93,13 @@ export const ProfileForm = (props: Props) => {
 						type="text" id={`contacts.${key}`}
 					/>
 				</StyledFormBlock>
-				{ formik.errors.contacts?.[key as keyof ContactsType] && <StyledError>{formik.errors.contacts?.[key as keyof ContactsType]}</StyledError> }
+				{formik.errors.contacts?.[key as keyof ContactsType] && formik.touched.contacts?.[key as keyof ContactsType] && <StyledError>{formik.errors.contacts?.[key as keyof ContactsType]}</StyledError> }
 	
 			 	</>
 		})}
-			{/* пришось делать приведение типов key as keyof ContactsType */}
+			{/*  приведение типов key as keyof ContactsType */}
 			<ButtonContainer>
-				<MainButton loading={false} children='Save Info' icon={<MdSaveAlt />} disabled={formik.isSubmitting} htmlType='submit'/>
+				<MainButton loading={isLoading} children='Save Info' icon={<MdSaveAlt />} disabled={formik.isSubmitting} htmlType='submit'/>
 			</ButtonContainer>
 		</StyledForm>
 
@@ -135,6 +137,7 @@ const StyledFormBlock = styled.div`
 const StyledError = styled.p`
 	font-size: 12px;
 	text-align: right;
+	color: ${myTheme.colors.error}
 `
 
 const ButtonContainer = styled.div`

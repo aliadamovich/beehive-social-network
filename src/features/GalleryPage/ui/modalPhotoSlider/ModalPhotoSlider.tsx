@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { myTheme } from '../../../../styles/Theme';
@@ -11,7 +11,7 @@ import s from './Swiper.module.scss';
 import { PhotoGrid } from 'features/GalleryPage/ui/PhotoGrid';
 import { selectGallery } from 'features/GalleryPage/model/gallerySlice';
 
-export const ModalPhotoSlider = ({preview}: {preview?: boolean}) => {
+export const ModalPhotoSlider = React.memo(({preview}: {preview?: boolean}) => {
 
 	const [activePhotoIndex, setActivePhotoIndex] = useState(1);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,7 +58,7 @@ export const ModalPhotoSlider = ({preview}: {preview?: boolean}) => {
 			}
 		</>
 	)
-}
+})
 
 const StyledModalWindow = styled.div`
 	position: fixed;

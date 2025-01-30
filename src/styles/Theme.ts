@@ -10,7 +10,9 @@ export const myTheme = {
 
     backgroundLayout: "#f5f5f5",
 		whiteBackground: '#fff',
-		siderBackground: '#383a45'
+		siderBackground: '#383a45',
+
+		error: '#f57272'
   },
 
   fonts: {

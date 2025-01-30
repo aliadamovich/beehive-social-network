@@ -2,7 +2,8 @@ import { ModalPhotoSlider } from 'features/GalleryPage/ui/modalPhotoSlider/Modal
 import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType'
 import React from 'react'
 
-export const ProfileMiniGallery = ({isOwner, profileId}: ProfileProps) => {
+export const ProfileMiniGallery = ({isOwner}: ProfileProps) => {
+	console.log('render');
 	return (
 		<>
 			{isOwner 

@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, isRejected } from "@reduxjs/toolkit";
 
 
 export const appSlice = createSlice({
@@ -15,6 +15,11 @@ export const appSlice = createSlice({
 			state.status = action.payload.status
 		}),
 	}),
+	// extraReducers(builder) {
+	// 	builder.addMatcher(isRejected, (state, action) => {
+	// 		debugger
+	// 	})
+	// },
 	selectors: {
 		selectStatus: state => state.status,
 		selectError: state => state.error

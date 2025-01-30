@@ -1,24 +1,18 @@
 import { Card, Divider, Skeleton } from 'antd';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useSelector } from 'react-redux';
 import { myTheme } from '../../../styles/Theme';
 import { GridWrapper } from 'common/components/GridWrapper';
 
 
-export const UsersSkeleton = () => {
+export const UsersSkeleton = ({ withoutSideBar }: { withoutSideBar?: boolean }) => {
 	return (
-		// <Container>
-		// 	<SkeletonSearchContainer >
-		// 		<SkeletonSearch></SkeletonSearch>
-		// 		<Skeleton.Avatar/>
-		// 	</SkeletonSearchContainer>
-			<StyledSkeletonUsersContainer>
-				<GridWrapper gap='15px' gtc='repeat(auto-fit, minmax(250px, 1fr))'>
-				{Array(9).fill(null).map((el, i) => <UserSkeleton key={i}/>)}
-				</GridWrapper>
-				<Card loading bordered={false}/>
-			</StyledSkeletonUsersContainer>
-		// </Container>
+		<StyledSkeletonUsersContainer withoutSideBar={withoutSideBar}>
+			<GridWrapper gap='15px' gtc='repeat(auto-fit, minmax(250px, 1fr))'>
+			{Array(9).fill(null).map((el, i) => <UserSkeleton key={i}/>)}
+			</GridWrapper>
+			<Card loading bordered={false} />
+		</StyledSkeletonUsersContainer>
 	)
 }
 
@@ -38,25 +32,8 @@ export const UsersSkeleton = () => {
 }
 
 
-const StyledUserTop = styled.div`
-	display: flex;
-	gap: 10px;
-	align-items: center;
-`
-const SkeletonSearchContainer = styled.div`
-	width: 100%;
-	margin: 20px 0%;
-	display: flex;
-	gap: 10px;
-`
-const SkeletonSearch = styled.div`
-	background-color: rgba(0, 0, 0, 0.06);
-	width: 100%;
-	border-radius: 20px;
-	height: 40px;
-`
 
-const StyledSkeletonUsersContainer = styled.div`
+const StyledSkeletonUsersContainer = styled.div<{ withoutSideBar?: boolean }>`
 	overflow: hidden;
 	padding: 20px 10px;
 	border-top: 1px solid ${myTheme.colors.borderColor};
@@ -70,4 +47,20 @@ const StyledSkeletonUsersContainer = styled.div`
 	>div:nth-child(2) {
 		flex: 1 1 auto;
 	}
+
+	${props => props.withoutSideBar && css<{ withoutSideBar?: boolean }>`
+		>div:first-child {
+			flex: 1 1 100%;
+			padding-top: 40px;
+		}
+		>div:nth-child(2) {
+		display: none;
+		}
+	`}
+`
+
+const StyledUserTop = styled.div`
+	display: flex;
+	gap: 10px;
+	align-items: center;
 `

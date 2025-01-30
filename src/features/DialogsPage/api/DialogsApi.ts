@@ -12,8 +12,8 @@ export const dialogsAPI = baseApi.injectEndpoints({
 			query: (userId) => `dialogs/${userId}/messages`,
 			providesTags: ["Dialogs"],
 		}),
-		getMessagesByDate: build.query<SingleDialogItem[], {date: string, userId: number}>({
-			query: ({userId, date}) => `dialogs/${userId}/messages/new?newerThen=${date}`,
+		getMessagesByDate: build.query<SingleDialogItem[], { date: string; userId: number }>({
+			query: ({ userId, date }) => `dialogs/${userId}/messages/new?newerThen=${date}`,
 			providesTags: ["Dialogs"],
 		}),
 		sendMessage: build.mutation<StandartResponse<{ message: SingleDialogItem }>, { userId: number; message: string }>({
@@ -31,8 +31,24 @@ export const dialogsAPI = baseApi.injectEndpoints({
 			}),
 			invalidatesTags: ["Dialogs"],
 		}),
+		startDialogWithUser: build.mutation<ResponseWithItems<[]>, number>({
+			query: (userId) => {
+				return {
+					url: `dialogs/${userId}`,
+					method: "PUT",
+					body: { userId },
+				}
+			},
+			invalidatesTags: ["Dialogs"],
+		}),
 	}),
 })
 
-export const { useGetAllMessagesQuery, useLazyGetMessagesByDateQuery, useGetMessagesWithUserQuery, useDeleteMessageMutation, useSendMessageMutation } = dialogsAPI
+export const 
+{ useGetAllMessagesQuery, 
+	useLazyGetMessagesByDateQuery, 
+	useGetMessagesWithUserQuery, 
+	useStartDialogWithUserMutation,
+	useSendMessageMutation,
+	useDeleteMessageMutation } = dialogsAPI
 

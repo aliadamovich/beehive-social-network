@@ -14,18 +14,18 @@ import { myTheme } from 'styles/Theme'
 export const ProfileInfoSection = ({ profileId, isOwner }: ProfileProps) => {
 	const [editMode, setEditMode] = useState(false)
 	const profileData = useSelector(selectProfileData(profileId))
-	const [setProfileInfo] = useSetProfileInfoMutation()
+	// const [setProfileInfo] = useSetProfileInfoMutation()
 
-	const saveProfileInfo = (form: ProfileType) => {
-		setProfileInfo(form)
-	}
+	// const saveProfileInfo = (form: ProfileType) => {
+	// 	setProfileInfo(form)
+	// }
 
 	return (
 		<>
 			<StyledHeader><SectionTitle>Personal Information:</SectionTitle></StyledHeader>
 			{
 				profileData && editMode
-				? <ProfileForm userProfile={profileData} saveProfileInfo={saveProfileInfo} onEditClick={() => { setEditMode(!editMode) }} />
+					? <ProfileForm userProfile={profileData} setEditMode={() => { setEditMode(!editMode) }} />
 				: <ProfileInfo userProfile={profileData} editProfileHandler={() => { setEditMode(!editMode) }} isOwner={isOwner} />
 			}
 		</>

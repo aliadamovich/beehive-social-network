@@ -5,13 +5,14 @@ export const basicSchema = yup.object().shape({
 	fullName: yup.string().min(3).required('Required'),
 	lookingForAJobDescription: yup.string().required('Required'),
 	contacts: yup.object().shape({
-		facebook: yup.string().url('Must be a valid URL').nullable(),
-		website: yup.string().url('Must be a valid URL').nullable(),
-		instagram: yup.string().url('Must be a valid URL').nullable(),
-		vk: yup.string().url('Must be a valid URL').nullable(),
-		youtube: yup.string().url('Must be a valid URL').nullable(),
-		github: yup.string().url('Must be a valid URL').nullable(),
-		mainLink: yup.string().url('Must be a valid URL').nullable(),
+		facebook: yup.string().url('Must be a valid URL starting with https://').nullable(),
+		website: yup.string().url('Must be a valid URL starting with https://').nullable(),
+		twitter: yup.string().url('Must be a valid URL starting with https://').nullable(),
+		instagram: yup.string().url('Must be a valid URL starting with https://').nullable(),
+		vk: yup.string().url('Must be a valid URL starting with https://').nullable(),
+		youtube: yup.string().url('Must be a valid URL starting with https://').nullable(),
+		github: yup.string().url('Must be a valid URL starting with https://').nullable(),
+		mainLink: yup.string().url('Must be a valid URL starting with https://').nullable(),
 	}),
 })
 
