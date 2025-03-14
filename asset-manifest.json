@@ -1,28 +1,28 @@
 {
   "files": {
-    "main.css": "/social__test/static/css/main.9e24a2e9.css",
-    "main.js": "/social__test/static/js/main.fb1da59f.js",
-    "static/js/787.25eaef86.chunk.js": "/social__test/static/js/787.25eaef86.chunk.js",
-    "static/media/8_webm.webm": "/social__test/static/media/8_webm.ec7fbd9e4f89a80c7b86.webm",
-    "static/media/8.mp4": "/social__test/static/media/8.c66b5a1af28a942adc55.mp4",
-    "static/media/404.jpg": "/social__test/static/media/404.f270efd3f58ed2d3341b.jpg",
-    "static/media/filip-rankovic-grobgaard-mY2SFFAotDQ-unsplash.jpg": "/social__test/static/media/filip-rankovic-grobgaard-mY2SFFAotDQ-unsplash.b93675384b7d17c8217d.jpg",
-    "static/media/user.png": "/social__test/static/media/user.a1a5974b3dbd6d078002.png",
-    "static/media/fabrizio-coco-LvLdV3L_iA8-unsplash.jpg": "/social__test/static/media/fabrizio-coco-LvLdV3L_iA8-unsplash.0ec319f20a9d404e2456.jpg",
-    "static/media/alex-moliski-lGsSjuLEo5k-unsplash.jpg": "/social__test/static/media/alex-moliski-lGsSjuLEo5k-unsplash.26656bfb31b97c45b7a2.jpg",
-    "static/media/kiarash-mansouri-TlNfasYsvXc-unsplash.jpg": "/social__test/static/media/kiarash-mansouri-TlNfasYsvXc-unsplash.5449904d8324596d68d5.jpg",
-    "static/media/oo-verthing-rlMVmhBSP8k-unsplash.jpg": "/social__test/static/media/oo-verthing-rlMVmhBSP8k-unsplash.2b11cc5e8c6e4721fe29.jpg",
-    "static/media/david-miller-0n12AlG-umA-unsplash.jpg": "/social__test/static/media/david-miller-0n12AlG-umA-unsplash.d1cb4c0bbe7570acc9b8.jpg",
-    "static/media/sprite.svg": "/social__test/static/media/sprite.b92a37c97832c21423b7ee8329108b52.svg",
-    "static/media/logo_login.svg": "/social__test/static/media/logo_login.03704e87e061eed1c6cae1d7e282ab78.svg",
-    "static/media/loader.svg": "/social__test/static/media/loader.4e9b341e53bf06ffcb4badd5ada7e14f.svg",
-    "index.html": "/social__test/index.html",
-    "main.9e24a2e9.css.map": "/social__test/static/css/main.9e24a2e9.css.map",
-    "main.fb1da59f.js.map": "/social__test/static/js/main.fb1da59f.js.map",
-    "787.25eaef86.chunk.js.map": "/social__test/static/js/787.25eaef86.chunk.js.map"
+    "main.css": "/beehive-social-network/static/css/main.9e24a2e9.css",
+    "main.js": "/beehive-social-network/static/js/main.33032bbe.js",
+    "static/js/787.25eaef86.chunk.js": "/beehive-social-network/static/js/787.25eaef86.chunk.js",
+    "static/media/8_webm.webm": "/beehive-social-network/static/media/8_webm.ec7fbd9e4f89a80c7b86.webm",
+    "static/media/8.mp4": "/beehive-social-network/static/media/8.c66b5a1af28a942adc55.mp4",
+    "static/media/404.jpg": "/beehive-social-network/static/media/404.f270efd3f58ed2d3341b.jpg",
+    "static/media/filip-rankovic-grobgaard-mY2SFFAotDQ-unsplash.jpg": "/beehive-social-network/static/media/filip-rankovic-grobgaard-mY2SFFAotDQ-unsplash.b93675384b7d17c8217d.jpg",
+    "static/media/user.png": "/beehive-social-network/static/media/user.a1a5974b3dbd6d078002.png",
+    "static/media/fabrizio-coco-LvLdV3L_iA8-unsplash.jpg": "/beehive-social-network/static/media/fabrizio-coco-LvLdV3L_iA8-unsplash.0ec319f20a9d404e2456.jpg",
+    "static/media/alex-moliski-lGsSjuLEo5k-unsplash.jpg": "/beehive-social-network/static/media/alex-moliski-lGsSjuLEo5k-unsplash.26656bfb31b97c45b7a2.jpg",
+    "static/media/kiarash-mansouri-TlNfasYsvXc-unsplash.jpg": "/beehive-social-network/static/media/kiarash-mansouri-TlNfasYsvXc-unsplash.5449904d8324596d68d5.jpg",
+    "static/media/oo-verthing-rlMVmhBSP8k-unsplash.jpg": "/beehive-social-network/static/media/oo-verthing-rlMVmhBSP8k-unsplash.2b11cc5e8c6e4721fe29.jpg",
+    "static/media/david-miller-0n12AlG-umA-unsplash.jpg": "/beehive-social-network/static/media/david-miller-0n12AlG-umA-unsplash.d1cb4c0bbe7570acc9b8.jpg",
+    "static/media/sprite.svg": "/beehive-social-network/static/media/sprite.b92a37c97832c21423b7ee8329108b52.svg",
+    "static/media/logo_login.svg": "/beehive-social-network/static/media/logo_login.03704e87e061eed1c6cae1d7e282ab78.svg",
+    "static/media/loader.svg": "/beehive-social-network/static/media/loader.4e9b341e53bf06ffcb4badd5ada7e14f.svg",
+    "index.html": "/beehive-social-network/index.html",
+    "main.9e24a2e9.css.map": "/beehive-social-network/static/css/main.9e24a2e9.css.map",
+    "main.33032bbe.js.map": "/beehive-social-network/static/js/main.33032bbe.js.map",
+    "787.25eaef86.chunk.js.map": "/beehive-social-network/static/js/787.25eaef86.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9e24a2e9.css",
-    "static/js/main.fb1da59f.js"
+    "static/js/main.33032bbe.js"
   ]
 }
