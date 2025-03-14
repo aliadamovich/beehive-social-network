@@ -24,9 +24,8 @@ function App() {
 	const {token: { colorBgContainer, borderRadiusLG }} = theme.useToken();
 	
 	const {data, isLoading} = useMeQuery()
-	// console.log(data);
 	useEffect(() => {
-		// dispatch(getMeTC()) 
+		// dispatch(getMeTC())
 		if (!isLoading) {
 			setIsAppInitialized(true)
 			if (data?.resultCode === ResultCodes.Success) {

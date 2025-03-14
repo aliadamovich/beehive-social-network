@@ -11,6 +11,9 @@ export const appSlice = createSlice({
 		setAppError: create.reducer<{ error: null | string }>((state, action) => {
 			state.error = action.payload.error
 		}),
+		resetAppError: create.reducer((state) => {
+			state.error = null;
+		}),
 		setAppStatus: create.reducer<{ status: AppStatusType }>((state, action) => {
 			state.status = action.payload.status
 		}),
@@ -27,7 +30,7 @@ export const appSlice = createSlice({
 })
 
 export const appReducer = appSlice.reducer
-export const {setAppError, setAppStatus} = appSlice.actions
+export const {setAppError, resetAppError, setAppStatus} = appSlice.actions
 export const {selectError, selectStatus} = appSlice.selectors
 
 

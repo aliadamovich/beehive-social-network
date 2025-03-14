@@ -1,12 +1,14 @@
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { message } from 'antd';
-import { selectError } from 'app/appSlice';
+import { resetAppError, selectError } from 'app/appSlice';
+import { useAppDispatch } from 'app/hooks';
 
 
 export const ErrorBanner = () => {
 	const apiError = useSelector(selectError)
 	const [messageApi, contextHolder] = message.useMessage();
+	const dispatch = useAppDispatch();
 
 	const error = () => {
 		messageApi.open({
@@ -18,10 +20,20 @@ export const ErrorBanner = () => {
 	};
 
 	useEffect(() => {
+
 		if (apiError !== null) {
-			error(); 
+			messageApi.open({
+				type: "error",
+				content: apiError || "Some error occurred",
+				duration: 4,
+			});
 		}
-	}, [apiError]); 
+		const timer = setTimeout(() => {
+			dispatch(resetAppError());
+		}, 4000);
+
+			return () => clearTimeout(timer);
+	}, [apiError])
 
 
 

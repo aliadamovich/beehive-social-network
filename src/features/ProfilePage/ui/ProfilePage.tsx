@@ -36,7 +36,7 @@ export const ProfilePage = () => {
 	const [getProfileStatus] = useLazyGetStatusQuery()
 
 	useEffect(() => {
-		if (!profileId) {
+		if (!profileId || !isAuth) {
 			return
 		}
 		 getProfileData(profileId).then(() => {
@@ -50,7 +50,6 @@ export const ProfilePage = () => {
 	}, [params.userId, profileId])
 
 	if ( isLoading || isFetching) {
-		// debugger
 		return <ProfileSkeleton />;
 	}
 

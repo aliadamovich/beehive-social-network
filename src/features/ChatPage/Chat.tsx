@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux'
 import { SingleDialog } from 'features/DialogsPage/ui/dialogs/SingleDialog'
 import { SendMessage } from 'common/components/sendMessageField/SendMessage'
 import { selectAuthorizedLoginId } from 'features/LoginPage/model/authSlice'
+import { Dialog } from 'common/components/dialog/Dialog'
+import { myTheme } from 'styles/Theme'
 
 export type ChatMessageType = {
 	userId: number
@@ -80,22 +82,19 @@ export const Chat = () => {
 		// setMyMessageText('');
 	}
 
-	const messagesArray = messages.map((m, i) => <SingleDialog
+	const messagesArray = messages.map((m, i) =>
+		<Dialog
 		fromMe={m.userId === myUserId}
-		text={m.message}
-		key={i}
-		userName={m.userName}
-		photo={m.photo}
-		dialogUserId={0}
-		messageId=''
-	/>)
-
+			messageBody={m.message}
+			key={i}
+			sender={m.userName}
+			photo={m.photo}
+		/>
+)
 
 	return (
-
 		<StyledChat>
 			<StyledChatMessages>
-
 				{messagesArray}
 				<div ref={messagesEndRef}></div>
 			</StyledChatMessages>
@@ -108,7 +107,6 @@ export const Chat = () => {
 				disabled={readyStatus === 'pending'}
 			/>
 		</StyledChat>
-
 	)
 }
 
@@ -118,10 +116,18 @@ overflow: hidden;
 position: relative;
 display: flex;
 flex-direction: column;
+
+
 `
+
 const StyledChatMessages = styled.div`
 	flex: 1 1 auto;
 	overflow-y: auto;
 	padding: 20px;
+	border-right: 1px solid ${myTheme.colors.borderColor};
+	border-left: 1px solid ${myTheme.colors.borderColor};
+	&::-webkit-scrollbar {
+		display: none;
+}
 `
 

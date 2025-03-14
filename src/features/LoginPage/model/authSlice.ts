@@ -4,7 +4,6 @@ import { setAppStatus } from "app/appSlice";
 import { AppThunk } from "app/store";
 import { ResultCodes } from "common/enums/enum";
 import { PhotosType } from "common/types/types";
-import { handleNetworkError, handleServerError } from "common/utils/errorHandlers";
 
 
 
