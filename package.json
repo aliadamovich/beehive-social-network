@@ -2,7 +2,7 @@
   "name": "portfolio-start",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://aliadamovich.github.io/social__test",
+  "homepage": "https://aliadamovich.github.io/beehive-social-network/",
   "dependencies": {
     "@babel/core": "7.16.0",
     "@babel/runtime": "^7.25.6",
