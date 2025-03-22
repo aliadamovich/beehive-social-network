@@ -1,7 +1,7 @@
 import { useAppDispatch } from 'app/hooks'
 import { MainButton } from 'common/components/MainButton'
 import { useFollowUserMutation, useLazyCheckFollowQuery, useUnfollowUserMutation } from 'features/UserPage/api/usersApi'
-import { updateStatusQueryData } from 'features/UserPage/lib/updateStatusQueryData'
+import { updateStatusInfiniteQueryData, updateStatusQueryData } from 'features/UserPage/lib/updateStatusQueryData'
 import { UserPropsType } from 'features/UserPage/ui/User'
 
 
@@ -11,11 +11,11 @@ export const FollowUserButton = ({user, params}: UserPropsType) => {
 	const [unfollowUser] = useUnfollowUserMutation()
 	const dispatch = useAppDispatch();
 	const [trigger] = useLazyCheckFollowQuery()
-
+	
 	const toggleFollowUser = async () => {
 		try {
 
-			updateStatusQueryData({ dispatch, params, userId: user.id, status: 'loading' })
+			updateStatusInfiniteQueryData({ dispatch, params, userId: user.id, status: 'loading' })
 			const { data: isUserFollowed } = await trigger(user.id)
 			if (isUserFollowed) {
 				await unfollowUser(user.id).unwrap()
@@ -25,7 +25,7 @@ export const FollowUserButton = ({user, params}: UserPropsType) => {
 		} catch (error) {
 
 		} finally {
-			updateStatusQueryData({ dispatch, params, userId: user.id, status: 'idle' })
+			updateStatusInfiniteQueryData({ dispatch, params, userId: user.id, status: 'idle' })
 		}
 	}
 	return (

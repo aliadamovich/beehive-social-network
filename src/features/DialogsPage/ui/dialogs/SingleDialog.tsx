@@ -54,6 +54,7 @@ const StyledMessageContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	gap: 10px;
 `
 
 const StyledTimeStamp = styled.span`

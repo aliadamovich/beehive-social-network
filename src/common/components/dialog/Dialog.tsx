@@ -25,6 +25,7 @@ export const Dialog = ({ fromMe, photo,messageBody, sender }: Props) => {
 const StyledMessage = styled.div<{ fromMe: boolean }>`
 	display: flex;
 	align-items: end;
+	width: 100%;
 	gap: 20px;
 	padding: 8px 0;
 	>:first-child{

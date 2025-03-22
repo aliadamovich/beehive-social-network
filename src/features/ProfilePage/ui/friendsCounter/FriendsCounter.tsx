@@ -19,11 +19,11 @@ export const FriendsCounter = (props: ProfileProps) => {
 } 
 
 const Counter = ({profileId, isOwner}: ProfileProps) => {
-	// const { data: friends} = useGetUsersQuery({friend: true})
+	const { data: friends} = useGetUsersQuery({friend: true})
 	return (
 		<StyledCounter>
 			<CounterItem>
-				{/* <span>{isOwner ? friends?.totalCount : 0}</span> */}
+				<span>{isOwner ? friends?.totalCount : 0}</span>
 				Friends
 			</CounterItem>
 			<CounterItem>

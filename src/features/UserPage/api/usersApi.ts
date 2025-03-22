@@ -1,6 +1,6 @@
 import { baseApi } from "app/baseApi"
 import { ResponseWithItems, StandartResponse } from "common/types/types"
-import { DomainUser, getUsersParams, UserType } from "features/UserPage/api/usersApi.types"
+import { DomainUser, getUsersParams, InfiniteSearchType, UserType } from "features/UserPage/api/usersApi.types"
 
 export const INITIAL_SEARCH_PARAMS = {
 	count: 12,
@@ -18,26 +18,26 @@ export const usersAPI = baseApi.injectEndpoints({
 			transformResponse(res: ResponseWithItems<UserType[]>): ResponseWithItems<DomainUser[]> {
 				return { ...res, items: res.items.map((u) => ({ ...u, entityStatus: "idle" })) }
 			},
-			serializeQueryArgs: ({ endpointName, queryArgs }) => {
-				// return `${endpointName}-${JSON.stringify(queryArgs)}`
-				return endpointName
-			},
-			merge: (currentCache: ResponseWithItems<DomainUser[]>, newItems: ResponseWithItems<DomainUser[]>, { arg }) => {
-				const isNewSearch = arg.page === 1
-				// debugger
-				if (isNewSearch) {
-					// debugger
-					currentCache.items = newItems.items
-				} else {
-					currentCache.items.push(...newItems.items)
-				}
-			},
-			// Refetch when the page arg changes
-			forceRefetch({ currentArg, previousArg }) {
-				return JSON.stringify(currentArg) !== JSON.stringify(previousArg)
-			},
 			providesTags: ["Users"],
 		}),
+		getInfiniteScrollUsers: build.infiniteQuery<ResponseWithItems<DomainUser[]>, InfiniteSearchType, number>({
+			infiniteQueryOptions: {
+				initialPageParam: 1,
+				getNextPageParam: (lastPage, allPages, lastPageParam, allPagesParams) => 
+					lastPageParam + 1
+			},
+			query: ({queryArg, pageParam}) => {
+			return {
+				url: "users",
+				params: { count: INITIAL_SEARCH_PARAMS.count, ...queryArg, page: pageParam },
+			}
+		},
+		transformResponse(res: ResponseWithItems<UserType[]>): ResponseWithItems<DomainUser[]> {
+		return { ...res, items: res.items.map((u) => ({ ...u, entityStatus: "idle" })) }
+		},
+		providesTags: ["Users"]
+	}),
+
 		checkFollow: build.query<boolean, number>({
 			query: (userId) => `follow/${userId}`,
 			providesTags: ["Users"],
@@ -59,5 +59,5 @@ export const usersAPI = baseApi.injectEndpoints({
 	}),
 })
 
-export const {useGetUsersQuery, useFollowUserMutation, useUnfollowUserMutation, useLazyCheckFollowQuery} = usersAPI
+export const {useGetUsersQuery, useGetInfiniteScrollUsersInfiniteQuery, useLazyGetUsersQuery, useFollowUserMutation, useUnfollowUserMutation, useLazyCheckFollowQuery} = usersAPI
 

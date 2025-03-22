@@ -2,8 +2,8 @@ import { EntityStatus, PhotosType } from "common/types/types"
 
 export type getUsersParams = {
 	count?: number
-	page?: number
 	term?: string
+	page?: number
 	friend?: boolean
 }
 
@@ -20,3 +20,4 @@ export type DomainUser = UserType & {
 }
 
 export type RequestParams = Required<getUsersParams>
+export type InfiniteSearchType = Omit<getUsersParams, 'page' | 'friend' | 'count'>

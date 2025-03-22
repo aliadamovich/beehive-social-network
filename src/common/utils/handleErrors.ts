@@ -1,8 +1,8 @@
-import { QueryReturnValue } from "@reduxjs/toolkit/dist/query/baseQueryTypes"
 import {
 	BaseQueryApi,
 	FetchBaseQueryError,
 	FetchBaseQueryMeta,
+	QueryReturnValue,
 } from "@reduxjs/toolkit/dist/query/react"
 import { setAppError } from "app/appSlice"
 import { ResultCodes } from "common/enums/enum"

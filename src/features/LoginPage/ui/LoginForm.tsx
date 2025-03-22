@@ -6,11 +6,11 @@ import { LuUser2 } from "react-icons/lu";
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'app/hooks';
 import { setIsAuth } from 'features/LoginPage/model/authSlice';
-import { Button } from 'common/components/Button';
 import { selectStatus } from 'app/appSlice';
 import { useLoginMutation } from 'features/LoginPage/api/authApi';
 import { ResultCodes } from 'common/enums/enum';
 import { useLazyGetProfileQuery } from 'features/ProfilePage/api/profileApi';
+import { MainButton } from 'common/components/MainButton';
 
 export type SubmittedValueType = {
 	email: string
@@ -21,7 +21,7 @@ export type SubmittedValueType = {
 
 export const LoginForm = () => {
 	const appStatus = useSelector(selectStatus);
-	const [login] = useLoginMutation()
+	const [login, {isLoading}] = useLoginMutation()
 	const [getProfileData] = useLazyGetProfileQuery()
 	const dispatch = useAppDispatch()
 
@@ -76,7 +76,7 @@ export const LoginForm = () => {
 								<Field type="checkbox" name="rememberMe" id='rememberMe' className={c.checkbox}/>
 								<label htmlFor="rememberMe">Remember</label>
 							</div>
-							<Button type='submit' disabled={appStatus === 'loading'}>Log into your account</Button>
+							<MainButton htmlType='submit' loading={isLoading}>Log in to your account</MainButton>
 						</Form>
 					)}
 				</Formik>

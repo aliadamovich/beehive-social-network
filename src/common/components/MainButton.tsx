@@ -1,5 +1,5 @@
 import { Button, ButtonProps } from 'antd'
-import React, { ButtonHTMLAttributes } from 'react'
+import React, { ButtonHTMLAttributes, ComponentProps } from 'react'
 import { useSelector } from 'react-redux';
 import { myTheme } from '../../styles/Theme';
 import styled from 'styled-components';
@@ -8,15 +8,15 @@ import { selectStatus } from 'app/appSlice';
 type MainButtonPropsType = ButtonProps & {
 	icon?: React.ReactNode
 	loading : boolean
+	htmlType: "submit" | "reset" | "button"
 }
 
-export const MainButton = ({ children, icon, type, loading, disabled, ...props }: MainButtonPropsType ) => {
-	const appStatus = useSelector(selectStatus);
-
+export const MainButton = ({ children, icon, type, loading, disabled, htmlType = 'button',...props }: MainButtonPropsType ) => {
 
 	return (
 		<StyledButton
 			type='primary'
+			htmlType={htmlType}
 			icon={icon}
 			loading={loading}
 			name='Logout'
