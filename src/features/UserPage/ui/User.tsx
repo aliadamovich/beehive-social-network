@@ -18,19 +18,23 @@ export const User = ({ user, ...props }: UserPropsType) => {
 	return (
 		<>
 			<StyledUserCard>
+				<Link to={'/profile/' + user.id}>
 				<StyledUserTop>
-					<Link to={'/profile/' + user.id}>
-						<Avatar photo={user.photos.small !== null ? user.photos.small : userPhoto} width='80px' height='80px' />
-					</Link>
 					
-					<StyledUserData>
-						<StyledUserName>{user.name}</StyledUserName>
-						<p>Country:</p>
-						<p>City:</p>
-					</StyledUserData>
-				</StyledUserTop>
-
-				<StyledStatus><p>{user.status || 'No status yet...'}</p> </StyledStatus>
+						<div>
+							<Avatar photo={user.photos.small !== null ? user.photos.small : userPhoto} width='80px' height='80px' />
+						</div>
+						
+						<StyledUserData>
+							<StyledUserName>{user.name}</StyledUserName>
+							<p>Country:</p>
+							<p>City:</p>
+						</StyledUserData>
+					</StyledUserTop>
+	
+					<StyledStatus><p>{user.status || 'No status yet...'}</p> </StyledStatus>
+				</Link>
+				
 				<Divider style={{margin: '12px 0'}}/>
 				<FollowUserButton user={user} {...props}/>
 
