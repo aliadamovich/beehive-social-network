@@ -45,6 +45,10 @@ const publicRoutes: RouteObject[] = [
 		path: PATH.USERS,
 		element: <UsersPage />,
 	},
+	{
+		path: PATH.GALLERY,
+		element: <Gallery />,
+	},
 ]
 
 //* массив с приватными компонентами
@@ -63,10 +67,6 @@ const privateRoutes: RouteObject[] = [
 				element: <Dialogs />
 			}
 		]
-	},
-	{
-		path: PATH.GALLERY,
-		element: <Gallery />,
 	},
 	{
 		path: PATH.CHAT,
@@ -90,11 +90,11 @@ export const router = createHashRouter([
 		errorElement: <Navigate to={PATH.ERROR} />,
 
 		children: [
+			...publicRoutes,
 			{
 				element: <PrivateRoute />,
 				children: privateRoutes 
 			},
-			...publicRoutes
 		],
 	},
 	{

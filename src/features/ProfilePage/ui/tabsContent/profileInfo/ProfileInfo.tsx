@@ -17,13 +17,13 @@ export const ProfileInfo = ({ userProfile, editProfileHandler, isOwner }: Profil
 			{isOwner && <FiEdit onClick={editProfileHandler} />}
 
 			<InfoBlock>
-				<Description>About Me:</Description>
-				<Value>{userProfile?.aboutMe}</Value>
+				<Description>Full name:</Description>
+				<Value>{userProfile?.fullName}</Value>
 			</InfoBlock>
 
 			<InfoBlock>
-				<Description>Full name:</Description>
-				<Value>{userProfile?.fullName}</Value>
+				<Description>About Me:</Description>
+				<Value>{userProfile?.aboutMe}</Value>
 			</InfoBlock>
 
 			<InfoBlock>

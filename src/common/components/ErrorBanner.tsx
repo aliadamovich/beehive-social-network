@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { message } from 'antd';
 import { resetAppError, selectError } from 'app/appSlice';
-import { useAppDispatch } from 'app/hooks';
+import { useAppDispatch } from 'app/hooks/hooks';
 
 
 export const ErrorBanner = () => {

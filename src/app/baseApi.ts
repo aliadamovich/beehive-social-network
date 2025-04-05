@@ -20,5 +20,5 @@ export const baseApi = createApi({
 	tagTypes: ["Users", "Profile", "UserStatus", "Dialogs"],
 	// refetchOnFocus: true,
 	refetchOnReconnect: true,
-	// keepUnusedDataFor: 5,
+	keepUnusedDataFor: 5,
 })

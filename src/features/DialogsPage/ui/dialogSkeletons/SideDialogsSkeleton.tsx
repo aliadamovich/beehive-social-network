@@ -7,11 +7,11 @@ export const SideDialogsSkeleton = () => {
 		<StyledSideContainer>
 			{
 				Array(9).fill(null).map((el, index) => (
-					<div key={index}>
+					<SkeletonContainer key={index}>
 						<Skeleton avatar active
 							title={false}
 							paragraph={{ rows: 2, width: "60%" }} />
-					</div>
+					</SkeletonContainer>
 				))
 			}
 		</StyledSideContainer>
@@ -26,6 +26,9 @@ const StyledSideContainer = styled.div`
 	>*:not(:last-child) {
 		margin-bottom: 20px;
 	}
+	>*:first-child {
+		margin-top: 10px;
+	}
 
 	@media ${myTheme.media[950]} {
 		position: absolute;
@@ -36,4 +39,8 @@ const StyledSideContainer = styled.div`
 		flex: 0 0 100%;
 		transition: transform 0.5s ease;
 	}
+`
+
+const SkeletonContainer = styled.div`
+	padding-right: 10px;
 `

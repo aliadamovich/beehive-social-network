@@ -3,8 +3,11 @@ import { UserOutlined, MessageOutlined, UsergroupAddOutlined, CameraOutlined, Sm
 import logo_1 from 'assets/images/logo.png';
 import logo_2 from 'assets/images/logo_login.svg';
 import { Link, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { myTheme } from 'styles/Theme';
+import { LoginForm } from 'features/LoginPage/ui/LoginForm';
+import { useSelector } from 'react-redux';
+import { selectIsAuth } from 'features/LoginPage/model/authSlice';
 
 type Props = {
 	collapsed: boolean
@@ -15,7 +18,7 @@ type Props = {
 export const SiderBar = ({ collapsed, setCollapsed }: Props ) => {
 	const { Sider } = Layout;
 	const location = useLocation();
-
+	const isAuth = useSelector(selectIsAuth);
 	const menuItems = [
 		{
 			key: '/profile',
@@ -58,25 +61,30 @@ export const SiderBar = ({ collapsed, setCollapsed }: Props ) => {
 	return (
 		<Sider
 			theme="dark"
-			trigger={null} collapsible collapsed={collapsed}
+			trigger={null} collapsible={false} collapsed={collapsed}
 			breakpoint="lg"
 			style={siderStyle}
 			onBreakpoint={(broken) => setCollapsed(broken)}
-			// onCollapse={(collapsed, type) => {console.log(collapsed, type)}}
 		>
 			<div className="demo-logo-vertical" />
 
 			<StyledLogo collapsed={collapsed}>
 				<img src={collapsed ? logo_1 : logo_2} alt="logo" />
 			</StyledLogo>
+			{isAuth ?
+				<StyledMenu
+					theme="dark" mode="inline"
+					selectedKeys={[location.pathname]}
+					style={{ background: `${myTheme.colors.siderBackground}` }}
+					items={menuItems}
+				>
+				</StyledMenu>
+				:
+				<StyledMiniLoginForm collapsed={collapsed}>
+					<LoginForm />
+				</StyledMiniLoginForm>
+			}
 
-			<StyledMenu
-				theme="dark" mode="inline"
-				selectedKeys={[location.pathname]}
-				style={{ background: `${myTheme.colors.siderBackground}` }} 
-				items={menuItems} 
-			>
-			</StyledMenu>
 		</Sider>
 	)
 }
@@ -95,4 +103,15 @@ const StyledLogo = styled.div<{ collapsed: boolean }>`
 		width: ${ ({ collapsed }) => (collapsed ? '50px' : '150px') };
 		height: 50px;
 	}
+`
+
+const StyledMiniLoginForm = styled.div<{ collapsed: boolean }>`
+	background-color: #fff;
+	border-radius: 8px;
+	margin: 10px;
+	padding: 10px;
+	
+	${props => props.collapsed && css<{ collapsed: boolean }>`
+	display: none;
+`}
 `

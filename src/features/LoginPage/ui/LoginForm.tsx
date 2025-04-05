@@ -4,9 +4,8 @@ import c from './LoginForm.module.scss'
 import { RiKey2Line } from "react-icons/ri";
 import { LuUser2 } from "react-icons/lu";
 import { useSelector } from 'react-redux';
-import { useAppDispatch } from 'app/hooks';
+import { useAppDispatch } from 'app/hooks/hooks';
 import { setIsAuth } from 'features/LoginPage/model/authSlice';
-import { selectStatus } from 'app/appSlice';
 import { useLoginMutation } from 'features/LoginPage/api/authApi';
 import { ResultCodes } from 'common/enums/enum';
 import { useLazyGetProfileQuery } from 'features/ProfilePage/api/profileApi';
@@ -20,7 +19,6 @@ export type SubmittedValueType = {
 
 
 export const LoginForm = () => {
-	const appStatus = useSelector(selectStatus);
 	const [login, {isLoading}] = useLoginMutation()
 	const [getProfileData] = useLazyGetProfileQuery()
 	const dispatch = useAppDispatch()

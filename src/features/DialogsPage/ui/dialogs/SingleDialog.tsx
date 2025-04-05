@@ -4,7 +4,7 @@ import { CloseOutlined, HeartOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { ModalWindow } from '../../../../common/components/modal/ModalWindow';
 import { useDeleteMessageMutation } from 'features/DialogsPage/api/DialogsApi';
-import { useAppDispatch } from 'app/hooks';
+import { useAppDispatch } from 'app/hooks/hooks';
 import { SingleDialogItem } from 'features/DialogsPage/api/DialogsApi.types';
 import { getTimeFromIso } from 'features/DialogsPage/lib/getTimeFunction';
 import { Dialog } from 'common/components/dialog/Dialog';

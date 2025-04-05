@@ -9,15 +9,16 @@ import { Activity } from "./profileActivity/Activity";
 import { myTheme } from "../../../styles/Theme";
 import { PATH } from "../../../routes/routes";
 import logo from './../../../assets/images/logo_login.svg'
-import { selectAuthorizedLoginId, selectIsAuth } from "features/LoginPage/model/authSlice";
+import { selectIsAuth } from "features/LoginPage/model/authSlice";
 import { AppDispatch } from "app/store";
-import { useLazyGetProfileQuery, useLazyGetStatusQuery } from "features/ProfilePage/api/profileApi";
+import { useGetProfileQuery} from "features/ProfilePage/api/profileApi";
 import { ProfileNavigation } from "features/ProfilePage/ui/tabs/ProfileNavigation";
 import { TabsContent } from "features/ProfilePage/ui/tabsContent/TabsContent";
 import { ProfileUser } from "features/ProfilePage/ui/ProfileUser/ProfileUser";
 import { ProfileMiniGallery } from "features/ProfilePage/ui/profileMiniGallery/ProfileMiniGallery";
 import { TABS } from "features/ProfilePage/lib/tabsEnum";
 import { ProfileSkeleton } from "features/ProfilePage/ui/skeletons/ProfilePageSkeleton";
+import { useSafeUserId } from "app/hooks/useSafeUserId";
 
 
 export const ProfilePage = () => {
@@ -28,22 +29,14 @@ export const ProfilePage = () => {
 	const [activeTab, setActiveTab] = useState<TABS>(isOwner ? TABS.ACTIVITY : TABS.PROFILE);
 	const dispatch = useDispatch<AppDispatch>();
 
-	const authorizedLoginId = useSelector(selectAuthorizedLoginId);
-	let profileId = params.userId ? Number(params.userId) : authorizedLoginId;
-	
-	const [getProfileData, {isLoading, isFetching}] = useLazyGetProfileQuery()
-	const [getProfileStatus] = useLazyGetStatusQuery()
+	const profileId = useSafeUserId()
+	const { data, isLoading, isFetching } = useGetProfileQuery(profileId!, {
+		skip: !profileId || !isAuth
+	})
 
 	useEffect(() => {
-		if (!profileId || !isAuth) {
-			return
-		}
-		 getProfileData(profileId).then(() => {
-			 setActiveTab(isOwner ? TABS.ACTIVITY : TABS.PROFILE)
-		 })
-		getProfileStatus(profileId)
-
-	}, [params.userId, profileId])
+	setActiveTab(isOwner ? TABS.ACTIVITY : TABS.PROFILE)
+	}, [isOwner])
 
 	if ( isLoading || isFetching) {
 		return <ProfileSkeleton />;
@@ -53,9 +46,9 @@ export const ProfilePage = () => {
 		return <Navigate to={PATH.LOGIN} />
 	}
 
-	if (!isAuth) {
-		return <Navigate to={PATH.LOGIN} />
-	}
+	// if (!isAuth) {
+	// 	return <Navigate to={PATH.LOGIN} />
+	// }
 
 	return (
 		<ProfileSection>
@@ -63,19 +56,19 @@ export const ProfilePage = () => {
 			<StyledProfileBackground />
 			<Container>
 				<StyledProfileTop>
-					<ProfileUser profileId={profileId} isOwner={isOwner} />
+					<ProfileUser isOwner={isOwner} />
 					<ProfileNavigation activeTab={activeTab} setActiveTab={setActiveTab} isOwner={isOwner} />
 				</StyledProfileTop>
 
 				<StyledProfileBottom>
 					<StyledProfileGallery>
-						<FriendsCounter profileId={profileId} isOwner={isOwner} />
-						<ProfileMiniGallery profileId={profileId} isOwner={isOwner} />
+						<FriendsCounter isOwner={isOwner} />
+						<ProfileMiniGallery isOwner={isOwner} />
 					</StyledProfileGallery>
 
-					<TabsContent activeTab={activeTab} profileId={profileId} isOwner={isOwner} />
+					<TabsContent activeTab={activeTab} isOwner={isOwner} />
 
-					<Activity profileId={profileId} isOwner={isOwner}/>
+					<Activity isOwner={isOwner}/>
 				</StyledProfileBottom>
 
 			</Container>

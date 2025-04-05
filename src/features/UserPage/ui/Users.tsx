@@ -17,7 +17,6 @@ import { useEffect } from 'react';
 export const Users = () => {
 
 	const [searchParams, setSearchParams] = useSearchParams()
-	const appStatus = useSelector(selectStatus)
 	const params: InfiniteSearchType = Object.fromEntries(searchParams)
 
 	const { data, isFetching, isLoading, fetchNextPage } = useGetInfiniteScrollUsersInfiniteQuery({...params})
@@ -45,7 +44,6 @@ export const Users = () => {
 			handleNextPage()
 		}
 	}
-	
 
 	const updateSearchParams = (newParams: Partial<Record<keyof getUsersParams, string>>) => {
 		setSearchParams((prevParams) => {
@@ -77,8 +75,6 @@ export const Users = () => {
 							<User user={u}
 								key={u.id}
 								params={params}
-							// followingInProgress={followingInProgress}
-							// isLoading={false}
 							/>)
 						}
 					</GridWrapper>

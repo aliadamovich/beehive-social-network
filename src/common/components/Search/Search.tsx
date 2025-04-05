@@ -7,6 +7,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { SearchParamsType } from 'features/UserPage/ui/_Users';
 import { selectStatus } from 'app/appSlice';
+import { myTheme } from 'styles/Theme';
 
 type Props = {
 	debounceChange: (value: string) => void
@@ -20,18 +21,17 @@ export const Search = ({ debounceChange, initialValue }: Props) => {
 	const [searchInProgress, setSearchInProgress] = useState(false);
 	const appStatus = useSelector(selectStatus);
 	const [searchValue, setSearchValue] = useState(initialValue);
+
 	useEffect(() => { setSearchValue(initialValue) },
 	[initialValue])
+	
 	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-		// searchInputChangeHandler(e.currentTarget.value)
-		// updateSearchParams({ term: e.currentTarget.value })
 		setSearchValue(e.currentTarget.value)
 		if (debounceChange) {
 			setSearchInProgress(true)
 			clearTimeout(timerId)
 			const newTimer = setTimeout(async () => {
 				debounceChange(e.currentTarget.value);
-				// updateSearchParams({ term: e.currentTarget.value })
 				setSearchInProgress(false)
 			}, 1500)
 			setTimerId(newTimer)
@@ -45,23 +45,33 @@ export const Search = ({ debounceChange, initialValue }: Props) => {
 	}
 
 	return(
-		<StyledSearch>
-			{/* {searchInProgress && <Spin indicator={<LoadingOutlined spin />} size="small" />} */}
-			<Input type="text" value={searchValue} placeholder='Search' onChange={onChangeHandler} />
+		<SearchContainer>
+			<StyledSearch>
+				{searchInProgress && 
+				<StyledSpinContainer><Spin style={{color: `${myTheme.colors.accentLight}`}} indicator={<LoadingOutlined spin />} size="small" /></StyledSpinContainer>
+				}
+				<Input type="text" value={searchValue} placeholder='Search' onChange={onChangeHandler} />
+				
+			</StyledSearch>
 			<StyledIconButton onClick={searchValueHandler} disabled={searchInProgress === true || appStatus=== 'loading'}>
-				<Icon iconId='search' viewBox="0 0 129 129" fill='#FFF' width='15' height='15' />
+					<Icon iconId='search' viewBox="0 0 129 129" fill='#FFF' width='15' height='15' />
 			</StyledIconButton>
-		</StyledSearch>
+		</SearchContainer>
 	)
 }
 
-
-const StyledSearch = styled.div`
+const SearchContainer = styled.div`
 	padding: 13px 10px;
 	display: flex;
 	align-items: center;
 	gap: 10px;
+	max-width: 600px;
+`
 
+
+const StyledSearch = styled.div`
+	flex: 1 1 auto;
+	position: relative;
 	input {
 		border: 1px solid rgb(237, 241, 245);
 		border-radius: 20px;
@@ -73,6 +83,14 @@ const StyledSearch = styled.div`
 			font-weight: 500;
 		}
 	}
+`
+
+const StyledSpinContainer = styled.div`
+	position: absolute;
+	top: 50%;
+	right: 15px;
+	transform: translateY(-50%);
+	z-index: 100;
 `
 
 const StyledIconButton = styled.button`

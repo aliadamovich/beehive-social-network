@@ -2,29 +2,28 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Input } from 'antd';
 import { EditOutlined  } from '@ant-design/icons';
-import { useUpdateStatusMutation } from 'features/ProfilePage/api/profileApi';
+import { useGetStatusQuery, useUpdateStatusMutation } from 'features/ProfilePage/api/profileApi';
 import { MainButton } from 'common/components/MainButton';
 import { myTheme } from 'styles/Theme';
 import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType';
 import { useSelector } from 'react-redux';
 import { selectProfileStatus } from 'features/ProfilePage/model/selectors/profileStatusSelector';
+import { useSafeUserId } from 'app/hooks/useSafeUserId';
 
-export const ProfileStatus = ({ profileId, isOwner }: ProfileProps) => {
+export const ProfileStatus = ({ isOwner }: ProfileProps) => {
 	const [editMode, setEditMode] = useState(false)
+	const userId = useSafeUserId()
+	const { data: serverUserStatus } = useGetStatusQuery(userId);
 	const [updateStatus, {isLoading}] = useUpdateStatusMutation();
-	const profileStatus = useSelector(selectProfileStatus(profileId));
-	const [status, setStatus] = useState(profileStatus || '')
+	const [status, setStatus] = useState(serverUserStatus || '')
 
 	useEffect(() => {
-		setStatus(profileStatus || '')
-	}, [profileStatus])
+		setStatus(serverUserStatus || '')
+	}, [serverUserStatus])
 
-	const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setStatus(e.currentTarget.value)
-	}
 
 	const blurHandler = () => {
-		if (status !== profileStatus && status !== '') {
+		if (status !== serverUserStatus && status !== '') {
 			updateStatus(status)
 		}
 		setEditMode(false)
@@ -33,8 +32,9 @@ export const ProfileStatus = ({ profileId, isOwner }: ProfileProps) => {
 	return (
 		<StatusContainer>
 			{editMode
-			?<StyledInput
-					variant='filled' value={status} onChange={onInputChange}
+			?
+			<StyledInput
+					variant='filled' value={status} onChange={(e) => { setStatus(e.currentTarget.value) }}
 					onBlur={blurHandler}
 					autoFocus={true}
 					showCount maxLength={30}

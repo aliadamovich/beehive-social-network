@@ -13,6 +13,12 @@ export const handleError = (
 	result: QueryReturnValue<unknown, FetchBaseQueryError, FetchBaseQueryMeta>
 ) => {
 	let error = "Some error occurred"
+	if (
+    (result.data as { resultCode: ResultCodes })?.resultCode === ResultCodes.Error &&
+    (result.data as { messages: string[] })?.messages?.[0] === "You are not authorized"
+  ) {
+    return; 
+  }
 	if (result.error) {
 		switch (result.error.status) {
 			case "FETCH_ERROR":

@@ -12,7 +12,7 @@ import { myTheme } from '../../../styles/Theme';
 import { Header } from 'antd/es/layout/layout';
 import { selectIsAuth, setIsAuth } from 'features/LoginPage/model/authSlice';
 import { useLogoutMutation } from 'features/LoginPage/api/authApi';
-import { useAppDispatch } from 'app/hooks';
+import { useAppDispatch } from 'app/hooks/hooks';
 
 type HeaderPropsType ={
 	collapsed: boolean
@@ -61,7 +61,7 @@ export const HeaderBlock = ({ collapsed, setCollapsed}: HeaderPropsType) => {
 						<MainButton onClick={onLogoutHandler} icon={<PoweroffOutlined />} children={'Log out'} loading={isLoading} />
 					:
 					<Link to={PATH.LOGIN}>
-						<Button variant="link">Login</Button>
+						<MainButton variant="link">Login</MainButton>
 					</Link>
 				}
 				

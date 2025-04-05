@@ -1,4 +1,4 @@
-import { useAppDispatch } from 'app/hooks'
+import { useAppDispatch } from 'app/hooks/hooks'
 import { MainButton } from 'common/components/MainButton'
 import { useFollowUserMutation, useLazyCheckFollowQuery, useUnfollowUserMutation } from 'features/UserPage/api/usersApi'
 import { updateStatusInfiniteQueryData, updateStatusQueryData } from 'features/UserPage/lib/updateStatusQueryData'

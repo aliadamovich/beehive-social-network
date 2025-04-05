@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { Loader } from '../common/components/Loader/Loader';
@@ -15,8 +15,6 @@ import { ResultCodes } from 'common/enums/enum';
 
 function App() {
 	const dispatch = useDispatch<AppDispatch>()
-	// const isInitialized = useSelector<AppStateType>(state => state.auth.initialized);
-	// const isInitialized = useSelector(selectIsInitialized);
 	const appStatus = useSelector<AppStateType>(state => state.app.status);
 	const [collapsed, setCollapsed] = useState(true);
 	const [isAppInitialized, setIsAppInitialized] = useState(false)
@@ -24,9 +22,10 @@ function App() {
 	const {token: { colorBgContainer, borderRadiusLG }} = theme.useToken();
 	
 	const {data, isLoading} = useMeQuery()
+
 	useEffect(() => {
-		// dispatch(getMeTC())
-		if (!isLoading) {
+
+		if (!isLoading ) {
 			setIsAppInitialized(true)
 			if (data?.resultCode === ResultCodes.Success) {
 				dispatch(setIsAuth({isAuth: true, userId: data.data.id}))
@@ -54,7 +53,7 @@ function App() {
 				<Layout style={{ marginInlineStart: collapsed ? 80 : 200, transition: 'all 0.2s ease' }}>
 					<HeaderBlock collapsed={collapsed} setCollapsed={setCollapsed} />
 					<Content style={{ margin: '24px 16px', overflow: 'initial', background: colorBgContainer, borderRadius: borderRadiusLG }} >
-						<Outlet />
+							<Outlet />
 					</Content>
 					<Footer style={{ textAlign: 'center', padding: '0px 24px', height: '35px' }}>
 						Beehive ©{new Date().getFullYear()} Created by Alesya Adamovich

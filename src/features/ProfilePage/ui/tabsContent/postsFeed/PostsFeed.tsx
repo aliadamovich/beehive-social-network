@@ -11,7 +11,7 @@ import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType';
 
 
 
-export const PostsFeed = React.memo(({isOwner, profileId}: ProfileProps) => {
+export const PostsFeed = React.memo(({isOwner}: ProfileProps) => {
 	const [post, setPost] = useState('');
 	const posts = useSelector(selectPosts);
 	const dispatch = useDispatch()
@@ -27,7 +27,7 @@ export const PostsFeed = React.memo(({isOwner, profileId}: ProfileProps) => {
 		key: p.id,
 		color: `${myTheme.colors.accentLight}`,
 		style: { padding: '0' }, 
-		children: <PostItem message={p.body} type={p.type} profileId={profileId}/>,
+		children: <PostItem message={p.body} type={p.type}/>,
 	}));
 	
 	return (
@@ -35,9 +35,7 @@ export const PostsFeed = React.memo(({isOwner, profileId}: ProfileProps) => {
 			{isOwner ?
 			<>
 				<SendMessage 
-					updateText={(e) => { setPost(e) }}
 					addMessage={sendPostHandler}
-					messageText={post}
 					showCount={true}
 					maxLength={100}
 					title='Send Post'

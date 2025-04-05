@@ -1,17 +1,18 @@
-import { useSelector } from 'react-redux';
 import { Avatar } from '../../../../../common/components/Avatar';
 import styled from 'styled-components';
 import { myTheme } from '../../../../../styles/Theme';
-import { selectProfileInfo } from 'features/ProfilePage/model/profileSlice';
-import { selectProfileData } from 'features/ProfilePage/model/selectors/profileDataSelector';
+import { useGetProfileQuery } from 'features/ProfilePage/api/profileApi';
+import { useSafeUserId } from 'app/hooks/useSafeUserId';
 
 type PostItemPropsType = {
 	type: string
 	message?: string
-	profileId: number | undefined
 }
-export const PostItem = ({type, message, profileId}: PostItemPropsType) => {
-	const profileData = useSelector(selectProfileData(profileId))
+export const PostItem = ({type, message}: PostItemPropsType) => {
+
+	const userId = useSafeUserId()
+	const { data: profileData } = useGetProfileQuery(userId)
+
 	return(
 		<StyledPost>
 			<div>

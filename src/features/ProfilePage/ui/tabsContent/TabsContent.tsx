@@ -11,20 +11,20 @@ type Props = ProfileProps & {
 	activeTab: TABS
 }
 
-export const TabsContent = ({ activeTab, isOwner, profileId }: Props) => {
+export const TabsContent = ({ activeTab, isOwner}: Props) => {
 
 	const renderTabContent = () => {
 		switch (activeTab) {
 			case TABS.ACTIVITY:
-				return <PostsFeed isOwner={isOwner} profileId={profileId} />
+				return <PostsFeed isOwner={isOwner} />
 			case TABS.PROFILE:
-				return <ProfileInfoSection profileId={profileId} isOwner={isOwner} />
+				return <ProfileInfoSection isOwner={isOwner} />
 			case TABS.FRIENDS:
 				return <FollowedFriends isOwner={isOwner} />
 			case TABS.GROUPS:
 				return <div>Here will be Groups</div>
 			default:
-				return <PostsFeed isOwner={!isOwner} profileId={profileId}/>
+				return <PostsFeed isOwner={!isOwner}/>
 		}
 	}
 	return (

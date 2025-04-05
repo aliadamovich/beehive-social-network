@@ -6,7 +6,7 @@ import { myTheme } from '../../../styles/Theme';
 import { useSearchParams } from 'react-router-dom';
 import { UsersSkeleton } from './UsersSkeleton';
 import { selectStatus } from '../../../app/appSlice';
-import { useAppDispatch } from 'app/hooks';
+import { useAppDispatch } from 'app/hooks/hooks';
 import { GridWrapper } from 'common/components/GridWrapper';
 import { Recent } from 'common/components/Recent/Recent';
 import { selectUsers, selectTotalUsers, selectFollowingInProgress, selectSearchParams, getUsersTC, resetSearchParams, updateParams, followUserTC } from 'features/UserPage/model/usersSlice';

@@ -3,16 +3,19 @@ import null_user from './../../../../assets/images/user.png';
 import { ChangeEvent } from 'react';
 import { myTheme } from '../../../../styles/Theme';
 import { SectionTitle } from '../../../../common/components/SectionTitle';
-import { useSetProfilePhotoMutation } from 'features/ProfilePage/api/profileApi';
+import { useGetProfileQuery, useSetProfilePhotoMutation } from 'features/ProfilePage/api/profileApi';
 import { useSelector } from 'react-redux';
 import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType';
 import { selectProfileData } from 'features/ProfilePage/model/selectors/profileDataSelector';
+import { useSafeUserId } from 'app/hooks/useSafeUserId';
 
 
-export const ProfilePhoto = ({ profileId, isOwner }: ProfileProps) => {
-	const profileData = useSelector(selectProfileData(profileId))
+export const ProfilePhoto = ({ isOwner }: ProfileProps) => {
+	const userId = useSafeUserId()
+	const { data: profileData } = useGetProfileQuery(userId)
+	
 	const [setProfilePhoto] = useSetProfilePhotoMutation()
-
+	
 	const addPhotoHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files.length > 0) {
 			const formData = new FormData() as FormData;

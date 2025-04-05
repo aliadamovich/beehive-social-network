@@ -18,8 +18,10 @@ export const FriendsCounter = (props: ProfileProps) => {
 	)
 } 
 
-const Counter = ({profileId, isOwner}: ProfileProps) => {
-	const { data: friends} = useGetUsersQuery({friend: true})
+const Counter = ({isOwner}: ProfileProps) => {
+	const { data: friends} = useGetUsersQuery({friend: true});
+	console.log(friends);
+	
 	return (
 		<StyledCounter>
 			<CounterItem>

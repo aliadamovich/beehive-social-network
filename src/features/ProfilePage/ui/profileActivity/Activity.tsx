@@ -7,9 +7,9 @@ import { selectPosts } from 'features/ProfilePage/model/profileSlice';
 import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType';
 import React from 'react';
 
-export const Activity = React.memo(({isOwner, profileId}: ProfileProps) => {
+export const Activity = React.memo(({isOwner}: ProfileProps) => {
 	const posts = useSelector(selectPosts);
-	const latestPosts = posts.slice(0, 3).map(p => <PostItem type={p.type} key={p.id} profileId={profileId}/>)
+	const latestPosts = posts.slice(0, 3).map(p => <PostItem type={p.type} key={p.id} />)
 	return(
 		<StyledActivitySection>
 			<ActivityContainer>

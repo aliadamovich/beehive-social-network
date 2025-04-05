@@ -7,8 +7,8 @@ import { selectStatus } from 'app/appSlice';
 
 type MainButtonPropsType = ButtonProps & {
 	icon?: React.ReactNode
-	loading : boolean
-	htmlType: "submit" | "reset" | "button"
+	loading?: boolean
+	htmlType?: "submit" | "reset" | "button"
 }
 
 export const MainButton = ({ children, icon, type, loading, disabled, htmlType = 'button',...props }: MainButtonPropsType ) => {

@@ -2,19 +2,17 @@ import { useState } from 'react'
 import { ProfileForm } from './ProfileForm'
 import { ProfileInfo } from './ProfileInfo'
 import { SectionTitle } from '../../../../../common/components/SectionTitle'
-import { ProfileType } from 'features/ProfilePage/api/profileApi.types'
-import { useSetProfileInfoMutation } from 'features/ProfilePage/api/profileApi'
-import { selectProfileData } from 'features/ProfilePage/model/selectors/profileDataSelector'
-import { useSelector } from 'react-redux'
+import { useGetProfileQuery } from 'features/ProfilePage/api/profileApi'
 import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType'
 import styled from 'styled-components'
 import { myTheme } from 'styles/Theme'
+import { useSafeUserId } from 'app/hooks/useSafeUserId'
 
 
-export const ProfileInfoSection = ({ profileId, isOwner }: ProfileProps) => {
+export const ProfileInfoSection = ({ isOwner }: ProfileProps) => {
 	const [editMode, setEditMode] = useState(false)
-	const profileData = useSelector(selectProfileData(profileId))
-	// const [setProfileInfo] = useSetProfileInfoMutation()
+	const userId = useSafeUserId()
+	const { data: profileData } = useGetProfileQuery(userId)
 
 	// const saveProfileInfo = (form: ProfileType) => {
 	// 	setProfileInfo(form)
@@ -26,7 +24,7 @@ export const ProfileInfoSection = ({ profileId, isOwner }: ProfileProps) => {
 			{
 				profileData && editMode
 					? <ProfileForm userProfile={profileData} setEditMode={() => { setEditMode(!editMode) }} />
-				: <ProfileInfo userProfile={profileData} editProfileHandler={() => { setEditMode(!editMode) }} isOwner={isOwner} />
+					: <ProfileInfo userProfile={profileData} editProfileHandler={() => { setEditMode(!editMode) }} isOwner={isOwner} />
 			}
 		</>
 	)
