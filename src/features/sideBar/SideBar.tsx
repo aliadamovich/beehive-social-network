@@ -2,12 +2,13 @@ import { Layout, Menu } from 'antd';
 import { UserOutlined, MessageOutlined, UsergroupAddOutlined, CameraOutlined, SmileOutlined } from '@ant-design/icons';
 import logo_1 from 'assets/images/logo.png';
 import logo_2 from 'assets/images/logo_login.svg';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { myTheme } from 'styles/Theme';
 import { LoginForm } from 'features/LoginPage/ui/LoginForm';
 import { useSelector } from 'react-redux';
 import { selectIsAuth } from 'features/LoginPage/model/authSlice';
+import { PATH } from 'routes/routes';
 
 type Props = {
 	collapsed: boolean
@@ -19,31 +20,33 @@ export const SiderBar = ({ collapsed, setCollapsed }: Props ) => {
 	const { Sider } = Layout;
 	const location = useLocation();
 	const isAuth = useSelector(selectIsAuth);
+	const { userId } = useParams();
+
 	const menuItems = [
 		{
 			key: '/profile',
 			icon: <UserOutlined />,
-			label: <Link to={'/profile'}>Profile</Link>,
+			label: <Link to={PATH.ROOT}>Profile</Link>,
 		},
 		{
 			key: '/dialogs',
 			icon: <MessageOutlined />,
-			label: <Link to={'/dialogs'}>Dialogs</Link>,
+			label: <Link to={PATH.DIALOGS}>Dialogs</Link>,
 		},
 		{
 			key: '/users',
 			icon: <UsergroupAddOutlined />,
-			label: <Link to={'/users'}>Users</Link>,
+			label: <Link to={PATH.USERS}>Users</Link>,
 		},
 		{
 			key: '/gallery',
 			icon: <CameraOutlined />,
-			label: <Link to={'/gallery'}>Gallery</Link>,
+			label: <Link to={PATH.GALLERY}>Gallery</Link>,
 		},
 		{
 			key: '/chat',
 			icon: <SmileOutlined />,
-			label: <Link to={'/chat'}>Live Chat</Link>,
+			label: <Link to={PATH.CHAT}>Live Chat</Link>,
 		},
 	];
 	const siderStyle: React.CSSProperties = {
@@ -68,7 +71,7 @@ export const SiderBar = ({ collapsed, setCollapsed }: Props ) => {
 		>
 			<div className="demo-logo-vertical" />
 
-			<StyledLogo collapsed={collapsed}>
+			<StyledLogo to={isAuth ? PATH.PROFILE : `${PATH.PROFILE}/${userId}`} $collapsed={collapsed}>
 				<img src={collapsed ? logo_1 : logo_2} alt="logo" />
 			</StyledLogo>
 			{isAuth ?
@@ -96,11 +99,12 @@ const StyledMenu = styled(Menu)`
   }
 `;
 
-const StyledLogo = styled.div<{ collapsed: boolean }>`
+const StyledLogo = styled(Link)<{ $collapsed: boolean }>`
+	display: block;
 	text-align: center;
 	margin: 10px 0 40px;
 	img {
-		width: ${ ({ collapsed }) => (collapsed ? '50px' : '150px') };
+		width: ${ ({ $collapsed }) => ($collapsed ? '50px' : '150px') };
 		height: 50px;
 	}
 `

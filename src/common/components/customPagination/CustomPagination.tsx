@@ -5,10 +5,12 @@ type Props = PaginationProps & {
 	
 }
 export const CustomPagination = (props: Props) => {
-	const {defaultCurrent, total, style, onChange, align, size} = props
-
+	const {defaultCurrent, pageSize, total, style, onChange, align, size} = props
+	console.log(total);
+	
 	return (
 		<Pagination
+			pageSize={pageSize}
 			defaultCurrent={INITIAL_SEARCH_PARAMS.page || defaultCurrent}
 			total={total}
 			onChange={onChange}

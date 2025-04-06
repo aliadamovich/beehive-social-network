@@ -9,6 +9,7 @@ import { Activity } from "./profileActivity/Activity";
 import { myTheme } from "../../../styles/Theme";
 import { PATH } from "../../../routes/routes";
 import logo from './../../../assets/images/logo_login.svg'
+import bg from './../../../assets/images/background.png'
 import { selectIsAuth } from "features/LoginPage/model/authSlice";
 import { AppDispatch } from "app/store";
 import { useGetProfileQuery} from "features/ProfilePage/api/profileApi";
@@ -62,7 +63,7 @@ export const ProfilePage = () => {
 
 				<StyledProfileBottom>
 					<StyledProfileGallery>
-						<FriendsCounter isOwner={isOwner} />
+						{/* <FriendsCounter isOwner={isOwner} /> */}
 						<ProfileMiniGallery isOwner={isOwner} />
 					</StyledProfileGallery>
 
@@ -93,22 +94,11 @@ const StyledProfileBackground = styled.div`
 			left: 0;
 			right: 0;
 			height: 250px;
-			background: 
+			background: url(${bg}) no-repeat;
+			/* background: 
 				url(${logo}) no-repeat 95% 5%,
-				linear-gradient(to bottom right, #8c30e2, #ae73e6 20%, #dfc4f9);
+				linear-gradient(to bottom right, #8c30e2, #ae73e6 20%, #dfc4f9); */
 			border-radius: 8px;
-		}
-
-		@media ${myTheme.media[768]} {
-			&::before{
-			background-size: 120px auto, cover;
-			}
-		}
-		@media ${myTheme.media[576]} {
-			&::before{
-			background:
-				linear-gradient(to bottom right, #8c30e2, #ae73e6 20%, #dfc4f9);
-			}
 		}
 
 `

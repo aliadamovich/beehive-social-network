@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import null_user from './../../../../assets/images/user.png';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { myTheme } from '../../../../styles/Theme';
 import { SectionTitle } from '../../../../common/components/SectionTitle';
 import { useGetProfileQuery, useSetProfilePhotoMutation } from 'features/ProfilePage/api/profileApi';
@@ -8,12 +8,17 @@ import { useSelector } from 'react-redux';
 import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType';
 import { selectProfileData } from 'features/ProfilePage/model/selectors/profileDataSelector';
 import { useSafeUserId } from 'app/hooks/useSafeUserId';
-
+import {  Upload } from 'antd';
+import type { GetProp, UploadProps } from 'antd';
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 
 export const ProfilePhoto = ({ isOwner }: ProfileProps) => {
 	const userId = useSafeUserId()
 	const { data: profileData } = useGetProfileQuery(userId)
-	
+
+	const [loading, setLoading] = useState(false);
+	const [imageUrl, setImageUrl] = useState<string>();
+
 	const [setProfilePhoto] = useSetProfilePhotoMutation()
 	
 	const addPhotoHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -25,6 +30,27 @@ export const ProfilePhoto = ({ isOwner }: ProfileProps) => {
 			setProfilePhoto(formData)
 		}
 	}
+
+	const uploadButton = (
+		<button style={{ border: 0, background: 'none' }} type="button">
+			{loading ? <LoadingOutlined /> : <PlusOutlined />}
+			<div style={{ marginTop: 8 }}>Upload</div>
+		</button>
+	);
+
+	const handleChange: UploadProps['onChange'] = (info) => {
+		// if (info.file.status === 'uploading') {
+		// 	setLoading(true);
+		// 	return;
+		// }
+		// if (info.file.status === 'done') {
+		// 	// Get this url from response in real world.
+		// 	getBase64(info.file.originFileObj as FileType, (url) => {
+		// 		setLoading(false);
+		// 		setImageUrl(url);
+		// 	});
+		// }
+	};
 	return (
 		<>
 			<UserStyledPhoto>
@@ -37,6 +63,20 @@ export const ProfilePhoto = ({ isOwner }: ProfileProps) => {
 					<>
 					<AddPhotoInput id='file' onChange={addPhotoHandler} type={'file'} />
 						<label htmlFor="file">+</label>
+
+					<StyledUpload>
+						<Upload
+							name="avatar"
+							listType="picture-card"
+							className="avatar-uploader"
+							showUploadList={false}
+							action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
+							// beforeUpload={beforeUpload}
+							onChange={handleChange}
+						>
+							{imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+						</Upload>
+					</StyledUpload>
 					</>
 				}
 			</UserStyledPhoto>
@@ -69,6 +109,14 @@ export const UserStyledPhoto = styled.div`
 		height: 240px;
 		padding: 0;
 	}
+`
+
+const StyledUpload = styled.div`
+	position: absolute;
+	/* width: 100%;
+	height: 100%; */
+	inset: 0;
+	
 `
 
 const AddPhotoInput = styled.input`

@@ -1,12 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
-import styled from 'styled-components'
+import { useState } from 'react'
 import { User } from 'features/UserPage/ui/User'
-import { INITIAL_SEARCH_PARAMS, useGetUsersQuery, useLazyGetUsersQuery } from 'features/UserPage/api/usersApi'
+import { INITIAL_SEARCH_PARAMS, useGetUsersQuery } from 'features/UserPage/api/usersApi'
 import { CustomPagination } from 'common/components/customPagination/CustomPagination'
 import { GridWrapper } from 'common/components/GridWrapper'
 import { UsersSkeleton } from 'features/UserPage/ui/UsersSkeleton'
 
-//!ОШИБКА ПРИ ПЕРЕЛИСТЫВАНИИ СТРАНИЦ - В КЭШ ДОБАЛЯЮТСЯ НОВЫЕ ЮЗЕРЫ А НЕ ЗАМЕЩАЮТСЯ НОВЫМИ ИЗЗА merge
 
 export const FollowedFriends = ({isOwner} : {isOwner: boolean}) => {
 	const [page, setPage] = useState(INITIAL_SEARCH_PARAMS.page);
@@ -22,6 +20,7 @@ export const FollowedFriends = ({isOwner} : {isOwner: boolean}) => {
 				defaultCurrent={page}
 				total={data?.totalCount}
 				style={{marginBottom: '10px'}}
+				pageSize={6}
 				size='small'
 			/>
 			{isLoading || isFetching

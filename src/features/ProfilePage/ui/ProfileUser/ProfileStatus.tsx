@@ -52,14 +52,14 @@ export const ProfileStatus = ({ isOwner }: ProfileProps) => {
 
 const StatusContainer = styled.div`
 	position: absolute;
-	top: 62%;
-	right: -250px;
-	/* width: 250px; */
-	transform: translateY(-50%);
+	top: 50%;
+	right: 0;
+	transform: translateX(100%);
+	padding-left: 10px;
 	z-index: 10000;
 
 	@media ${myTheme.media[950]} {
-		right: 0;
+		transform: translateX(0);
 		left: 300px;
 	}
 
@@ -73,7 +73,7 @@ const StatusContainer = styled.div`
 const StyledInput = styled(Input)`
 	color: ${myTheme.colors.boldFontColor};
 	height: 35px;
-	outline: none
+	outline: none;
 `
 
 const StatusWrapper = styled.div`
@@ -86,6 +86,10 @@ const StatusWrapper = styled.div`
 		svg{
 			color: ${myTheme.colors.mainFontColor};
 		}
+
+		&:hover{
+			background-color:${myTheme.colors.backgroundLayout} !important;
+		}
 	}
 `
 const StyledStatus = styled.div`
@@ -94,4 +98,5 @@ const StyledStatus = styled.div`
 	background-color: ${myTheme.colors.backgroundLayout};
 	border-radius: 6px;
 	color: ${myTheme.colors.boldFontColor};
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 `

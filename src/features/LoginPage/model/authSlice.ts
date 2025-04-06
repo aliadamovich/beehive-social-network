@@ -1,10 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { authAPI, profileAPI } from "apiDal/apiDal";
-import { setAppStatus } from "app/appSlice";
-import { AppThunk } from "app/store";
-import { ResultCodes } from "common/enums/enum";
 import { PhotosType } from "common/types/types";
-
 
 
 export const authSlice = createSlice({
@@ -13,20 +8,14 @@ export const authSlice = createSlice({
 		isInitialized: false,
 		profileData: {
 			isAuth: false,
-			// userId: null as number | null,
 			userId: undefined as number | undefined,
-			// login: null as string | null,
-			// email: null as string | null,
-			// photos: null as PhotosType | null,
 		},
 	},
 	reducers: (create) => ({
 		setInitializedSuccess: create.reducer((state) => {
 			state.isInitialized = true
 		}),
-		// setAuthProfile: create.reducer<ProfileData>((state, action) => {
-		// 	state.profileData = action.payload
-		// }),
+
 		setIsAuth: create.reducer<{isAuth: boolean, userId: number | undefined}>((state, action) => {
 			state.profileData.isAuth = action.payload.isAuth
 			state.profileData.userId = action.payload.userId
@@ -36,7 +25,6 @@ export const authSlice = createSlice({
 		selectIsAuth: (state) => state.profileData.isAuth,
 		selectAuthorizedLoginId: (state) => state.profileData.userId,
 		selectIsInitialized: (state) => state.isInitialized,
-		// selectProfileData: (state) => state.profileData
 	},
 })
 

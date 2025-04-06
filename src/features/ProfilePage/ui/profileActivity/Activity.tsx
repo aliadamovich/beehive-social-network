@@ -13,8 +13,8 @@ export const Activity = React.memo(({isOwner}: ProfileProps) => {
 	return(
 		<StyledActivitySection>
 			<ActivityContainer>
-				<SectionTitle>Recent activity</SectionTitle>
-				{isOwner && latestPosts.length ? latestPosts : <div>No activity yet...</div>}
+				<SectionTitle textAlignCenter>Recent activity</SectionTitle>
+				{isOwner && latestPosts.length ? latestPosts : <div style={{textAlign:'center'}}>No activity yet...</div>}
 			</ActivityContainer>
 		</StyledActivitySection>
 	)
@@ -42,7 +42,7 @@ const ActivityContainer = styled.div`
 			height: 2px;
 			bottom: 0px;
 			right: 50%;
-			transform: translateX(-50%);
+			transform: translateX(50%);
 			background: ${myTheme.colors.accent};
 		}
 	}
