@@ -1,15 +1,17 @@
 {
   "files": {
     "main.css": "/beehive-social-network/static/css/main.0389b267.css",
-    "main.js": "/beehive-social-network/static/js/main.699a4fdc.js",
+    "main.js": "/beehive-social-network/static/js/main.f912d68f.js",
     "static/js/787.25eaef86.chunk.js": "/beehive-social-network/static/js/787.25eaef86.chunk.js",
     "static/media/8_webm.webm": "/beehive-social-network/static/media/8_webm.ec7fbd9e4f89a80c7b86.webm",
     "static/media/8.mp4": "/beehive-social-network/static/media/8.c66b5a1af28a942adc55.mp4",
-    "static/media/404.jpg": "/beehive-social-network/static/media/404.f270efd3f58ed2d3341b.jpg",
+    "static/media/error.png": "/beehive-social-network/static/media/error.ac5a115601dda2ed9baa.png",
+    "static/media/error_mobile.png": "/beehive-social-network/static/media/error_mobile.89a3e237ba2ed1024394.png",
     "static/media/filip-rankovic-grobgaard-mY2SFFAotDQ-unsplash.jpg": "/beehive-social-network/static/media/filip-rankovic-grobgaard-mY2SFFAotDQ-unsplash.b93675384b7d17c8217d.jpg",
     "static/media/user.png": "/beehive-social-network/static/media/user.a1a5974b3dbd6d078002.png",
     "static/media/fabrizio-coco-LvLdV3L_iA8-unsplash.jpg": "/beehive-social-network/static/media/fabrizio-coco-LvLdV3L_iA8-unsplash.0ec319f20a9d404e2456.jpg",
     "static/media/alex-moliski-lGsSjuLEo5k-unsplash.jpg": "/beehive-social-network/static/media/alex-moliski-lGsSjuLEo5k-unsplash.26656bfb31b97c45b7a2.jpg",
+    "static/media/background.png": "/beehive-social-network/static/media/background.55c9ec6277fead637d2b.png",
     "static/media/kiarash-mansouri-TlNfasYsvXc-unsplash.jpg": "/beehive-social-network/static/media/kiarash-mansouri-TlNfasYsvXc-unsplash.5449904d8324596d68d5.jpg",
     "static/media/oo-verthing-rlMVmhBSP8k-unsplash.jpg": "/beehive-social-network/static/media/oo-verthing-rlMVmhBSP8k-unsplash.2b11cc5e8c6e4721fe29.jpg",
     "static/media/david-miller-0n12AlG-umA-unsplash.jpg": "/beehive-social-network/static/media/david-miller-0n12AlG-umA-unsplash.d1cb4c0bbe7570acc9b8.jpg",
@@ -18,11 +20,11 @@
     "static/media/loader.svg": "/beehive-social-network/static/media/loader.4e9b341e53bf06ffcb4badd5ada7e14f.svg",
     "index.html": "/beehive-social-network/index.html",
     "main.0389b267.css.map": "/beehive-social-network/static/css/main.0389b267.css.map",
-    "main.699a4fdc.js.map": "/beehive-social-network/static/js/main.699a4fdc.js.map",
+    "main.f912d68f.js.map": "/beehive-social-network/static/js/main.f912d68f.js.map",
     "787.25eaef86.chunk.js.map": "/beehive-social-network/static/js/787.25eaef86.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0389b267.css",
-    "static/js/main.699a4fdc.js"
+    "static/js/main.f912d68f.js"
   ]
 }
