@@ -4,7 +4,6 @@ import { setAppStatus } from 'app/appSlice';
 import { AppStateType, AppThunk } from 'app/store';
 import { ResultCodes } from 'common/enums/enum';
 import { PhotosType } from 'common/types/types';
-import { handleNetworkError, handleServerError } from 'common/utils/errorHandlers';
 import { ProfileType } from 'features/ProfilePage/api/profileApi.types';
 import {v1} from 'uuid'
 
@@ -12,7 +11,8 @@ const mockPosts = [
 	{
 		"id": v1(),
 		"type": "replied",
-		"body": "Congrats with your new job, dear!"
+		"body": "Congrats with your new job, dear!",
+		date: new Date()
 	},
 	{
 		"id": v1(),
@@ -30,6 +30,79 @@ const mockPosts = [
 		"body": "ea molestias quasi exercitationem repellat qui ipsa sit aut",
 	},
 ]
+
+//fake posts date
+
+// utils/mockPosts.ts
+// import { faker } from '@faker-js/faker';
+
+// interface Post {
+//   id: string;
+//   author: string;
+//   content: string;
+//   date: Date;
+//   likes: number;
+//   comments: number;
+// }
+
+// export const generateMockTimeline = (count: number): Post[] => {
+//   const posts: Post[] = [];
+//   let currentDate = new Date(); // Начинаем с текущей даты
+  
+//   for (let i = 0; i < count; i++) {
+//     // Уменьшаем дату для каждого следующего поста
+//     currentDate = new Date(currentDate.getTime() - faker.datatype.number({ 
+//       min: 3600000, // 1 час
+//       max: 259200000 // 3 дня
+//     }));
+    
+//     posts.push({
+//       id: faker.datatype.uuid(),
+//       author: faker.name.fullName(),
+//       content: faker.lorem.paragraphs(faker.datatype.number({ min: 1, max: 3 })),
+//       date: currentDate,
+//       likes: faker.datatype.number(1000),
+//       comments: faker.datatype.number(100),
+//     });
+//   }
+  
+//   // Сортируем по дате (новые сначала)
+//   return posts.sort((a, b) => b.date.getTime() - a.date.getTime());
+// };
+// const PostCard: React.FC<{ post: Post }> = ({ post }) => {
+//   return (
+//     <div className="post-card">
+//       <div className="post-header">
+//         <h3>{post.author}</h3>
+//         <time>{format(post.date, 'dd MMM yyyy, HH:mm')}</time>
+//       </div>
+//       <p>{post.content}</p>
+//       <div className="post-stats">
+//         <span>❤️ {post.likes}</span>
+//         <span>💬 {post.comments}</span>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export const Timeline = () => {
+//   const [posts, setPosts] = React.useState<Post[]>([]);
+
+//   React.useEffect(() => {
+//     // Генерируем 10 постов при монтировании
+//     setPosts(generateMockTimeline(10));
+//   }, []);
+
+//   return (
+//     <div className="timeline">
+//       {posts.map(post => (
+//         <PostCard key={post.id} post={post} />
+//       ))}
+//     </div>
+//   );
+// };
+
+
 
 
 export const profileSlice = createSlice({

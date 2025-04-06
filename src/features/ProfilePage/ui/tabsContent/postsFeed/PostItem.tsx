@@ -22,6 +22,8 @@ export const PostItem = ({type, message}: PostItemPropsType) => {
 				<div>
 					<StyledTitle>
 						<span>{profileData?.fullName}</span>
+						<span>❤️ {}</span>
+						<span>💬 {}</span>
 						{` ${type}`}
 					</StyledTitle>
 					<StyledTime>14 hours <span> ago</span></StyledTime>

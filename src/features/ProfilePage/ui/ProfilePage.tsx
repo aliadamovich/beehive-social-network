@@ -47,9 +47,6 @@ export const ProfilePage = () => {
 		return <Navigate to={PATH.LOGIN} />
 	}
 
-	// if (!isAuth) {
-	// 	return <Navigate to={PATH.LOGIN} />
-	// }
 
 	return (
 		<ProfileSection>
@@ -63,7 +60,7 @@ export const ProfilePage = () => {
 
 				<StyledProfileBottom>
 					<StyledProfileGallery>
-						{/* <FriendsCounter isOwner={isOwner} /> */}
+						<FriendsCounter isOwner={isOwner} />
 						<ProfileMiniGallery isOwner={isOwner} />
 					</StyledProfileGallery>
 
@@ -142,8 +139,4 @@ const StyledProfileGallery = styled.div`
 		display: none;
 	}
 `
-
-
-//обернули в хок дя выкидывания в случае если поьз-ль не авторизован
-// export const ProfilePageContainer = withAuthRedirect(ProfilePage);
 

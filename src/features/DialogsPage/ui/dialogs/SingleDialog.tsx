@@ -26,24 +26,18 @@ export const SingleDialog = ({message, fromMe, photo, isWS = false}: Props) => {
 	const confirmDeleteHandler = () => {
 		deleteMessage(message.id)
 	}
-	
-	const likeButtonClickHandler = () => {}
-
 
 	return(
 		<StyledMessageContainer>
 			{!isWS && <StyledTimeStamp>{getTimeFromIso(message.addedAt)}</StyledTimeStamp>}
 			{/* <StyledMessage fromMe={fromMe}> */}
-				<Dialog fromMe={fromMe} photo={photo} messageBody={message.body} sender={message.senderName}/>
+				
 				<StyledIconButtons>
 					<IconButton onClick={() => { setIsModalOpen(true) }}>
 						<CloseOutlined />
 					</IconButton>
-	
-					<IconButton onClick={likeButtonClickHandler}>
-						<HeartOutlined />
-					</IconButton>
 				</StyledIconButtons>
+				<Dialog fromMe={fromMe} photo={photo} messageBody={message.body} sender={message.senderName} />
 				{isModalOpen && <ModalWindow title='Delete this message?' isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} confirmHandler={confirmDeleteHandler}/>}
 			{/* </StyledMessage> */}
 		</StyledMessageContainer>
@@ -55,6 +49,13 @@ const StyledMessageContainer = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	gap: 10px;
+
+	&:hover{
+		button {
+			visibility: visible;
+			opacity: 1;
+		}
+	}
 `
 
 const StyledTimeStamp = styled.span`
@@ -67,6 +68,7 @@ const StyledIconButtons = styled.div`
 	display: flex;
 	gap: 5px;
 	align-items: center;
+	color: ${myTheme.colors.mainFontColor};
 `
 const IconButton = styled.button`
 	border: none;

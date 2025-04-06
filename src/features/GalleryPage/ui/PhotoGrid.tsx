@@ -51,10 +51,10 @@ export const StyledGridItem = styled.div`
 	}
 
 	&:hover {
-		/* transition: all 0.3s ease 0s;
+		transition: all 0.3s ease 0s;
 
 		img {
 			scale: 1.1;
-		} */
+		}
 	}
 `

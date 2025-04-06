@@ -1,8 +1,8 @@
 import { Avatar } from 'common/components/Avatar'
-import React from 'react'
+import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
 import { myTheme } from 'styles/Theme'
-
+import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 type Props = {
 	fromMe: boolean
 	photo: string | null
@@ -11,12 +11,19 @@ type Props = {
 }
 
 export const Dialog = ({ fromMe, photo,messageBody, sender }: Props) => {
+	const [isLiked, setIsLiked] = useState(true);
+
 	return (
 		<StyledMessage fromMe={fromMe}>
 		<Avatar photo={photo} width={'50px'} height={'50px'} />
-		<StyledTextBox fromMe={fromMe}>
+		<StyledTextBox fromMe={fromMe} >
 			<StyledName>{sender}</StyledName>
 				<p>{messageBody}</p>
+
+				<StyledLikeButton onClick={() => { setIsLiked(!isLiked) }} isLiked={isLiked}>
+					{isLiked ? <HeartFilled /> : <HeartOutlined />}
+				</StyledLikeButton>
+
 		</StyledTextBox>
 		</StyledMessage>
 	)
@@ -38,6 +45,7 @@ const StyledMessage = styled.div<{ fromMe: boolean }>`
 		button {
 			opacity: 1;
 			visibility: visible;
+			transform: translate(-50%, 50%);
 		}
 	}
 	@media ${myTheme.media[576]} {
@@ -49,7 +57,24 @@ const StyledMessage = styled.div<{ fromMe: boolean }>`
 	}
 	}
 `
+const StyledLikeButton = styled.button<{isLiked: boolean}>`
+	all: unset;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	transform: translate(-50%, 100%);
+	transition: all 0.2s ease 0s;
+	color: #ba0303;
+	opacity: 0;
+	visibility: hidden;
+	cursor: pointer;
+	${props => props.isLiked && css<{ isLiked: boolean}>`
+		opacity: 1;
+		visibility: visible;
+		transform: translate(-50%, 50%);
+	`}
 
+`
 const StyledTextBox = styled.div<{ fromMe: boolean }>`
 	font-size: 16px;
 	position: relative;
