@@ -31,7 +31,7 @@ export const ProfilePage = () => {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const profileId = useSafeUserId()
-	const { data, isLoading, isFetching } = useGetProfileQuery(profileId!, {
+	const { data, isLoading, isFetching } = useGetProfileQuery(profileId, {
 		skip: !profileId || !isAuth
 	})
 
