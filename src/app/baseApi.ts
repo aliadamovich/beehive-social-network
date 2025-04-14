@@ -8,8 +8,11 @@ export const baseApi = createApi({
 			baseUrl: process.env.REACT_APP_BASE_URL,
 			credentials: "include",
 			prepareHeaders: (headers) => {
+				let token = localStorage.getItem('token')
+				if( token) {
+					headers.set("Authorization", `Bearer ${token}`)
+				}
 				headers.set("API-KEY", `${process.env.REACT_APP_API_KEY}`)
-				headers.set("Authorization", `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`)
 			},
 		})(args, api, extraOptions)
 	

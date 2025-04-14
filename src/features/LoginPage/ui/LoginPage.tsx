@@ -30,7 +30,12 @@ export const LoginPage = () => {
 				<LoginContainer>
 					<Logo src={logo} alt="" />
 					<LoginHeader>Welcome</LoginHeader>
-					<LoginDescription>Join gazillions of people online</LoginDescription>
+					{/* <LoginDescription>Join gazillions of people online</LoginDescription> */}
+					<Disclaimer>
+						To login use common test account credentials:
+						<p><b>Email: </b>adamovich.dev@gmail.com</p>
+						<p><b>Password:</b> Pass123</p>
+					</Disclaimer>
 					<LoginForm />
 				</LoginContainer>
 			</FormContainer>
@@ -87,7 +92,11 @@ export const LoginDescription = styled.p`
 	font-size: 14px;
 	color: ${props => props.color};
 `
-
+const Disclaimer = styled.div`
+	p {
+		margin-top: 5px;
+	}
+`
 
 const LoginContainer = styled.div`
 	flex: 0 1 50%;

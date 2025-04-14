@@ -27,14 +27,16 @@ export const LoginForm = () => {
 		login(data)
 			.then((resp) => {
 				if (resp.data?.resultCode === ResultCodes.Success && 'userId' in resp.data?.data) {
-				getProfileData(resp.data.data.userId)
-					.then((res) => {
-						dispatch(setIsAuth({ isAuth: true, userId: res.data?.userId }))
-						resetForm()
-					})
+				localStorage.setItem('token', resp.data?.data.token)
+				return getProfileData(resp.data.data.userId)
 			}
 		})
-		
+		.then((res) => {
+			if (res) {
+				dispatch(setIsAuth({ isAuth: true, userId: res.data?.userId }))
+				resetForm()
+			}
+		})
 	 }
 
 	return (

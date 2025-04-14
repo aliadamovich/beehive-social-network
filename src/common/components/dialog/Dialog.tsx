@@ -20,9 +20,9 @@ export const Dialog = ({ fromMe, photo,messageBody, sender }: Props) => {
 			<StyledName>{sender}</StyledName>
 				<p>{messageBody}</p>
 
-				<StyledLikeButton onClick={() => { setIsLiked(!isLiked) }} isLiked={isLiked}>
+				{/* <StyledLikeButton onClick={() => { setIsLiked(!isLiked) }} isLiked={isLiked}>
 					{isLiked ? <HeartFilled /> : <HeartOutlined />}
-				</StyledLikeButton>
+				</StyledLikeButton> */}
 
 		</StyledTextBox>
 		</StyledMessage>

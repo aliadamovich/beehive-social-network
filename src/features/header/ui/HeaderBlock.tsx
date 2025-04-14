@@ -33,6 +33,7 @@ export const HeaderBlock = ({ collapsed, setCollapsed}: HeaderPropsType) => {
 		logout().then(() => {
 			navigate(PATH.LOGIN)
 			dispatch(setIsAuth({ isAuth: false, userId: undefined }))
+			localStorage.clear()
 		})
 	}
 
