@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/beehive-social-network/static/css/main.0389b267.css",
-    "main.js": "/beehive-social-network/static/js/main.f912d68f.js",
+    "main.js": "/beehive-social-network/static/js/main.4c97ad67.js",
     "static/js/787.25eaef86.chunk.js": "/beehive-social-network/static/js/787.25eaef86.chunk.js",
     "static/media/8_webm.webm": "/beehive-social-network/static/media/8_webm.ec7fbd9e4f89a80c7b86.webm",
     "static/media/8.mp4": "/beehive-social-network/static/media/8.c66b5a1af28a942adc55.mp4",
@@ -20,11 +20,11 @@
     "static/media/loader.svg": "/beehive-social-network/static/media/loader.4e9b341e53bf06ffcb4badd5ada7e14f.svg",
     "index.html": "/beehive-social-network/index.html",
     "main.0389b267.css.map": "/beehive-social-network/static/css/main.0389b267.css.map",
-    "main.f912d68f.js.map": "/beehive-social-network/static/js/main.f912d68f.js.map",
+    "main.4c97ad67.js.map": "/beehive-social-network/static/js/main.4c97ad67.js.map",
     "787.25eaef86.chunk.js.map": "/beehive-social-network/static/js/787.25eaef86.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0389b267.css",
-    "static/js/main.f912d68f.js"
+    "static/js/main.4c97ad67.js"
   ]
 }
