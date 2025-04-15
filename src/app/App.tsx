@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState } from 'react';
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { Loader } from '../common/components/Loader/Loader';
 import { ConfigProvider, Layout, theme } from 'antd';
@@ -7,32 +7,43 @@ import { HeaderBlock } from '../features/header/ui/HeaderBlock';
 import { myTheme } from "../styles/Theme";
 import { ErrorBanner } from '../common/components/ErrorBanner';
 import { SiderBar } from 'features/sideBar/SideBar';
-import { setIsAuth } from 'features/LoginPage/model/authSlice';
+import { selectIsAuth, setIsAuth } from 'features/LoginPage/model/authSlice';
 import { AppDispatch, AppStateType } from 'app/store';
 import { useMeQuery } from 'features/LoginPage/api/authApi';
 import { ResultCodes } from 'common/enums/enum';
+import { useAuth } from 'app/hooks/AuthProvider';
+import { PATH } from 'routes/routes';
 
 
 function App() {
-	const dispatch = useDispatch<AppDispatch>()
-	const appStatus = useSelector<AppStateType>(state => state.app.status);
-	const [collapsed, setCollapsed] = useState(true);
-	const [isAppInitialized, setIsAppInitialized] = useState(false)
-	const { Content, Footer } = Layout;
+	// const dispatch = useDispatch<AppDispatch>()
+	// const appStatus = useSelector<AppStateType>(state => state.app.status);
 	const {token: { colorBgContainer, borderRadiusLG }} = theme.useToken();
+	const { Content, Footer } = Layout;
+	const [collapsed, setCollapsed] = useState(true);
+	// const [isAppInitialized, setIsAppInitialized] = useState(false)
 	
-	const {data, isLoading} = useMeQuery()
+	// const {data, isLoading} = useMeQuery()
+	// const rData = data?.data
+	// useEffect(() => {
 
-	useEffect(() => {
+	// 	if (!isLoading ) {
+	// 		setIsAppInitialized(true)
+	// 		if (data?.resultCode === ResultCodes.Success && rData && 'id' in rData) {
+	// 			dispatch(setIsAuth({ isAuth: true, userId: rData?.id }))
+	// 		}
+	// 	}
+	// },
+	// 	[data]);
+	
+	const isAuth = useSelector(selectIsAuth)
+	const { isAppInitialized } = useAuth()
+	const location = useLocation()
 
-		if (!isLoading ) {
-			setIsAppInitialized(true)
-			if (data?.resultCode === ResultCodes.Success) {
-				dispatch(setIsAuth({isAuth: true, userId: data.data.id}))
-			}
-		}
-	},
-		[data]);
+	if (!isAuth && location.pathname === PATH.PROFILE) {
+		return <Navigate to={PATH.LOGIN} />
+	}
+
 
 	if (!isAppInitialized) {
 		return <Loader />;
@@ -65,7 +76,7 @@ function App() {
 						</Content>
 					</Layout> */}
 				<ErrorBanner />
-				<div >{appStatus === "loading" && <Loader />}</div>
+				{/* <div >{appStatus === "loading" && <Loader />}</div> */}
 			</Layout>
 			
 		</ConfigProvider>

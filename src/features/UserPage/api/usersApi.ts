@@ -29,35 +29,46 @@ export const usersAPI = baseApi.injectEndpoints({
 			query: ({queryArg, pageParam}) => {
 			return {
 				url: "users",
-				params: { count: INITIAL_SEARCH_PARAMS.count, ...queryArg, page: pageParam },
+				// params: { count: INITIAL_SEARCH_PARAMS.count, ...queryArg, page: pageParam },
+				params: { count: 12, page: pageParam },
 			}
 		},
 		transformResponse(res: ResponseWithItems<UserType[]>): ResponseWithItems<DomainUser[]> {
 		return { ...res, items: res.items.map((u) => ({ ...u, entityStatus: "idle" })) }
 		},
-		providesTags: ["Users"]
+		 extraOptions: {
+        refetchOnMountOrArgChange: false,
+      },
+		providesTags: (result, error) => {
+			if (!result) return ["Users"]
+			return [
+  		 ...result.pages.flatMap(page => 
+     	 page.items.map(user => ({ type: "Users" as const, id: user.id }))
+				),
+			];
+		},
 	}),
 
-		checkFollow: build.query<boolean, number>({
-			query: (userId) => `follow/${userId}`,
-			providesTags: ["Users"],
-		}),
 		followUser: build.mutation<StandartResponse, number>({
 			query: (userId) => ({
 				url: `follow/${userId}`,
 				method: "POST",
 			}),
-			invalidatesTags: ["Users"],
+			invalidatesTags: (result, error, userId) => [
+				{ type: "Users", id: userId },
+			]
 		}),
 		unfollowUser: build.mutation<StandartResponse, number>({
 			query: (userId) => ({
 				url: `follow/${userId}`,
 				method: "DELETE",
 			}),
-			invalidatesTags: ["Users"],
+			invalidatesTags: (result, error, userId) => [
+				{ type: "Users", id: userId },
+			]
 		}),
 	}),
 })
 
-export const {useGetUsersQuery, useGetInfiniteScrollUsersInfiniteQuery, useLazyGetUsersQuery, useFollowUserMutation, useUnfollowUserMutation, useLazyCheckFollowQuery} = usersAPI
+export const {useGetUsersQuery, useGetInfiniteScrollUsersInfiniteQuery, useLazyGetUsersQuery, useFollowUserMutation, useUnfollowUserMutation} = usersAPI
 

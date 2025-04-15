@@ -10,9 +10,8 @@ type PostItemPropsType = {
 }
 export const PostItem = ({type, message}: PostItemPropsType) => {
 
-	const userId = useSafeUserId()
-	const { data: profileData } = useGetProfileQuery(userId)
-
+	const { profileData } = useSafeUserId()
+	
 	return(
 		<StyledPost>
 			<div>

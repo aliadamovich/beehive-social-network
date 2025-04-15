@@ -8,6 +8,7 @@ import { HashRouter, RouterProvider} from "react-router-dom";
 import { GlobalStyles } from './styles/Global.styled';
 import { router } from './routes/routes';
 import { store } from './app/store';
+import { AuthProvider } from 'app/hooks/AuthProvider';
 
 
 
@@ -17,13 +18,10 @@ if (rootElement) {
 	const root = ReactDOM.createRoot(rootElement);
 	root.render(
 		<Provider store={store}>
-		<GlobalStyles />
-			{/* <HashRouter>
-				<App />
-			</HashRouter> */}
-
-			<RouterProvider router={router} />
-
+			<GlobalStyles />
+		<AuthProvider>
+				<RouterProvider router={router} />
+		</AuthProvider>
 		</Provider>
 	);
 } else {

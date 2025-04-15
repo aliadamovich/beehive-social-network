@@ -9,11 +9,12 @@ import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType';
 import { useSelector } from 'react-redux';
 import { selectProfileStatus } from 'features/ProfilePage/model/selectors/profileStatusSelector';
 import { useSafeUserId } from 'app/hooks/useSafeUserId';
+import { skipToken } from '@reduxjs/toolkit/query';
 
-export const ProfileStatus = ({ isOwner }: ProfileProps) => {
+export const ProfileStatus = () => {
 	const [editMode, setEditMode] = useState(false)
-	const userId = useSafeUserId()
-	const { data: serverUserStatus } = useGetStatusQuery(userId);
+	const {profileId, isOwner} = useSafeUserId()
+	const { data: serverUserStatus } = useGetStatusQuery(profileId ?? skipToken);
 	const [updateStatus, {isLoading}] = useUpdateStatusMutation();
 	const [status, setStatus] = useState(serverUserStatus || '')
 

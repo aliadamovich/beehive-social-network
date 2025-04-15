@@ -1,8 +1,9 @@
+import { useSafeUserId } from 'app/hooks/useSafeUserId'
 import { ModalPhotoSlider } from 'features/GalleryPage/ui/modalPhotoSlider/ModalPhotoSlider'
 import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType'
 
-export const ProfileMiniGallery = ({isOwner}: ProfileProps) => {
-
+export const ProfileMiniGallery = () => {
+	const { isOwner } = useSafeUserId()
 	return (
 		<>
 			{isOwner 

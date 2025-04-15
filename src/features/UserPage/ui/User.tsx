@@ -13,7 +13,7 @@ export type UserPropsType = {
 	params: getUsersParams
 }
 
-export const User = ({ user, ...props }: UserPropsType) => {
+export const User = ({ user, params }: UserPropsType) => {
 
 	return (
 		<>
@@ -36,7 +36,7 @@ export const User = ({ user, ...props }: UserPropsType) => {
 				</Link>
 				
 				<Divider style={{margin: '12px 0'}}/>
-				<FollowUserButton user={user} {...props}/>
+				<FollowUserButton user={user} params={params}/>
 
 			</StyledUserCard>
 		</>

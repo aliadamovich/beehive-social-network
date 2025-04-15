@@ -6,7 +6,7 @@ import { LoginData } from "features/LoginPage/api/authApi.types"
 
 export const authAPI = baseApi.injectEndpoints({
 	endpoints: (build) => ({
-		me: build.query<StandartResponse<{ id: number; email: string; login: string }>, void>({
+		me: build.query<StandartResponse<{ id: number; email: string; login: string } | {}>, void>({
 			query: () => "auth/me",
 		}),
 		login: build.mutation<StandartResponse<{ userId: number, token: string } | {}>, LoginData>({
@@ -27,5 +27,5 @@ export const authAPI = baseApi.injectEndpoints({
 	}),
 })
 
-export const {useLoginMutation, useLogoutMutation, useMeQuery} = authAPI
+export const {useLoginMutation, useLogoutMutation, useMeQuery, useLazyMeQuery} = authAPI
 

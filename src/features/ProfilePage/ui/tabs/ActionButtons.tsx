@@ -7,7 +7,6 @@ import { myTheme } from 'styles/Theme'
 
 export const ActionButtons = () => {
 	const {userId} = useParams();
-	console.log(userId);
 	const [startDialog] = useStartDialogWithUserMutation()
 	const startDialogHandler = () => {
 		startDialog(Number(userId))

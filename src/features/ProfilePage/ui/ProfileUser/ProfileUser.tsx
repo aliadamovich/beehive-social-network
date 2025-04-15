@@ -4,11 +4,11 @@ import { ProfileStatus } from 'features/ProfilePage/ui/ProfileUser/ProfileStatus
 import styled from 'styled-components'
 import { myTheme } from 'styles/Theme'
 
-export const ProfileUser = ({ isOwner }: ProfileProps) => {
+export const ProfileUser = () => {
 	return (
 		<StyledProfileUser>
-			<ProfilePhoto isOwner={isOwner} />
-			<ProfileStatus isOwner={isOwner} />
+			<ProfilePhoto />
+			<ProfileStatus />
 		</StyledProfileUser>
 	)
 }

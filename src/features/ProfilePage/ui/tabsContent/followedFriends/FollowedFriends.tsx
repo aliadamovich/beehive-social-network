@@ -4,12 +4,15 @@ import { INITIAL_SEARCH_PARAMS, useGetUsersQuery } from 'features/UserPage/api/u
 import { CustomPagination } from 'common/components/customPagination/CustomPagination'
 import { GridWrapper } from 'common/components/GridWrapper'
 import { UsersSkeleton } from 'features/UserPage/ui/UsersSkeleton'
+import { useSafeUserId } from 'app/hooks/useSafeUserId'
 
 
-export const FollowedFriends = ({isOwner} : {isOwner: boolean}) => {
+export const FollowedFriends = () => {
 	const [page, setPage] = useState(INITIAL_SEARCH_PARAMS.page);
 	const { data, isLoading, isFetching } = useGetUsersQuery({ friend: true, page, count: 6 })
 	const users = data?.items
+	const { isOwner } = useSafeUserId()
+
 
 	if (!isOwner) return <div>No friends yet...</div>
 

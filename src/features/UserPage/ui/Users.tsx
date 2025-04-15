@@ -11,15 +11,22 @@ import { Search } from 'common/components/Search/Search';
 import { useGetInfiniteScrollUsersInfiniteQuery } from 'features/UserPage/api/usersApi';
 import { Spin } from 'antd';
 import { getUsersParams, InfiniteSearchType } from 'features/UserPage/api/usersApi.types';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 //! Не решена проблема бесконечного запроса при окончании юзеров 
 export const Users = () => {
 
 	const [searchParams, setSearchParams] = useSearchParams()
-	const params: InfiniteSearchType = Object.fromEntries(searchParams)
 
-	const { data, isFetching, isLoading, fetchNextPage } = useGetInfiniteScrollUsersInfiniteQuery({...params})
+	// function getStableParams(rawParams: InfiniteSearchType): InfiniteSearchType {
+// 	const { count = INITIAL_SEARCH_PARAMS.count, page = 1, term = '' } = rawParams
+// 	return { count, page, term }
+// }
+	const params: InfiniteSearchType = useMemo(() => {
+		return Object.fromEntries(searchParams)
+	}, [searchParams])
+
+	const { data, isFetching, isLoading, fetchNextPage, hasNextPage } = useGetInfiniteScrollUsersInfiniteQuery({...params})
 	const usersArray = data?.pages.flat();
 	const users = usersArray?.map((ua) => ua.items).flat()
 	
@@ -29,21 +36,25 @@ export const Users = () => {
 	}
 
 	useEffect(() => {
+
+		const handleScroll = () => {
+			if (isFetching || !hasNextPage) return;
+
+			const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+			if (scrollTop + clientHeight >= scrollHeight - 100) {
+				handleNextPage()
+			}
+		}
 		
 		window.addEventListener('scroll', handleScroll);
 		return () => {
 			window.removeEventListener('scroll', handleScroll);
 		}
 
-	}, [isFetching])
+	}, [isFetching, hasNextPage, fetchNextPage])
 
 
-	const handleScroll = () => {
-		const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-		if (scrollTop + clientHeight >= scrollHeight && !isFetching) {
-			handleNextPage()
-		}
-	}
+
 
 	const updateSearchParams = (newParams: Partial<Record<keyof getUsersParams, string>>) => {
 		setSearchParams((prevParams) => {

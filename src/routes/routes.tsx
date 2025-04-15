@@ -11,6 +11,7 @@ import { UsersPage } from "features/UserPage/ui/UsersPage";
 import { selectIsAuth } from "features/LoginPage/model/authSlice";
 import { LoginPage } from "features/LoginPage/ui/LoginPage";
 import { Gallery } from "features/GalleryPage/ui/Gallery";
+import { useAuth } from "app/hooks/AuthProvider";
 
 
 export const PATH = {
@@ -25,11 +26,22 @@ export const PATH = {
 	ERROR: '/404'
 } as const;
 
+export const InitialRedirect = () => {
+	const { userId } = useAuth()
+
+	if (userId) {
+		return <Navigate to={PATH.PROFILE} />
+	} else {
+		return <Navigate to={PATH.LOGIN} />
+	}
+}
+
 //* массив с публичными компонентами
 const publicRoutes: RouteObject[] = [
 	{
 		index: true, // Это путь по умолчанию
-		element: <Navigate to={PATH.PROFILE} />
+		// element: <Navigate to={PATH.PROFILE} />
+		element: <InitialRedirect />
 	},
 	{
 		path: PATH.PROFILE,
@@ -76,7 +88,7 @@ const privateRoutes: RouteObject[] = [
 
 //* создаем hoc для оборачивания всех приватных компонент
 export const PrivateRoute = () => {
-	const isAuth = useSelector(selectIsAuth);
+	const isAuth = useSelector(selectIsAuth)
 
 	return isAuth ? <Outlet /> : <Navigate to={PATH.LOGIN} />
 }

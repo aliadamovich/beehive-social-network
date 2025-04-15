@@ -3,8 +3,9 @@ import { myTheme } from '../../../../styles/Theme'
 import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType'
 import { useGetUsersQuery } from 'features/UserPage/api/usersApi'
 import { useEffect, useState } from 'react'
+import { useSafeUserId } from 'app/hooks/useSafeUserId'
 
-export const FriendsCounter = (props: ProfileProps) => {
+export const FriendsCounter = () => {
 	const [width, setWidth] = useState(window.innerWidth);
 	const breakpoint = 950;
 
@@ -13,14 +14,14 @@ export const FriendsCounter = (props: ProfileProps) => {
 	}, []);
 	return (
 		<>
-			{width > breakpoint && <Counter {...props}/> }
+			{width > breakpoint && <Counter /> }
 		</>
 	)
 } 
 
-const Counter = ({isOwner}: ProfileProps) => {
+const Counter = () => {
 	const { data: friends } = useGetUsersQuery({ friend: true, count: 6 });
-
+	const { isOwner } = useSafeUserId()
 	
 	return (
 		<StyledCounter>

@@ -8,14 +8,16 @@ import styled from 'styled-components';
 import { myTheme } from '../../../../../styles/Theme';
 import { addPost, selectPosts } from 'features/ProfilePage/model/profileSlice';
 import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType';
+import { useSafeUserId } from 'app/hooks/useSafeUserId';
 
 
 
-export const PostsFeed = React.memo(({isOwner}: ProfileProps) => {
+export const PostsFeed = React.memo(() => {
 	const [post, setPost] = useState('');
 	const posts = useSelector(selectPosts);
 	const dispatch = useDispatch()
-
+	const { isOwner} = useSafeUserId()
+	
 	const sendPostHandler = () => {
 		if(post.trim() !== '') {
 			dispatch(addPost({post}))

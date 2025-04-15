@@ -5,7 +5,7 @@ export const getProfile = (state: AppStateType) => {
 }
 
 export const getStatus = (state: AppStateType) => {
-	return state.profile.userStatus
+	return state.profile.status
 }
 
 export const getPosts = (state: AppStateType) => {

@@ -23,29 +23,25 @@ import { useSafeUserId } from "app/hooks/useSafeUserId";
 
 
 export const ProfilePage = () => {
-	//!моргание при переходе с пролфиля на профиль
-	const isAuth = useSelector(selectIsAuth);
-	const params = useParams();
-	const isOwner = !params.userId;
+	// const isAuth = useSelector(selectIsAuth);
+	// const params = useParams();
+	// const { isLoading, profileId, isProfileDefined, isOwner } = useSafeUserId()
+	const { isOwner, profileId, isLoading } = useSafeUserId()
+	// const isOwner = !params.userId;
 	const [activeTab, setActiveTab] = useState<TABS>(isOwner ? TABS.ACTIVITY : TABS.PROFILE);
-	const dispatch = useDispatch<AppDispatch>();
-
-	const profileId = useSafeUserId()
-	const { data, isLoading, isFetching } = useGetProfileQuery(profileId, {
-		skip: !profileId || !isAuth
-	})
 
 	useEffect(() => {
-	setActiveTab(isOwner ? TABS.ACTIVITY : TABS.PROFILE)
+		setActiveTab(isOwner ? TABS.ACTIVITY : TABS.PROFILE)
 	}, [isOwner])
 
-	if ( isLoading || isFetching) {
+	if ( isLoading) {
 		return <ProfileSkeleton />;
 	}
 
-	if (!profileId) {
-		return <Navigate to={PATH.LOGIN} />
-	}
+
+	// if (!profileId) {
+	// 	return <Navigate to={PATH.LOGIN} />
+	// }
 
 
 	return (
@@ -54,19 +50,19 @@ export const ProfilePage = () => {
 			<StyledProfileBackground />
 			<Container>
 				<StyledProfileTop>
-					<ProfileUser isOwner={isOwner} />
+					<ProfileUser />
 					<ProfileNavigation activeTab={activeTab} setActiveTab={setActiveTab} isOwner={isOwner} />
 				</StyledProfileTop>
 
 				<StyledProfileBottom>
 					<StyledProfileGallery>
-						<FriendsCounter isOwner={isOwner} />
-						<ProfileMiniGallery isOwner={isOwner} />
+						<FriendsCounter />
+						<ProfileMiniGallery/>
 					</StyledProfileGallery>
 
-					<TabsContent activeTab={activeTab} isOwner={isOwner} />
+					<TabsContent activeTab={activeTab} />
 
-					<Activity isOwner={isOwner}/>
+					<Activity/>
 				</StyledProfileBottom>
 
 			</Container>

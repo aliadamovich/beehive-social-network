@@ -1,3 +1,4 @@
+import { useSafeUserId } from 'app/hooks/useSafeUserId'
 import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType'
 import { TABS } from 'features/ProfilePage/lib/tabsEnum'
 import { FollowedFriends } from 'features/ProfilePage/ui/tabsContent/followedFriends/FollowedFriends'
@@ -7,24 +8,25 @@ import React from 'react'
 import styled from 'styled-components'
 import { myTheme } from 'styles/Theme'
 
-type Props = ProfileProps & {
+type Props = {
 	activeTab: TABS
 }
 
-export const TabsContent = ({ activeTab, isOwner}: Props) => {
+export const TabsContent = ({ activeTab}: Props) => {
+	const { isOwner } = useSafeUserId()
 
 	const renderTabContent = () => {
 		switch (activeTab) {
 			case TABS.ACTIVITY:
-				return <PostsFeed isOwner={isOwner} />
+				return <PostsFeed />
 			case TABS.PROFILE:
-				return <ProfileInfoSection isOwner={isOwner} />
+				return <ProfileInfoSection />
 			case TABS.FRIENDS:
-				return <FollowedFriends isOwner={isOwner} />
+				return <FollowedFriends />
 			case TABS.GROUPS:
 				return <div>Here will be Groups</div>
 			default:
-				return <PostsFeed isOwner={!isOwner}/>
+				return <PostsFeed />
 		}
 	}
 	return (

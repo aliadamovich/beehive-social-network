@@ -6,9 +6,11 @@ import { myTheme } from '../../../../styles/Theme';
 import { selectPosts } from 'features/ProfilePage/model/profileSlice';
 import { ProfileProps } from 'features/ProfilePage/lib/profilePropsType';
 import React from 'react';
+import { useSafeUserId } from 'app/hooks/useSafeUserId';
 
-export const Activity = React.memo(({isOwner}: ProfileProps) => {
+export const Activity = React.memo(() => {
 	const posts = useSelector(selectPosts);
+	const { isOwner } = useSafeUserId()
 	const latestPosts = posts.slice(0, 3).map(p => <PostItem type={p.type} key={p.id} />)
 	return(
 		<StyledActivitySection>

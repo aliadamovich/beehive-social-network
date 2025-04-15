@@ -9,11 +9,10 @@ import { useSafeUserId } from 'app/hooks/useSafeUserId';
 import { Spin } from 'antd';
 import { CameraOutlined, LoadingOutlined } from '@ant-design/icons';
 
-export const ProfilePhoto = ({ isOwner }: ProfileProps) => {
+export const ProfilePhoto = () => {
 	const userId = useSafeUserId()
-	const { data: profileData } = useGetProfileQuery(userId)
-
-	const [setProfilePhoto, {isLoading}] = useSetProfilePhotoMutation()
+	const { isOwner, profileData } = useSafeUserId()
+	const [setProfilePhoto, {isLoading: isSetPhotoLoading}] = useSetProfilePhotoMutation()
 
 	const addPhotoHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files.length > 0) {
@@ -36,7 +35,7 @@ export const ProfilePhoto = ({ isOwner }: ProfileProps) => {
 					<>
 						<AddPhotoInput id='file' onChange={addPhotoHandler} type={'file'} />
 						<label htmlFor="file">
-							{isLoading ? <Spin style={{ color: `${myTheme.colors.accentLight}` }} indicator={<LoadingOutlined spin />} size="small" /> : <CameraOutlined />}
+							{isSetPhotoLoading ? <Spin style={{ color: `${myTheme.colors.accentLight}` }} indicator={<LoadingOutlined spin />} size="small" /> : <CameraOutlined />}
 						</label>
 					</>
 					}
