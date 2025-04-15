@@ -28,34 +28,14 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider = ({ children }: {children: ReactNode}) => {
-	// const [isAuth, setIsAuth] = useState(false);
 	const [userId, setUserId] = useState<number | null>(null);
 	const [isAppInitialized, setIsAppInitialized] = useState(false);
-	const [profileData, setProfileData] = useState<ProfileType | null>(null)
 	const dispatch = useDispatch<AppDispatch>()
-	// const params = useParams()
-	// const navigate = useNavigate()
-	// const isAuth = !!userId
-	// const {data, isLoading: isMeLoading} = useMeQuery()
-	// const meData = data?.data
 	const [triggerGetMe, {isLoading: isTriggerGetMeLoading}] = useLazyMeQuery()
-	const [fetchProfile, {isLoading: isFetchProfileLoading}] = useLazyGetProfileQuery()
 	const [isProfileDefined, setIsProfileDefined] = useState(false);
-	// const [isLoading, setIsLoading] = useState(true);
-	// const authorizedLoginId = useSelector(selectAuthorizedLoginId);
+
 	const isAuth = useSelector(selectIsAuth)
-	// const isOwner = !params.userId
-	// const profileId = params.userId ? Number(params.userId) : userId;
 
-
-	// useEffect(() => {
-	// 	if (!profileId) {
-	// 		navigate(PATH.LOGIN)
-	// 	}
-	// 	setIsProfileDefined(true)
-	// }, [profileId, isProfileDefined, navigate])
-
-	// const { data: userProfile, isLoading } = useGetProfileQuery(profileId ?? skipToken)
 
 	const checkAuth = async () => {
 		try {
@@ -71,30 +51,9 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
 		}
 	}
 
-	const checkAuthAndFetchUser = async () => {
-		try {
-			const { resultCode, data } = await triggerGetMe().unwrap()
-			if (resultCode === ResultCodes.Success && data && 'id' in data) {
-					setUserId(data.id)
-					const userProfile = await fetchProfile(data.id).unwrap()
-					setProfileData(userProfile)
-					// return userProfi
-				} else {
-					setProfileData(null)
-				}
-			} catch (error) {
-			console.log('error in AuthProvider', error);
-		} finally {
-			setIsAppInitialized(true)
-		}
-	}
 
 	useEffect(() => {
-		// if (!isTriggerGetMeLoading || !isFetchProfileLoading) {
-		// 	setIsAppInitialized(true)
-		// }
 		checkAuth()
-		// checkAuthAndFetchUser()
 	}, [])
 
 
@@ -121,12 +80,12 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
 	)
 }
 
-export const useAuth = () => {
-	const context = useContext(AuthContext)
+// export const useAuth = () => {
+// 	const context = useContext(AuthContext)
 
-	if (!context) {
-		throw new Error('Component should be inside context')
-	}
+// 	if (!context) {
+// 		throw new Error('Component should be inside context')
+// 	}
 
-	return context
-}
+// 	return context
+// }

@@ -3,13 +3,13 @@ import { loginSchema } from '../../ProfilePage/lib/profileFormSchema'
 import c from './LoginForm.module.scss'
 import { RiKey2Line } from "react-icons/ri";
 import { LuUser2 } from "react-icons/lu";
-import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'app/hooks/hooks';
 import { setIsAuth } from 'features/LoginPage/model/authSlice';
 import { useLoginMutation } from 'features/LoginPage/api/authApi';
 import { ResultCodes } from 'common/enums/enum';
-import { useLazyGetProfileQuery } from 'features/ProfilePage/api/profileApi';
 import { MainButton } from 'common/components/MainButton';
+import { useNavigate } from 'react-router-dom';
+import { PATH } from 'routes/routes';
 
 export type SubmittedValueType = {
 	email: string
@@ -20,23 +20,20 @@ export type SubmittedValueType = {
 
 export const LoginForm = () => {
 	const [login, {isLoading}] = useLoginMutation()
-	const [getProfileData] = useLazyGetProfileQuery()
 	const dispatch = useAppDispatch()
-
-	const loginHandler = (data: SubmittedValueType, resetForm: () => void) => {
-		login(data)
-			.then((resp) => {
-				if (resp.data?.resultCode === ResultCodes.Success && 'userId' in resp.data?.data) {
-				localStorage.setItem('token', resp.data?.data.token)
-				return getProfileData(resp.data.data.userId)
-			}
-		})
-		.then((res) => {
-			if (res) {
-				dispatch(setIsAuth({ isAuth: true, userId: res.data?.userId }))
+	const navigate = useNavigate()
+	const loginHandler = async (data: SubmittedValueType, resetForm: () => void) => {
+		try {
+			const res = await login(data).unwrap()
+			if (res.resultCode === ResultCodes.Success && 'userId' in res.data) {
+				localStorage.setItem('token', res.data.token)
+				dispatch(setIsAuth({ isAuth: true, userId: res.data.userId }))
+				navigate(PATH.PROFILE)
 				resetForm()
 			}
-		})
+		} catch (error) {
+			console.log('error when logging in', error);
+		}
 	 }
 
 	return (

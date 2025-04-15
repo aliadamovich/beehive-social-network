@@ -8,10 +8,9 @@ import { ProfilePage } from "../features/ProfilePage/ui/ProfilePage";
 import { useSelector } from "react-redux";
 import { ChatPage } from "features/ChatPage/ChatPage";
 import { UsersPage } from "features/UserPage/ui/UsersPage";
-import { selectIsAuth } from "features/LoginPage/model/authSlice";
+import { selectAuthorizedLoginId, selectIsAuth } from "features/LoginPage/model/authSlice";
 import { LoginPage } from "features/LoginPage/ui/LoginPage";
 import { Gallery } from "features/GalleryPage/ui/Gallery";
-import { useAuth } from "app/hooks/AuthProvider";
 
 
 export const PATH = {
@@ -27,9 +26,9 @@ export const PATH = {
 } as const;
 
 export const InitialRedirect = () => {
-	const { userId } = useAuth()
+	const authorizedLoginId = useSelector(selectAuthorizedLoginId)
 
-	if (userId) {
+	if (authorizedLoginId) {
 		return <Navigate to={PATH.PROFILE} />
 	} else {
 		return <Navigate to={PATH.LOGIN} />

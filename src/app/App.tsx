@@ -11,8 +11,8 @@ import { selectIsAuth, setIsAuth } from 'features/LoginPage/model/authSlice';
 import { AppDispatch, AppStateType } from 'app/store';
 import { useMeQuery } from 'features/LoginPage/api/authApi';
 import { ResultCodes } from 'common/enums/enum';
-import { useAuth } from 'app/hooks/AuthProvider';
 import { PATH } from 'routes/routes';
+import { useAuth } from 'app/hooks/useAuth';
 
 
 function App() {
@@ -39,15 +39,17 @@ function App() {
 	const isAuth = useSelector(selectIsAuth)
 	const { isAppInitialized } = useAuth()
 	const location = useLocation()
-
+	
+	if (!isAppInitialized) {
+		return <Loader />;
+	}
+	
 	if (!isAuth && location.pathname === PATH.PROFILE) {
 		return <Navigate to={PATH.LOGIN} />
 	}
 
 
-	if (!isAppInitialized) {
-		return <Loader />;
-	}
+
 
 	return (
 

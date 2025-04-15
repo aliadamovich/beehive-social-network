@@ -1,10 +1,10 @@
-import { ResultCodesEnum } from '../../apiDal/apiDal';
 import { profileAPI } from "../../apiDal/apiDal";
-import { PhotosType, ProfileType } from "../../common/types/types";
+import { PhotosType } from "../../common/types/types";
 import { AppStateType, AppThunk } from "../redux-store";
-import { handleNetworkError, handleServerError } from '../../utils/errorHandlers';
 import { setAppStatus } from '../../app/appSlice';
 import { v1 } from 'uuid';
+import { ProfileType } from 'features/ProfilePage/api/profileApi.types';
+import { ResultCodes } from "common/enums/enum";
 
 
 let initialState = {
@@ -130,7 +130,7 @@ export const _getStatusThunkCreator = (profileId: number): AppThunk<Promise<void
 export const _updateStatusThunkCreator = (status: string): AppThunk => {
 	return async (dispatch) => {
 		const resp = await profileAPI.updateStatus(status)
-		if (resp.data.resultCode === ResultCodesEnum.Success) {
+		if (resp.data.resultCode === ResultCodes.Success) {
 			dispatch(setStatusAC(status))
 		}
 	}
@@ -142,14 +142,14 @@ export const _updateProfilePhotoThunkCreator = (file: any): AppThunk => {
 		try {
 			dispatch(setAppStatus({status: 'loading'}));
 			const resp = await profileAPI.setProfilePhoto(file);
-      if (resp.data.resultCode === ResultCodesEnum.Success) {
+      if (resp.data.resultCode === ResultCodes.Success) {
         dispatch(setPhotoAC(resp.data.data.photos));
 				dispatch(setAppStatus({status: 'success'}));
       } else {
-				handleServerError(dispatch, resp.data)
+				// handleServerError(dispatch, resp.data)
 			}
 		} catch (error) {
-			handleNetworkError(dispatch, error as {message: string})
+			// handleNetworkError(dispatch, error as {message: string})
 		}
   };
 };
@@ -162,13 +162,13 @@ export const _updateProfileInfoTC = (formData: ProfileType): AppThunk => {
 		if (userId ) {
 			try {
 				let resp = await profileAPI.setProfileInfo(formData);
-        if (resp.data.resultCode === ResultCodesEnum.Success) {
+        if (resp.data.resultCode === ResultCodes.Success) {
           dispatch(_getUserProfileThunkCreator(userId));
         } else {
-          handleServerError(dispatch, resp.data);
+          // handleServerError(dispatch, resp.data);
         }
 			} catch (error) {
-				handleNetworkError(dispatch, error as { message: string });
+				// handleNetworkError(dispatch, error as { message: string });
 			}
 		}
   };

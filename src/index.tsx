@@ -19,9 +19,9 @@ if (rootElement) {
 	root.render(
 		<Provider store={store}>
 			<GlobalStyles />
-		<AuthProvider>
+		{/* <AuthProvider> */}
 				<RouterProvider router={router} />
-		</AuthProvider>
+		{/* </AuthProvider> */}
 		</Provider>
 	);
 } else {

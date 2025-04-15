@@ -1,18 +1,11 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useParams, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { Container } from "../../../common/components/Container";
 import { FriendsCounter } from "./friendsCounter/FriendsCounter";
 import { Activity } from "./profileActivity/Activity";
 import { myTheme } from "../../../styles/Theme";
-import { PATH } from "../../../routes/routes";
 import logo from './../../../assets/images/logo_login.svg'
 import bg from './../../../assets/images/background.png'
-import { selectIsAuth } from "features/LoginPage/model/authSlice";
-import { AppDispatch } from "app/store";
-import { useGetProfileQuery} from "features/ProfilePage/api/profileApi";
 import { ProfileNavigation } from "features/ProfilePage/ui/tabs/ProfileNavigation";
 import { TabsContent } from "features/ProfilePage/ui/tabsContent/TabsContent";
 import { ProfileUser } from "features/ProfilePage/ui/ProfileUser/ProfileUser";
@@ -23,11 +16,8 @@ import { useSafeUserId } from "app/hooks/useSafeUserId";
 
 
 export const ProfilePage = () => {
-	// const isAuth = useSelector(selectIsAuth);
-	// const params = useParams();
-	// const { isLoading, profileId, isProfileDefined, isOwner } = useSafeUserId()
-	const { isOwner, profileId, isLoading } = useSafeUserId()
-	// const isOwner = !params.userId;
+
+	const { isOwner, isLoading } = useSafeUserId()
 	const [activeTab, setActiveTab] = useState<TABS>(isOwner ? TABS.ACTIVITY : TABS.PROFILE);
 
 	useEffect(() => {

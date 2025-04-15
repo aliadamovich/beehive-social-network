@@ -12,7 +12,6 @@ const mockPosts = [
 		"id": v1(),
 		"type": "replied",
 		"body": "Congrats with your new job, dear!",
-		date: new Date()
 	},
 	{
 		"id": v1(),
